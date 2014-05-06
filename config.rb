@@ -70,6 +70,14 @@ page "/feed.xml", :layout => false
 # Methods defined in the helpers block are available in templates
 helpers do
 
+  def title_tag
+    title = 'work.stevegrossi.com'
+    if current_page.try{ |p| p.data.title }
+      title = [current_page.data.title, title].join(' | ')
+    end
+    content_tag(:title, title)
+  end
+
   # Generates an absolute path for a work article's image
   def work_image(article, image, options = {})
     dir = "#{article.date.strftime('%Y-%m-%d')}-#{article.slug}/"
