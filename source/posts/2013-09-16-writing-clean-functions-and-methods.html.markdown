@@ -6,6 +6,8 @@ tags: refactoring
 
 I've begun reading Robert Martin's [Clean Code: A Handbook of Agile Software Craftsmanship][1], and I'm so glad I have. I strongly believe that code is written not for computers but for other programmers (including one's future self), and Martin's book is rich with principles for how to write code with greater transparency of intention and execution.
 
+READMORE
+
 His third chapter, on functions, is especially rich, and I want to record just some of what I've learned here. (Since I write primarily in Ruby, where the convention is to call result-producing code "methods" instead of "functions", I'll use the former term from here on out.)
 
 ## Use Intention-Revealing Names

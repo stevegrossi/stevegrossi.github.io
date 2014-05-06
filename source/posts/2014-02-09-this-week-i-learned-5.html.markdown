@@ -4,6 +4,10 @@ date: 2014-02-09 00:00 EST
 tags: errors, postgresql, rails, security
 ---
 
+Regular expressions in PostgreSQL, a terser `where()` syntax for ActiveRecord associations, signed cookies in Rails, and some tips for writing great error messages.
+
+READMORE
+
 ## PostgreSQL Supports Regular Expressions
 
 I needed to query a PostgreSQL database for records which matched certain #hashtags or @mentions. A simple `where('content LIKE ?', "##hashtag")` wouldn't be specific enough, because I didn't want queries for #bacon returning things like #baconlovers. As so often is the case, PostgreSQL was there for me with [pattern matching][1]. My regexes are a little too specific, but the general idea is this:

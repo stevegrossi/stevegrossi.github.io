@@ -6,6 +6,8 @@ tags: paperclip, performance, rails, s3
 
 [Paperclip][1] is a great gem for handling file uploads in your Rails app, but there are some important steps you need to take to ensure the best performance when serving images.
 
+READMORE
+
 ## Set Expires Headers
 
 I'm using Amazon S3 to serve images, and Paperclip doesn't tell S3 to set expires headers on uploads by default, which means browsers won't cache these uploads, leading to a massive performance loss (not to mention S3 transfer expense). Make sure to set these yourself with the option:

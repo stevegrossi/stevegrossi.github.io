@@ -4,6 +4,10 @@ date: 2014-01-25 00:00 EST
 tags: rails, wordpress
 ---
 
+An assets gotcha to avoid when upgrading from Rails 3 to 4, keeping WordPress theme comments around with Sass, and an intro to one of my favorite new development tools: the virtualization-management tool Vagrant.
+
+READMORE
+
 ## Upgrading from Rails 3 to 4 Won't Minify Your Assets By Default
 
 This one caught me by surprise while I was trying out Google's [PageSpeed Insights Chrome extension][1]. Rails 4 seems to require a new configuration syntax to minify your text assets (like stylesheets and scripts). Newly generated Rails 4 apps will include it by default, but if you're upgrading from Rails 3 you have to adjust your config/environments/production.rb as shown:

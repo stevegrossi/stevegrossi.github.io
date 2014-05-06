@@ -6,6 +6,8 @@ tags: postgresql, rails
 
 [Maurício Linhares has a great post](http://mauricio.github.io/2014/02/09/foreman-and-environment-variables.html) espousing the virtues of [Foreman][1], a Ruby gem for process management. I've benefited from Foreman's `.env`-file way of managing environment variables, but aside from adding `web: bundle exec unicorn -p $PORT` to my Procfile I haven't really used Foreman for its primary purpose, managing processes.
 
+READMORE
+
 But I noticed this weekend that my laptop's getting on in years and has been growing sluggish, and when I inspect what's consuming its CPU cycles, I see processes like mysqld, postgres, mongod--things I need when developing specific projects but don't necessarily want running 24/7, but since I've installed them as services that's what they do.
 
 Following Maurício's advice, I set about uninstalling Postgres as a service, so it's not going to be running all the time, and setting up Foreman to only run Postgres when I need it, i.e. when I'm running a local web server with `bundle exec foreman start`.

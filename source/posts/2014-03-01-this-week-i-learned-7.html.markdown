@@ -4,6 +4,10 @@ date: 2014-03-01 00:00 EST
 tags: problem solving, rails
 ---
 
+The most important rule of problem-solving and some lesser-known tricks with ActiveRecord's `has_many` macro.
+
+READMORE
+
 ## When You're Stuck, Examine Your Assumptions
 
 I continue to learn this one the hard way. This week, I spent a couple of hours trying to fix something based on a flawed assumption about what Chrome's DevTools network inspector was showing me. When inspecting an AJAX request, I thought that the "preview" tab was showing me the request params, not the response params (since "Response" is its own tab), which hid from me the fact that Rails' strong_parameters was filtering out a required parameter and making the update fail.

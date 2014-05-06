@@ -6,6 +6,8 @@ tags: heroku, performance, rails
 
 I love Heroku for deploying Rails apps. If you use Heroku too, you may have noticed a line of output when deploying:
 
+READMORE
+
     -----> Rails plugin injection
            Injecting rails3_serve_static_assets
 

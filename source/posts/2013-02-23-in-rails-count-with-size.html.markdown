@@ -6,6 +6,8 @@ tags: rails, performance
 
 While using the uber-handy [Rails Panel Chrome extension][1] to monitor my pages' query counts, I discovered that [the page on my site that lists authors][2] was making 50 queries. The culprit? I was counting each author's books with `.count`, which performs a SQL `COUNT` query for every author.
 
+READMORE
+
 As [Josh Susser explains][3], there are three methods for counting records in Ruby/Rails:
 
 * **.count**, which performs a SQL `COUNT` query each time it's called.

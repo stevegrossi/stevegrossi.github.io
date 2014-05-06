@@ -6,6 +6,8 @@ tags: paperclip, ruby, sass
 
 This is the first post in what I hope will be a weekly feature on things I've learned which are neat enough to mention, but not big enough for their own post.
 
+READMORE
+
 ## How to rename a Paperclip attachment when an interpolated attribute in the Filename changes
 
 It seemed like a common-enough use case, but I couldn't find any documentation in Paperclip or elsewhere on the web about how to rename files when an interpolated attribute is changed, so I figured out a pretty good way and put it into [this gist][1].

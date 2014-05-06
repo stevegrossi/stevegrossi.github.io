@@ -6,6 +6,8 @@ tags: rails
 
 I know it's not Christmas yet, but I can's help opening one of my presents early: [Rails 4.1 beta][1] from Rails core! There are some cool new features I want to try out, and since 37 Signals is apparently running the beta in production for Basecamp, it has to be pretty darn stable. So let's get to it.
 
+READMORE
+
     # Gemfile
     gem 'rails', '4.1.0.beta1'
 

@@ -4,6 +4,10 @@ date: 2014-04-26 00:00 EDT
 tags: security,
 ---
 
+Adding environment-based HTTP authentication to a Rails app, how to filter tailed log output, and a great habit for writing clearer, self-documenting code.
+
+READMORE
+
 ## How to Password-Protect a Staging Environment
 
 At first I considered making the conditional `if Rails.env.staging?` but by using environment variables, it's easy to enable authentication in any environment (perhaps a production server before launch) without needing to push new code.

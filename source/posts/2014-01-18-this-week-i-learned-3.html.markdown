@@ -4,6 +4,10 @@ date: 2014-01-18 00:00 EST
 tags: rails, seo
 ---
 
+A robots.txt gotcha, cleaning up asset output in Rails' logs, reversing a specific git commit (in a way that's itself reversible), displaying errors with ActiveAdmin, and--spoiler alert--the keyboard shortcut for "View Source" in Chrome on a Mac is <kbd>Cmd</kbd> + <kbd>Opt</kbd> + <kbd>u</kbd>
+
+READMORE
+
 ## robots.txt can block Google from recognizing 301 redirects
 
 I built a site for a client that was at a new URL, so I asked their previous webmaster to set up 301 redirects from the old domain to the new one. After launch, everything seemed in order, but before long someone noticed that the old site was still appearing in search results, only with a message from Google that "A description for this result is not available because of this site's robots.txt". What seems to have happened is that the previous webmaster, in addition to setting up 301 redirects, also added a robots.txt file with

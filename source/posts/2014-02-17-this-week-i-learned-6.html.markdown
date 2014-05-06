@@ -4,6 +4,10 @@ date: 2014-02-17 00:00 EST
 tags: backbone, jquery
 ---
 
+Getting started with Backbone.js and Underscore.js, and a jQuery trick for filtering empty values from an array.
+
+READMORE
+
 ## Backbone.js
 
 This week I finally got a chance to use [Backbone.js][1]. Before now, I had only a vague understanding of what it is and why you'd use it. Even after reading Ryan Bates' [introduction to Backbone][2] (subscription required) and Thoughtbot's [Backbone.js on Rails][3]--both excellent resources--I had a practical understanding of how to use Backbone well before I really "got" it.

@@ -5,7 +5,9 @@ tags: performance
 published: false
 ---
 
-From Facebook, [The Mature Optimization Handbook](https://www.facebook.com/notes/facebook-engineering/the-mature-optimization-handbook/10151784131623920).
+From Facebook, [The Mature Optimization Handbook](https://www.facebook.com/notes/facebook-engineering/the-mature-optimization-handbook/10151784131623920), a guide to 
+
+READMORE
 
 1. be scientific. Define the problem. formulate a hypothesis about what's wrong and what specific optimization will prove it. test that hypothesis. don't overextend it--just because an optimization is worthwhile is one place doesn't mean it's worth your time in another, where it may be less effective.
 

@@ -6,6 +6,8 @@ tags: problem solving
 
 Part of what drives us as programmers is a desire to solve problems. We get requirements, and our brains immediately begin formulating solutions, which we analyze and from which we pluck the best one to implement. At least, that's how it's supposed to work. Then, there are hard problems: problems which are difficult to understand, problems which don't immediately suggest their solutions, and problems with no best solution but only tradeoffs.
 
+READMORE
+
 Here is [a great talk by Rich Hickey](http://www.youtube.com/watch?v=f84n5oFoZBc) about how to handle these situations. Some of the key takeaways for me were:
 
 * **List the things you know, but also what you don't know.** Brain-dumping, or writing things down, is a good tactic for understanding your situation. Write down everything you know, but just as important, what you don't know. That can keep you from making unjustified assumptions, and provide a road map to further investigation.

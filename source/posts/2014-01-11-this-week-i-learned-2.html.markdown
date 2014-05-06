@@ -4,6 +4,10 @@ date: 2014-01-11 00:00 EST
 tags: git, heroku, ruby
 ---
 
+How Ruby's `super` really works, DRYing out Heroku toolbelt commands, passing Ruby exceptions to blocks, and one weird tricks for making a robot voice speak my git commits.
+
+READMORE
+
 ## In Ruby, `super` Acts Like a Method
 
 `super` is one of those things I'd seen in Ruby but never knew quite what it does. I'd seen it used within methods to jump out and call the instance's parent's method of the same name. Indeed, it does that, but I learned this week that it actually *returns* with the result of that method, which opens up some interesting possibilties. This came in handy when I wanted to add a boolean method to a child model (e.g. Dachshund) that also took into account the result of the same method on the parent model (e.g. Dog):

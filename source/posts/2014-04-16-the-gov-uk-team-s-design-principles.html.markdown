@@ -6,4 +6,6 @@ tags: principles
 
 I love the Gov.uk team's idea of codifying and making public [the principles behind their work](https://www.gov.uk/design-principles). And props to Jeremy Keith for [building a collection of such collections][1] for his own and others' benefit, which is how I discovered this.
 
+READMORE
+
  [1]: http://principles.adactio.com/

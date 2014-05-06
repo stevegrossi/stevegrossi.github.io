@@ -4,9 +4,9 @@ date: 2013-01-05 23:40 UTC
 tags: computer science
 ---
 
-[Sorting Algorithms Redux][1]
+Without a formal computer science background, I found [this YouTube series][1] an accessible introduction to the subjects of time complexity, big-O notation, and sorting algorithms.
 
-Without a formal computer science background, I found this YouTube series an accessible introduction to the subjects of time complexity, big-O notation, and sorting algorithms.
+READMORE
 
 **Time complexity** is the relationship between how much time it will take a computer to perform some function on a set of data, and the size of the data set. In other words, it's how a function *scales* as the amount of data it acts upon increases. You might also think of it as one way to measure the efficiency of a function.
 

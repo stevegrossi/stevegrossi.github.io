@@ -6,6 +6,8 @@ tags: ruby, rails
 
 This weekend I had the great pleasure of helping out at [Railsbridge Indy](http://www.railsbridgeindy.org/), an event aimed at introducing women to Ruby and Rails. It's the local chapter of [RailsBridge](http://railsbridge.org/), a really cool organization that open-sources all of the curriculum and helps people set up local chapters. Having myself learned Ruby and Rails from others who've generously shared their knowledge online, I was excited for an opportunity to give back and happily learned a few things, too.
 
+READMORE
+
 The event really started Friday night with Installfest, where we invite Saturday's participants to stop by [the space](http://speakeasyindy.com/) for pizza and any help they might need getting Git, Ruby, Rails, a text editor, and accounts on Github and Heroku set up. I heard that last year's was a challenge when someone brought a Chromebook, but this year's went off without too many issues. The fact that [Railsinstaller](http://railsinstaller.org/) supports Windows now was a big help. We did discover a few places where [the curriculum](http://docs.railsbridge.org/installfest/) could have been clearer, but the great thing about open source is that we can just submit a pull request with an update.
 
 Kudos to the Railsbridge folks (and its many contributors) for keeping the curriculum up-to-date. I was excited to see that it's geared toward the latest version of Rails, thanks to which I learned that with routes, **`root` now takes a 'controller#action' string** as well as a hash, so that:

@@ -6,6 +6,8 @@ tags: perspective
 
 I had a revelation a few years ago while thinking about *Minority Report*, specifically that scene in the beginning when Tom Cruise is interacting with the futuristic crime computer like the conductor of an orchestra. (If you haven't seen it, Tom Cruise is in front of a translucent desktop full of media—documents, videos, images—which he manipulates with his hands in midair.) I realized that one day websites might work like this. Not that they necessarily should, but that they could. It suddenly seemed very silly to be looking for inspiration toward the top sites of last year, or even current trends. No ma'am, not when there was a future to be built.
 
+READMORE
+
 Of course, printing search results one at a time on to wooden spheres and dispensing them like gumballs is a tad inefficient, which is why the measure of any prediction is whether it would make life easier, better, or both. So, for this blog’s inaugural post at the beginning of this new year, I'd like to begin with some predictions for what the websites of the future will be like.
 
 ## Myriad Screens
