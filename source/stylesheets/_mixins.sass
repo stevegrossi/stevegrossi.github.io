@@ -1,0 +1,20 @@
+@mixin transition($opts)
+  -webkit-transition: $opts
+  -moz-transition: $opts
+  -o-transition: $opts
+  -ms-transition: $opts
+  transition: $opts
+
+@mixin transform($opts)
+  -webkit-transform: $opts
+  -webkit-backface-visibility: hidden
+  -moz-transform: $opts
+  -ms-transform: $opts
+  -o-transform: $opts
+  transform: $opts
+
+@mixin border-radius($rad: .5em)
+  -webkit-border-radius: $rad
+  -moz-border-radius: $rad
+  border-radius: $rad
+

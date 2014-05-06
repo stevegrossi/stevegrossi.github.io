@@ -1,0 +1,19 @@
+h1 Portfolio
+p.lede I make websites. Nice ones.
+
+- blog('work').articles.each do |article|
+
+  article.project
+    header.project-meta
+      h2= article.title
+      p
+        span.tags= article.tags.map{ |tag| content_tag(:strong, tag) }.to_sentence
+        span.client=< "for #{content_tag(:strong, article.data.client)}"
+        - if article.data.employer && article.data.employer != article.data.client
+          span.employer=< "with #{content_tag(:strong, article.data.employer)}"
+      - if article.data.project_url
+        = link_to('Visit Site', article.data.project_url, class: 'btn')
+    .project-content
+      - if article.data.images
+        - article.data.images.each do |image|
+          = work_image(article, image, alt: '')

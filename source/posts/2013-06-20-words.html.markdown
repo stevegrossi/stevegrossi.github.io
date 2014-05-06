@@ -1,0 +1,16 @@
+---
+title: Words
+date: 2013-06-20 00:00 EDT
+tags: content, perspective
+---
+
+<http://justinjackson.ca/words.html>
+
+> What do you have to say? If you don't know, there's not much use in adding all that other cruft. Just start with one page, with a single focus. Write it and publish it, and then iterate on that. Every time you're about to add something, ask yourself: does this help me communicate better? Will that additional styling, image, or hyperlink give my audience more understanding? If the answer's "no", don't add it.
+
+Like Justin Jackson, the author of this, I too was impressed--no, that's the wrong word, maybe "inspired" in the sense of being literally filled with fresh air--with Jason Fried's homepage for 37 Signals' new service, [Know Your Company][1]. One page, with lots of words, and they're great ones. We've become so obsessed with connecting things by collecting and liking and associating that it's easy to forget how people have been connecting for all time: by talking to one another. The internet's still pretty damn good for that, even as it becomes good for so much more.
+
+Via [Jeremy][2]
+
+ [1]: https://knowyourcompany.com/
+ [2]: http://adactio.com/links/6303/
