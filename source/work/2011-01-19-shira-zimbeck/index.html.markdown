@@ -1,5 +1,6 @@
 ---
 title: Shira Zimbeck
+published: false
 project_url: http://shirazimbeck.com
 client: Hedley Productions
 tags: design, development
