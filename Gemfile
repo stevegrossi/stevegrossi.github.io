@@ -4,6 +4,7 @@ source 'http://rubygems.org'
 
 gem 'middleman'
 gem 'middleman-blog'
+gem 'middleman-minify-html'
 gem 'middleman-gh-pages'
 
 gem 'slim'

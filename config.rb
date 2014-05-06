@@ -94,6 +94,10 @@ set :images_dir, 'images'
 
 # Build-specific configuration
 configure :build do
+
+  # Minify HTML
+  activate :minify_html
+
   # For example, change the Compass output style for deployment
   activate :minify_css
 
