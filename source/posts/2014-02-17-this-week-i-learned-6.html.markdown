@@ -10,7 +10,7 @@ READMORE
 
 ## Backbone.js
 
-This week I finally got a chance to use [Backbone.js][1]. Before now, I had only a vague understanding of what it is and why you'd use it. Even after reading Ryan Bates' [introduction to Backbone][2] (subscription required) and Thoughtbot's [Backbone.js on Rails][3]--both excellent resources--I had a practical understanding of how to use Backbone well before I really "got" it.
+This week I finally got a chance to use [Backbone.js][1]. Before now, I had only a vague understanding of what it is and why you'd use it. Even after reading Ryan Bates' [introduction to Backbone][2] (subscription required) and Thoughtbot's [Backbone.js on Rails][3]—both excellent resources—I had a practical understanding of how to use Backbone well before I really "got" it.
 
 Backbone is a lot of things, but there are just three that I found myself using most.
 

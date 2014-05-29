@@ -26,7 +26,7 @@ There's a lot of unclarity here. What do `u` and `p` stand for? Why are there tw
 
 ## The Fewer Arguments, the Better
 
-Martin doesn't, but I'd go so far as to say that **method arguments are a code smell**. Of course, they're frequently necessary and not always extraneous, but I can think of plenty of examples where a method is made more clear by removing an argument. Early on, I wrote helper methods like `author_full_name_for(article)` when `article.author_full_name` would have been clearer. The latter makes clear the domain of `author_full_name`--it's a property of articles--whereas the former is opaque as to what type of argument it's expecting.
+Martin doesn't, but I'd go so far as to say that **method arguments are a code smell**. Of course, they're frequently necessary and not always extraneous, but I can think of plenty of examples where a method is made more clear by removing an argument. Early on, I wrote helper methods like `author_full_name_for(article)` when `article.author_full_name` would have been clearer. The latter makes clear the domain of `author_full_name`—it's a property of articles—whereas the former is opaque as to what type of argument it's expecting.
 
 Another tip is to **avoid flag arguments**. Not only are they opaque (in `format(a, b, true)`, what the heck does `true` do?), requiring future developers to reference the method whenever they need to call it, but they introduce needless complexity. **Methods should do exactly one thing each.** If the third boolean argument in the method above, say, includes an optional wrapper element, the method should be split into `format(a, b)` and `format_with_wrapper(a, b)`, the latter of which calls the former, avoiding duplication. Then there's no ambiguity about their purpose.
 

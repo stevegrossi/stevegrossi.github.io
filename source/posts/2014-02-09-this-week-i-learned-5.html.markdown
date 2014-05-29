@@ -45,7 +45,7 @@ Now, if someone inspects their `user_id` cookie, instead of "1234" they'll see s
 * **Describe the System Impact:** Most errors have negative effects, so let the person looking into the error know what those may be, something as simple as "This means the confirmation email for Order ##{order.id} was not sent" or "This means the missile bay is unlocked as of #{Time.zone.now}".
 * **Offer Tips for Debugging**: this is always useful, and can save your team time a good bit of time. For example, you might include a pre-built URL to a log parser for the time in which the error occurred, in case the error was the result of issues with the system at large (e.g. "View system status: http://logparser.com/system?from=#{Time.now.to_i}").
 
-We've all been in the unfortunate situation of having to debug an error in someone else's app--maybe that someone else isn't even with the company anymore--and having no idea what the error means or where to start. It isn't hard to take the time and provide a solid bit of context for the next person to find themselves in that situation with *your* app, if for no other reason than that person is likely to be yourself.
+We've all been in the unfortunate situation of having to debug an error in someone else's app—maybe that someone else isn't even with the company anymore—and having no idea what the error means or where to start. It isn't hard to take the time and provide a solid bit of context for the next person to find themselves in that situation with *your* app, if for no other reason than that person is likely to be yourself.
 
  [1]: http://www.postgresql.org/docs/9.0/static/functions-matching.html
  [2]: http://bugroll.com/how-to-write-good-error-messages.html

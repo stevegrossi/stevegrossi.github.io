@@ -8,7 +8,7 @@ tags: postgresql, rails
 
 READMORE
 
-But I noticed this weekend that my laptop's getting on in years and has been growing sluggish, and when I inspect what's consuming its CPU cycles, I see processes like mysqld, postgres, mongod--things I need when developing specific projects but don't necessarily want running 24/7, but since I've installed them as services that's what they do.
+But I noticed this weekend that my laptop's getting on in years and has been growing sluggish, and when I inspect what's consuming its CPU cycles, I see processes like mysqld, postgres, mongod—things I need when developing specific projects but don't necessarily want running 24/7, but since I've installed them as services that's what they do.
 
 Following Maurício's advice, I set about uninstalling Postgres as a service, so it's not going to be running all the time, and setting up Foreman to only run Postgres when I need it, i.e. when I'm running a local web server with `bundle exec foreman start`.
 

@@ -4,7 +4,7 @@ date: 2014-02-27 00:00 EST
 tags: ruby, computer science
 ---
 
-Here is [a fascinating talk](http://vimeo.com/66849976)--from Tom Stuart at last year's Scottish Ruby Conference--on the subject of programs that are impossible to write in Ruby. Computers are logic machines, and Stuart takes us on a tour of many of the underlying problems with logic and how they manifest themselves in computer science, touching on things like undecideability, the halting problem, and Rice's theorem.
+Here is [a fascinating talk](http://vimeo.com/66849976)—from Tom Stuart at last year's Scottish Ruby Conference—on the subject of programs that are impossible to write in Ruby. Computers are logic machines, and Stuart takes us on a tour of many of the underlying problems with logic and how they manifest themselves in computer science, touching on things like undecideability, the halting problem, and Rice's theorem.
 
 READMORE
 
@@ -24,7 +24,7 @@ From these two facts arises the possibility of infinite loops: you can always fe
 
 In Ruby, we can write programs that may or may not run forever (for another example, one which loops through all prime numbers until it finds one that isn't the sum of 2 other primes). We don't know if this program will ever finish, so it's probably impossible to write a Ruby programs that determines whether or not that program will run forever.
 
-But if this were possible--if we could write a program that reads another program and tells whether it will ever finish--then this second program, something like
+But if this were possible—if we could write a program that reads another program and tells whether it will ever finish—then this second program, something like
 
     def halts?(input)
       // determine if the input program will ever finish
@@ -48,7 +48,7 @@ In other words, it is impossible to look into the future and predict what a comp
 
 In other words, **any system powerful enough to be self-referential cannot correct answer every question about itself.** This is prety much [Gödel's Incompleteness theorem][1] applied to computers.
 
-The good news for us is that for this reason, the world will probably always need programmers. Programs themselves cannot determine their own interesting propetrties--properties they may or may not have that we'd want to check for. But how can *we* do that? Stuart ends with some strategies:
+The good news for us is that for this reason, the world will probably always need programmers. Programs themselves cannot determine their own interesting propetrties—properties they may or may not have that we'd want to check for. But how can *we* do that? Stuart ends with some strategies:
 
 * Ask undecideable questions, but set a time limit at which we give up. We may learn things, but avoid getting caught in those nasty infinite loops.
 * Ask several smaller questions whose answers suggest the answer to a larger, fundamentally unanswerable question.
