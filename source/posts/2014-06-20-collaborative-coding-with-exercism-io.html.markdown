@@ -73,7 +73,7 @@ I still have some reservations about this approach, but I felt good enough about
 Doing exercises is only half of Exercism.io. The other half, which I found equally rewarding, is giving feedback (or "picking nits," as they call it). It's easy to find hundreds of other people working on the same exercise you are, and it's instructive both to see how they've solved it, and to compare their approaches to yours. I happened upon [an approach by Github user jesk](http://exercism.io/submissions/f8e9de857a028622866daa11) which is longer and more procedural---two things I typically try to avoid---but which I found to be quite clear about what it's doing. Still, I was able to provide some suggestions for simplifying jesk's approach, and learned some things in the process:
 
 * Ruby has `String#empty?` but no `String#full?` (which wouldn't make sense anyway). For its opposite, as an alternative to `!str.empty?`, you can do `str[0]` which returns nil and evaluates to false when part of a conditional.
-* `Array#min` typically returns the smallest value in an array, but when all elements of an array are strings, it implicitly returns the shortest one.
+* `Array#min` typically returns the smallest value in an array, but when <s>all elements of an array are strings, it implicitly returns the shortest one.</s> **Update::** This is incorrect. `Array#min` with strings actually returns the string nearest the beginning of the alphabet. It was random chance that all of the exercise's tests still passed on this assumption. To actually fetch the shortest string in an array, use `Array#min_by(&:length)`.
 
 ## Addendum: Automatucally Running Exercism.io Tests
 
