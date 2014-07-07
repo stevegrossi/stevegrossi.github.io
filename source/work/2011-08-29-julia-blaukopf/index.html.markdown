@@ -1,5 +1,6 @@
 ---
 title: Julia Blaukopf
+published: false
 project_url: http://www.juliablaukopf.com
 client: Julia Blaukopf
 tags: design, development
