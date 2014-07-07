@@ -1,5 +1,4 @@
 @charset "UTF-8"
-@import 'theme_meta'
 @import 'normalize'
 @import 'variables'
 @import 'mixins'
@@ -15,7 +14,7 @@ body
     font-size: 112.5%
   @media (min-width: 800px)
     font-size: 131.25%
-  max-width: 50em
+  max-width: 42em
   margin: 0 auto
   line-height: 1.5
   color: $text_color
@@ -107,6 +106,13 @@ pre
 code
   font-family: $mono-stack
   font-size: .875em
+  background: $lighter-gray
+  padding: .1em .25em
+  @include border-radius(.25em)
+
+pre
+  code
+    background: inherit
 
 header[role="banner"]
   margin: 0 5%
