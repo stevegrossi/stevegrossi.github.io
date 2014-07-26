@@ -1,7 +1,7 @@
 ---
 title: "Provisioning a LAMP Stack and WordPress with Chef, Part 1: Apache, MySQL, and PHP"
 date: 2014-06-24 08:00 EDT
-tags: devops, wordpress
+tags: chef, wordpress
 ---
 
 After years of getting less and less while paying more and more for shared hosting, I finally decided to spin up my own (virtual) server to host a few WordPress sites. I chose to provision the server with [Chef](http://www.getchef.com/), which lets you describe how you'd like the server set up with a handy Ruby <abbr title="Domain-specific Language">DSL</abbr> and Chef takes care of the rest. Chef lived up to its reputation for being incredibly powerful, but it took me longer than I'd hoped to really understand how to use it. What follows is the blog post I wish I'd had available before jumping in.
@@ -113,11 +113,11 @@ At this point, we've fetched and installed some third-party cookbooks, but we're
 
 Notice the JSON file is named after the IP address of our VPS. (You should be able to get that from your host, as I did from Digital Ocean.) Chef can also use a hostname, so you might create a DNS A-record pointing from, say, test-server.mywebsite.com to your VPS's IP address, and then naming this file `test-server.mywebsite.com.json`, which is a bit more human-readable.
 
-The `run_list` in this file tells Chef which recipes to run on the server. Some lines refer to specific recipes (e.g. `recipe[apache2::mod_php5]`) while others refer just to the cookbook (e.g. `"recipe[apache2]"`) which implicitly refers to a default recipe (`"recipe[apache2::default]"`). I arrived at this particular list of recipes through a good deal of trial-and-error. For example, the mysql cookbook initially used a default recipe (`"recipe[mysql]"`) as I saw in many tutorials, but when this gave me an error, I discovered that it now requires referring to the specific server and client recipes as I've done above. If you run into trouble, recipe READMEs should be pretty reliable in telling you how to invoke them.
+The `run_list` in this file tells Chef which recipes to run on the server. Some lines refer to specific recipes (e.g. `recipe[apache2::mod_php5]`) while others refer just to the cookbook (e.g. `recipe[apache2]`) which implicitly refers to a default recipe (`recipe[apache2::default]`). I arrived at this particular list of recipes through a good deal of trial-and-error. For example, the mysql cookbook initially used a default recipe (`recipe[mysql]`) as I saw in many tutorials, but when this gave me an error, I discovered that it now requires referring to the specific server and client recipes as I've done above. If you run into trouble, recipe READMEs should be pretty reliable in telling you how to invoke them.
 
 With our node file created, Chef now knows where to find our server and what belongs on it, so let's let Chef do its thing. When first having Chef set up a server, the command to use (from the project root) is:
 
-    $ knife solo bootstrap root@123.45.67.890
+    $ knife solo bootstrap root@IP_OR_HOSTNAME
 
 (Replace the dummy IP adress with your server's, or its hostname if you set that up.) Knife-solo's `bootstrap` combines the functionality of two sub-commands:
 
@@ -147,7 +147,7 @@ Alas, things didn't go quite to smoothly on my first try. Instead, Chef was gett
 
 On that second try, everything worked out (I've never been so happy to see a 404 from Apache!) The 404 is because we haven't installed Apache's default site, so let's fix that now. Here, you can see the impressive power of chef. Instead of having to reinstall Apache or FTP a bunch of files, we simply add some additional configuration to our node file:
 
-    # nodes/123.45.67.890.json
+    # nodes/IP_OR_HOSTNAME.json
     "run_list": [
       "recipe[apache2]"
       // ...
@@ -172,7 +172,7 @@ After having Chef install Apache, I noticed that Chef began reporting errors lik
 
 which were preventing me from running `$ knife solo cook`. Inspecting my server, it appeared that Apache was maxxing out  the available 512MB of RAM. From what I've read, with a web server you kind of want Apache to use as much RAM as it can, but clearly this wouldn't work if it was prevent Chef from running. I think that by default Apache is tuned for more powerful servers than my little Digital Ocean box, so I had to dial it back in my node's Apache config:
 
-    # nodes/123.45.67.890.json
+    # nodes/IP_OR_HOSTNAME.json
     "apache": {
       "prefork": {
         "startservers": 2,
@@ -193,13 +193,13 @@ Next let's make sure PHP is configured. We'd included some PHP recipes that shou
 
 So let's SSH into the server and put a PHP test file in the web root.
 
-    $ ssh root@123.45.67.890
+    $ ssh root@IP_OR_HOSTNAME
     $ cd /var/www
     $ echo "<?php phpinfo();" > info.php
 
 (Typically, we wouldn't interact directly wth the server like this, but since it's just a temporary file, we'll do this manually to keep things simple.)
 
-Now, navigating to http://123.45.67.890/info.php we should see the standard PHP Info page. If that's the case, we can now remove the file:
+Now, navigating to http://IP_OR_HOSTNAME/info.php we should see the standard PHP Info page. If that's the case, we can now remove the file:
 
     $ rm /var/www/info.php
 
@@ -207,12 +207,12 @@ Now, navigating to http://123.45.67.890/info.php we should see the standard PHP 
 
 To test that MySQL is installed, let's SSH in and open up a MySQL console:
 
-    $ ssh root@123.45.67.890
+    $ ssh root@IP_OR_HOSTNAME
     $ mysql -u root -pilikerandompasswords
 
 This should drop you into a nice MySQL console, and don't exit it just yet. Naturally, we'll want to change the default password that the cookbook provides. While we can and should provide that as an option in our node file (replacing "yoursecurepassword" with something actually secure):
 
-    # nodes/123.45.67.890.json
+    # nodes/IP_OR_HOSTNAME.json
     "run_list": [ // ...
     "mysql": {
       "server_root_password": "yoursecurepassword",
