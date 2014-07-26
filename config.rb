@@ -35,6 +35,7 @@ activate :blog do |blog|
 end
 
 activate :directory_indexes
+activate :meta_tags
 
 page "/feed.xml", :layout => false
 
