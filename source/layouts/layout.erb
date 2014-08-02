@@ -7,6 +7,7 @@
     <%= display_meta_tags site: 'work.stevegrossi.com' %>
     <%= stylesheet_link_tag :all %>
     <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet'>
+    <link rel="alternate" type="application/atom+xml" title="work.stevegrossi.com Feed" href="/feed.xml" />
   </head>
   <body>
   <%= partial :analytics  %>
@@ -43,7 +44,7 @@
     -->
     </div>
     <footer class="site-footer">
-      &copy; 2013 — <%= Time.now.year %> Steve Grossi
+      &copy; 2013 — <%= Time.now.year %> Steve Grossi | <%= link_to 'Feed', '/feed.xml' %>
     </footer>
     <%= javascript_include_tag :all %>
   </body>
