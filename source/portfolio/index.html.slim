@@ -5,7 +5,7 @@ title: Portfolio
 h1 Portfolio
 p.lede I make websites. Nice ones.
 
-- blog('work').articles.each do |article|
+- blog('portfolio').articles.each do |article|
 
   article.project
     header.project-meta
@@ -20,4 +20,4 @@ p.lede I make websites. Nice ones.
     .project-content
       - if article.data.images
         - article.data.images.each do |image|
-          = work_image(article, image, alt: '')
+          = portfolio_image(article, image, alt: '')

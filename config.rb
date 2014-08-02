@@ -29,9 +29,9 @@ activate :blog do |blog|
 end
 
 activate :blog do |blog|
-  blog.name = 'work'
-  blog.sources = "work/:year-:month-:day-:title/index.html"
-  blog.permalink = "work/:title.html"
+  blog.name = 'portfolio'
+  blog.sources = "portfolio/:year-:month-:day-:title/index.html"
+  blog.permalink = "portfolio/:title.html"
 end
 
 activate :directory_indexes
@@ -80,9 +80,9 @@ helpers do
   end
 
   # Generates an absolute path for a work article's image
-  def work_image(article, image, options = {})
+  def portfolio_image(article, image, options = {})
     dir = "#{article.date.strftime('%Y-%m-%d')}-#{article.slug}/"
-    url = '/work/' + dir + image
+    url = '/portfolio/' + dir + image
     options[:class] = image.split('.').first
     image_tag(url, options)
   end
@@ -112,7 +112,7 @@ configure :build do
   activate :relative_assets
 
   # Add asset fingerprinting to avoid cache issues
-  activate :asset_hash, ignore: /work\/|javascripts\/(lang|prett)/
+  activate :asset_hash, ignore: /portfolio\/|javascripts\/(lang|prett)/
 
   # Compress PNGs after build
   # First: gem install middleman-smusher
