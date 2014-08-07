@@ -37,7 +37,15 @@ h1, h2, h3, h4, h5, p, ul, ol, dl, table, figure, fieldset, input[type="submit"]
   margin-bottom: $baseline
 
 h1, h2, h3, h4, h5, h6
+  margin-top: $baseline * 2
   line-height: 1
+
+h1 + h2,
+h2 + h3,
+h3 + h4,
+h4 + h5,
+h5 + h6
+  margin-top: $baseline
 
 h1
   text-align: center
@@ -120,6 +128,7 @@ header[role="banner"]
   h1
     font-weight: normal
     font-size: 1.5em
+    margin-top: $baseline
     @media (min-width: 600px)
       float: left
   a
