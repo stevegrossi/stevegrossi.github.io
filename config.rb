@@ -71,12 +71,14 @@ page "/feed.xml", layout: false
 # Methods defined in the helpers block are available in templates
 helpers do
 
-  def title_tag
-    title = 'work.stevegrossi.com'
-    if current_page.try{ |p| p.data.title }
-      title = [current_page.data.title, title].join(' | ')
+  def custom_meta_tags
+    if current_page
+      title       current_page.data.title
+    elsif current_article
+      title       current_article.title
+      description current_article.summary
+      keywords    current_article.tags.join(', ')
     end
-    content_tag(:title, title)
   end
 
   # Generates an absolute path for a work article's image
