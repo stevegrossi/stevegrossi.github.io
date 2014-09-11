@@ -1,7 +1,7 @@
 @charset "UTF-8"
-@import 'normalize'
-@import 'variables'
-@import 'mixins'
+@import normalize
+@import variables
+@import mixins
 
 html
   overflow-y: scroll
@@ -158,9 +158,13 @@ header[role="banner"]
   padding: 0 5%
 
 .subhead
+  display: block
   font-size: 1em
   color: $gray
   font-weight: normal
+  margin: 1em 0
+  h2 &
+    font-size: .75em
 
 .lede
   text-align: center
@@ -172,10 +176,9 @@ header[role="banner"]
   text-align: center
   margin: $baseline
 
-@import "posts"
-@import "portfolio"
-
-@import 'prettify'
+@import posts
+@import portfolio
+@import prettify
 
 .gist table
   margin: 0
@@ -188,3 +191,24 @@ header[role="banner"]
   margin-left: 1em
 .center
   text-align: center
+
+// Yuck
+.resume
+  .main
+    h1
+      color: $red
+  .lede
+    color: $darker-gray
+
+#skills--values
+  color: $yellow
+#developer-at-alldayeveryday-span-classsubheadjanuary-2013presentspan
+  color: $blue
+#senior-coordinator-of-online-projects-at-cancercare-span-classsubheadjuly-2009january-2013span
+  color: mix(#fff, $blue, 20%)
+#freelance-design--development-span-classsubhead2008every-now-and-thenspan
+  color: mix(#fff, $blue, 40%)
+#in-the-community
+  color: $green
+#new-york-university
+  color: $violet

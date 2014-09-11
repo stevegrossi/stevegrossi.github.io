@@ -6,11 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <% custom_meta_tags %>
     <%= display_meta_tags site: 'work.stevegrossi.com' %>
-    <%= stylesheet_link_tag :all %>
+    <%= stylesheet_link_tag :all, media: :screen %>
+    <%= stylesheet_link_tag :print, media: :print %>
     <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet'>
     <link rel="alternate" type="application/atom+xml" title="work.stevegrossi.com Feed" href="/feed.xml" />
   </head>
-  <body>
+  <body class="<%= current_page.data.body_class if current_page %>">
   <%= partial :analytics  %>
     <header role="banner">
       <a href="/" title="Home">
@@ -45,7 +46,7 @@
     -->
     </div>
     <footer class="site-footer">
-      &copy; 2013 — <%= Time.now.year %> Steve Grossi | <%= link_to 'Feed', '/feed.xml' %>
+      &copy; 2013 — <%= Time.now.year %> Steve Grossi | <%= link_to 'Subscribe', '/feed.xml' %>
     </footer>
     <%= javascript_include_tag :all %>
   </body>
