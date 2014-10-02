@@ -47,16 +47,17 @@ Tools like [Sass](http://sass-lang.com/) and [Less](http://lesscss.org/) can rea
 
 ### Avoid ID Selectors
 
-IDs in HTML are fine as anchors, but ID selectors in CSS have a slew of downsides:
+IDs in HTML are fine as anchors, but ID selectors in CSS have several downsides:
 
 - They're heavily weighted (10x more than classes), and thus very difficult to override their styles. (If you're not familiar with the mechanics of specificity in CSS, Chris Coyier has [a nice explanation](http://css-tricks.com/specifics-on-css-specificity/), as much of what follows will reference the concept.)
 - IDs can appear only once in HTML (and bugs with duplicate IDs are notoriously hard to pin down). Even if you think a page will only ever have one `#banner`, eventually someone will ask you to add a second, and switching styles from `#banner` to `.banner` can be hairy for the reasons in the previous bullet.
+- IDs are great for linking to sections of a page in HTML. But if you target them with CSS, you limit your ability to use them like that. There have been times when I've wanted to link directly to a contact section of the about page with `/about#contact` by giving that section an ID of "contact", but couldn't because someone had applied CSS to a single-contact listing on another page with `#contact`.
 
 ### Avoid Nesting Rules
 
 - According to Mozilla, the descendent selector (i.e. the space in a rule like `.something h3`) is [the least performant selector in CSS](https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Writing_efficient_CSS#Avoid_the_descendant_selector.21).
 - As with ID selectors, descendent selectors also add specificity to your styles which can make them difficult to override.
-- Nesting rules as a practice leads to bloated CSS. If all you need is `.header a`, don't use `.header nav ul a` (even if Sass makes it *really* easy to write the latter). And for the same reason and more, `.header-link` is a better choice than `.header a`.
+- Nesting rules as a practice leads to extra, unnecessary CSS. If all you need is `.header a`, don't use `.header nav ul a` (even if Sass makes it *really* easy to write the latter). And for the same reason and more, adding a class of `.header-link` to the `<a>` is a better choice than selecting it with `.header a`.
 
 ### Avoid Qualifying Selectors With Elements
 
@@ -69,7 +70,7 @@ By this I mean `a.link-button` instead of just `.link-button`.
 
 We've all done this. You get a new banner design for the about page and so you add the styles with `.about-page-banner` or `.about .banner`. Inevitably, a week later someone will ask you to add the same banner module to the contact page. Now you have three options:
 
-- add another class to your rule (i.e. `.about-page-banner, .contact-page-banner`), leading to bloated CSS
+- add another class to your rule (i.e. `.about-page-banner, .contact-page-banner`), which may work for now but will lead to conflict when the styles inevitably diverge
 - add something like `<div class="about-page-banner">` to your *contact.html* page, leading to confusion
 - come up with a more generic name like `.fancy-banner`, find-and-replace `.about-page-banner`, and use that on the contact page, which adds extra work and can lead to bugs if you miss one.
 
