@@ -6,7 +6,7 @@ gem 'middleman'
 gem 'middleman-blog'
 gem 'middleman-meta-tags'
 gem 'middleman-minify-html'
-gem 'middleman-gh-pages'
+gem 'middleman-deploy', '~> 0.3.0'
 
 gem 'slim'
 gem 'nokogiri'

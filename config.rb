@@ -6,6 +6,11 @@ require 'slim'
 
 Time.zone = "Eastern Time (US & Canada)"
 
+activate :deploy do |deploy|
+  deploy.method = :git
+  deploy.build_before = true
+end
+
 activate :blog do |blog|
   blog.name = 'blog'
   # blog.prefix = "blog"
