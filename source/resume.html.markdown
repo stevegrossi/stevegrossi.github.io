@@ -19,9 +19,13 @@ body_class: resume
 - Continuous delivery with a CI system like Travis
 - Infrastructure-as-code with Chef
 
-## Developer at Alldayeveryday <span class="subhead">(January 2013–Present)</span>
+## Developer at Lesson.ly <span class="subhead">(November 2014–Present)</span>
 
-At Allday, I’ve worked across the stack developing and deploying everything from Tumblr themes to global media platforms. I also championed the creation of a company wiki which helps the tech and strategy teams share information and resources about projects and technologies. Highlights include:
+I recently joined [Lesson.ly](http://www.lesson.ly) as a Rails developer to help build the best way to train people online.
+
+## Developer at Alldayeveryday <span class="subhead">(January 2013–November 2014)</span>
+
+At Allday, I worked across the stack developing and deploying everything from Tumblr themes to global media platforms. I also championed the creation of a company wiki which helps the tech and strategy teams share information and resources about projects and technologies. Highlights include:
 
 - Lead developer of styld-by.com, a responsive, internationalized publishing platform for Gap's global media team
 - Sole developer of Gap's 2013 online holiday gift guide, an editorialized shopping experience backed by a custom CMS built on Rails 
@@ -34,10 +38,6 @@ While at Cancer*Care* I helped lead and develop a brand new cancercare.org, both
 - By rewriting cancercare.org's HTML for to be semantic and sensible, I helped increase search-engine referrals by 40%.
 - Design and WordPress development of many of Cancer*Care*'s supplemental sites including cancercarecopay.org, cancercareforwomen.org, and myelofibrosisawareness.org.
 - I managed two contract developers brought on to help with big projects.
-
-## Freelance Design & Development <span class="subhead">(2008–every now and then)</span>
-  
-My personal mission as a freelancer has been to banish the concept of a “webmaster”. I set all of my clients up with customized WordPress installations, leveraging the custom post type and menu APIs to empower them to manage their content with ease. Since I moonlight these jobs, I prefer smaller projects for artists, churches, and local businesses.
 
 ## In the Community
 
