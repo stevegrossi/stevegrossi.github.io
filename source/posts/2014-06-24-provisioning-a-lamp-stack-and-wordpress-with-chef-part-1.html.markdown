@@ -82,8 +82,8 @@ Start with a very simple Gemfile:
     source 'http://rubygems.org'
     ruby '2.1.2'
 
-    gem 'knife-solo'
-    gem 'librarian-chef'
+    gem 'knife-solo', '~> 0.4.2'
+    gem 'librarian-chef', '~> 0.0.3'
 
 Knife is command-line tool you'll use to invoke Chef commands, and which pulls in Chef itself as a dependency. Librarian-chef is a tool like Bundler for installing cookbooks from an official repository. (I'd [read tutorials](http://adamcod.es/2013/06/04/deploy-a-basic-lamp-stack-digital-ocean-chef-solo.html) saying Chef wouldn't work with Bundler or newer versions of Ruby, but I didn't have any problems with either.)
 
@@ -91,9 +91,9 @@ Upon installing these gems with `$ bundle install`, run `$ knife solo init .` fr
 
     site 'http://community.opscode.com/api/v1'
 
-    cookbook 'apache2'
-    cookbook 'mysql'
-    cookbook 'php'
+    cookbook 'apache2', '~> 1.10.4'
+    cookbook 'mysql', '~> 5.3.6'
+    cookbook 'php', '~> 1.4.6'
 
 Running `$ librarian-chef install` will fetch them from the Opscode repository. Third-party cookbooks will be stored in the "cookbooks" directory of your project, and any of our own cookbooks we create will go in "site-cookbooks".
 

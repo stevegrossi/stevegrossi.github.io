@@ -12,7 +12,7 @@ We'll be setting up WordPress for a single site, which will involve three steps,
 
 1. Create an Apache virtual host pointing our site's domain to a directory on our server
 2. Create a database user and database to use for this WordPress installation (for security reasons, it's a good idea to avoid using the default "root" MySQL user)
-3. Install WordPress from the Wordpress.org and setting up our "wp-config.php" to configure this installation
+3. Install WordPress from the Wordpress.org and set up our "wp-config.php" to configure this installation
 
 ## Getting Started
 
@@ -28,7 +28,7 @@ This will create a new directory called "test_site" within "site-cookbooks," whi
     depends 'php'
     depends 'database'
 
-The first three should be familiar from [part 1](/2014/06/24/provisioning-a-lamp-stack-and-wordpress-with-chef-part-1/), and "database" is another third-party cookbook from the Opscode folks which lets Chef create databases and users for a variety of database software like our MySQL. Since this is new to our Chef project, we'll need to add `cookbook 'database'` to our Cheffile and run `$ librarian-chef install` to install it before we can use it here.
+The first three should be familiar from [part 1](/2014/06/24/provisioning-a-lamp-stack-and-wordpress-with-chef-part-1/), and "database" is another third-party cookbook from the Opscode folks which lets Chef create databases and users for a variety of database software like our MySQL. Since this is new to our Chef project, we'll need to add `cookbook 'database', '~> 2.2.0'` to our Cheffile and run `$ librarian-chef install` to install it before we can use it here.
 
 ### Avoiding Repetition with Cookbook Attributes
 
