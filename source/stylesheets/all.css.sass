@@ -14,7 +14,7 @@ body
     font-size: 112.5%
   @media (min-width: 800px)
     font-size: 131.25%
-  max-width: 42em
+  max-width: 40em
   margin: 0 auto
   line-height: 1.5
   color: $text_color
@@ -50,9 +50,6 @@ h5 + h6
 h1
   text-align: center
   font-size: 2em // 32px
-  strong
-    font-family: $sans-stack
-    font-weight: normal
 
 h2
   font-size: 1.5em // 24px
@@ -135,9 +132,11 @@ figcaption
 header[role="banner"]
   margin: 0 5%
   overflow: hidden
+  border-bottom: 1px solid $lighter-gray
   h1
     font-weight: normal
-    font-size: 1.5em
+    font-size: 1em
+    line-height: 1.5
     margin-top: $baseline
     @media (min-width: 600px)
       float: left
@@ -145,7 +144,6 @@ header[role="banner"]
     text-decoration: none
     color: $gray
     strong
-      font-weight: normal
       color: $dark-gray
 
   .active
@@ -162,7 +160,6 @@ header[role="banner"]
       margin: 0 1em
       @media (min-width: 600px)
         margin: 0 0 0 2em
-      line-height: 2
 
 [role="main"]
   padding: 0 5%
