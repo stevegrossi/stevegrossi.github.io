@@ -119,7 +119,7 @@ configure :build do
   activate :relative_assets
 
   # Add asset fingerprinting to avoid cache issues
-  activate :asset_hash, ignore: /portfolio\/|javascripts\/(lang|prett)/
+  activate :asset_hash, ignore: [/^portfolio/, /^javascripts\/(lang|prett)/, /^[0-9]{4}\/[0-9]{2}\/[0-9]{2}/]
 
   # Compress PNGs after build
   # First: gem install middleman-smusher
