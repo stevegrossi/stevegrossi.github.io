@@ -132,7 +132,7 @@ figcaption
 header[role="banner"]
   margin: 0 5%
   overflow: hidden
-  border-bottom: 1px solid $lighter-gray
+  border-bottom: $default-border
   h1
     font-weight: normal
     font-size: 1em
@@ -179,9 +179,10 @@ header[role="banner"]
   color: $gray
 
 .site-footer
+  border-top: $default-border
   color: $gray
   text-align: center
-  margin: $baseline
+  padding: $baseline
 
 @import posts
 @import portfolio
