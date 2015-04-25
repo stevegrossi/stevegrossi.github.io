@@ -45,7 +45,7 @@ For further reading on the kinds of load testing, check out [this article on the
 While it's possible, there are some good reasons why you shouldn't.
 
 - It introduces **too many variables**. Consistency is key when doing any kind of meausrement, and your laptop just isn't isolated. Things like how long your computer's been running or even the temperature in the room can affect its ability both to generate and respond to traffic.
-- It's likely a **very different environment from production**—especially if the OS is different. The ultimate goal of testing is to learn things about how your production app, so the system under test should be as similar as possible.
+- It's likely a **very different environment from production**—especially if the OS is different. The ultimate goal of testing is to learn things about how your production app behaves, so the system under test should be as similar as possible.
 - There's an unhelpful feedback loop when the system doing the testing is the same one being tested. It takes a non-trivial amount of processing power to generate the HTTP requests that comprise a load test, and if your laptop is struggling to respond to that traffic, it'll also struggle to generate that traffic, leading to inconsistent results at volume.
 
 For these reasons, I recommend load testing against a staging environment as similar to the production environment as possible. It's also common to do load testing against a production environment during off-peak hours.
