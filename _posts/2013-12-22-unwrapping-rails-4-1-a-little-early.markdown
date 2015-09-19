@@ -1,7 +1,8 @@
 ---
 title: Unwrapping Rails 4.1 a Little Early
 date: 2013-12-22 00:00 EST
-tags: rails
+tags:
+  - rails
 ---
 
 I know it's not Christmas yet, but I can's help opening one of my presents early: [Rails 4.1 beta][1] from Rails core! There are some cool new features I want to try out, and since 37 Signals is apparently running the beta in production for Basecamp, it has to be pretty darn stable. So let's get to it.

@@ -1,7 +1,11 @@
 ---
 title: "Provisioning a LAMP Stack and WordPress with Chef, Bonus Part: Deploying Themes with Git"
 date: 2014-07-19 07:43 EDT
-tags: chef, git, wordpress, devops
+tags:
+  - chef
+  - git
+  - wordpress
+  - devops
 ---
 
 Having [set up a server](/2014/06/24/provisioning-a-lamp-stack-and-wordpress-with-chef-part-1.html) and [WordPress installation](/2014/07/06/provisioning-a-lamp-stack-and-wordpress-with-chef-part-2.html) without manually FTPing a single file, it would be a shame to have to ask Chef to install an FTP client so that we can upload and update our theme files the old-fashioned way. Fortunately, we don't have to! Matt Banks has [an excellent technique for using Git to deploy WordPress themes](http://mattbanks.me/wordpress-deployments-with-git/), which I'll be automating with a Chef recipe.

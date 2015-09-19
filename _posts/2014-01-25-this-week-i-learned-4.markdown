@@ -1,7 +1,9 @@
 ---
 title: 'This Week I Learned #4'
 date: 2014-01-25 00:00 EST
-tags: rails, wordpress
+tags:
+  - rails
+  - wordpress
 ---
 
 An assets gotcha to avoid when upgrading from Rails 3 to 4, keeping WordPress theme comments around with Sass, and an intro to one of my favorite new development tools: the virtualization-management tool Vagrant.

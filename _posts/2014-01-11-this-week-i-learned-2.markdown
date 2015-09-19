@@ -1,7 +1,10 @@
 ---
 title: 'This Week I Learned #2'
 date: 2014-01-11 00:00 EST
-tags: git, heroku, ruby
+tags:
+  - git
+  - heroku
+  - ruby
 ---
 
 How Ruby's `super` really works, DRYing out Heroku toolbelt commands, passing Ruby exceptions to blocks, and one weird tricks for making a robot voice speak my git commits.

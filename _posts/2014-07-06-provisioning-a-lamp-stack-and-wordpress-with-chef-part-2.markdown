@@ -1,7 +1,9 @@
 ---
 title: "Provisioning a LAMP Stack and WordPress with Chef, Part 2: A Recipe for WordPress"
 date: 2014-07-06 18:57 EDT
-tags: chef, wordpress
+tags:
+  - chef
+  - wordpress
 ---
 
 In [part 1 of this two-part series](/2014/06/24/provisioning-a-lamp-stack-and-wordpress-with-chef-part-1/), I introduced Chef and went through the process using it to set up and configure a <abbr title="Linux, Apache, MySQL, and PHP">LAMP</abbr> stack on a virtual private server. In this second part, we'll use Chef to install and configure WordPress on our server, all without touching an FTP client!

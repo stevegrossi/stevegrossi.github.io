@@ -1,7 +1,8 @@
 ---
 title: Writing Clean Functions and Methods
 date: 2013-09-16 00:00 EDT
-tags: refactoring
+tags:
+  - refactoring
 ---
 
 I've begun reading Robert Martin's [Clean Code: A Handbook of Agile Software Craftsmanship][1], and I'm so glad I have. I strongly believe that code is written not for computers but for other programmers (including one's future self), and Martin's book is rich with principles for how to write code with greater transparency of intention and execution.

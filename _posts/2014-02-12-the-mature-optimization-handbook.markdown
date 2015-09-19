@@ -1,7 +1,8 @@
 ---
 title: The Mature Optimization Handbook
 date: 2014-02-12 00:00 EST
-tags: performance
+tags:
+  - performance
 ---
 
 From Facebook's Carlos Bueno, [The Mature Optimization Handbook](https://www.facebook.com/notes/facebook-engineering/the-mature-optimization-handbook/10151784131623920) is a short but valuable guide to the strategy behind performance optimization. Instead of tips for improving specfic technologies, the author addresses things like whether you should optimize at all, how to determine what to optimize, and how to validate whether your optimization had the desired effect.

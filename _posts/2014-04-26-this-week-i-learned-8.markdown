@@ -1,7 +1,8 @@
 ---
 title: 'This Week I Learned #8'
 date: 2014-04-26 00:00 EDT
-tags: security,
+tags:
+  - security
 ---
 
 Adding environment-based HTTP authentication to a Rails app, how to filter tailed log output, and a great habit for writing clearer, self-documenting code.

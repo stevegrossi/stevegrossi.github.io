@@ -1,7 +1,10 @@
 ---
 title: Load Testing Rails Apps with Apache Bench, Siege, and JMeter
 date: 2015-02-07 09:06 EST
-tags: rails, performance, testing
+tags:
+  - rails
+  - performance
+  - testing
 ---
 
 Your app works great in development and in production with dozens of users. Now, the marketing team wants to send out a blast: can the app handle hundreds? Thousands? How many users *can* it handle? These are tricky questions to parse, let alone answer, but any answer is going to involve some form of load testing.

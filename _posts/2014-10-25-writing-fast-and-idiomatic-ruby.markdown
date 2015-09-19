@@ -1,7 +1,9 @@
 ---
 title: "Writing Fast (and Idiomatic) Ruby"
 date: 2014-10-25 07:49 EDT
-tags: ruby, performance
+tags:
+  - ruby
+  - performance
 ---
 
 Ruby hero Erik Michaels-Ober gave a superbly userful talk ([video](https://www.youtube.com/watch?v=fGFM_UrSp70), [slides](https://speakerdeck.com/sferik/writing-fast-ruby)) at this year's Barcelona Ruby Conference. In it, Michaels-Ober offers up a dozen-or-so cases where some casual Ruby code can be made both faster and cleaner by using built-in Ruby features.

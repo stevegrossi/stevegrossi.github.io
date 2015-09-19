@@ -1,7 +1,8 @@
 ---
 title: Sorting Algorithms Redux
 date: 2013-01-05 23:40 UTC
-tags: computer science
+tags:
+  - computer science
 ---
 
 Without a formal computer science background, I found [this YouTube series][1] an accessible introduction to the subjects of time complexity, big-O notation, and sorting algorithms.

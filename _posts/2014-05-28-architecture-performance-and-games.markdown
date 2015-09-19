@@ -1,7 +1,9 @@
 ---
 title: Architecture, Performance, and Games
 date: 2014-05-28 18:17 EDT
-tags: architecture, performance
+tags:
+  - architecture
+  - performance
 ---
 
 The [Ruby Rogues](http://rubyrogues.com/157-rr-book-club-object-design-book-club-with-rebecca-wirfs-brock/) pointed me to a chapter from Robert Nystrom's e-book *Game Programming Patterns* entitled [Architecture, Performance, and Games](http://gameprogrammingpatterns.com/architecture-performance-and-games.html). While ostensibly about game development, Nystrom's piece is full of excellent perspective and advice for developers of all stripes. 

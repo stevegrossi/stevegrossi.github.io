@@ -1,7 +1,8 @@
 ---
 title: Food for Thought
 date: 2013-02-19 23:51 UTC
-tags: perspective
+tags:
+  - perspective
 ---
 
 [Dan Cederholm's favorite website][1] is his local soup joint's soup of the day page. It isn't fancy or even pretty, but it gives him what he wants with minimal fuss.

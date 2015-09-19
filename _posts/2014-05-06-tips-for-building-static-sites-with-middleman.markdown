@@ -1,7 +1,9 @@
 ---
 title: Tips for Building Static Sites with Middleman
 date: 2014-05-06 16:53 EDT
-tags: static sites, performance
+tags:
+  - static sites
+  - performance
 ---
 
 After a year of powering this site on a WordPress self-install, I recently switched to deploying this site as static HTML, published and kept organized by [Middleman](http://middlemanapp.com) and served up by Github pages. I've been quite pleased with the experience and results. Here's why I switched, and some things I learned in doing so.

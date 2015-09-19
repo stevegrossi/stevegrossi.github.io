@@ -1,7 +1,9 @@
 ---
 title: What Screens Want
 date: 2013-11-21 00:00 EST
-tags: interaction design, perspective
+tags:
+  - interaction design
+  - perspective
 ---
 
 A [timely talk by Frank Chimero](http://frankchimero.com/what-screens-want/) from this year's Build conference in Belfast. He drives home the point that the internet isn't done yet, that it can still be shaped as we want it, which is a good thing because, he states plainly, "things are starting to suck."

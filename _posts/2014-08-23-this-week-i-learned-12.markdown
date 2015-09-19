@@ -1,7 +1,10 @@
 ---
 title: 'This Week I Learned #12'
 date: 2014-08-23 07:47 EDT
-tags: rails, css, sass
+tags:
+  - rails
+  - css
+  - sass
 ---
 
 This week, I learned how to clean up complex or repeated validations with ActiveModel's custom validator objects; how to write cleaner, more intention-revealing Sass with pure functions; and a useful but little-known CSS selector with a lot of potential.

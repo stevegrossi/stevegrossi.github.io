@@ -1,7 +1,10 @@
 ---
 title: Set Far-Future Expires Headers for Assets on Heroku
 date: 2013-05-28 00:00 EDT
-tags: heroku, performance, rails
+tags:
+  - heroku
+  - performance
+  - rails
 ---
 
 I love Heroku for deploying Rails apps. If you use Heroku too, you may have noticed a line of output when deploying:

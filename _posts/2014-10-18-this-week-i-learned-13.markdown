@@ -1,7 +1,9 @@
 ---
 title: "This Week I Learned #13"
 date: 2014-10-18 08:24 EDT
-tags: css, git
+tags:
+  - css
+  - git
 ---
 
 Replacing jQuery's fade functions with silky-smooth CSS transitions both in and out of hover states, a Git strategy for extracting individual commits from a branch's tree, and how to search a Git repo for a commit by name (which Github unfortunately doesn't support).

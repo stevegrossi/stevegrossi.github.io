@@ -1,7 +1,9 @@
 ---
 title: Words
 date: 2013-06-20 00:00 EDT
-tags: content, perspective
+tags:
+  - content
+  - perspective
 ---
 
 > What do you have to say? If you don't know, there's not much use in adding all that other cruft. Just start with one page, with a single focus. Write it and publish it, and then iterate on that. Every time you're about to add something, ask yourself: does this help me communicate better? Will that additional styling, image, or hyperlink give my audience more understanding? If the answer's "no", don't add it.

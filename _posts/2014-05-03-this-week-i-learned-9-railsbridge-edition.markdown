@@ -1,7 +1,9 @@
 ---
 title: 'This Week I Learned #9: Railsbridge Edition'
 date: 2014-05-03 17:22 EDT
-tags: ruby, rails
+tags:
+  - ruby
+  - rails
 ---
 
 This weekend I had the great pleasure of helping out at [Railsbridge Indy](http://www.railsbridgeindy.org/), an event aimed at introducing women to Ruby and Rails. It's the local chapter of [RailsBridge](http://railsbridge.org/), a really cool organization that open-sources all of the curriculum and helps people set up local chapters. Having myself learned Ruby and Rails from others who've generously shared their knowledge online, I was excited for an opportunity to give back and happily learned a few things, too.

@@ -1,7 +1,9 @@
 ---
 title: Collaborative Coding with Exercism.io
 date: 2014-06-20 15:54 EDT
-tags: ruby, learning
+tags:
+  - ruby
+  - learning
 ---
 
 [Exercism.io](http://exercism.io/) is a tool for giving and getting feedback on code. It provides you with a series of exercises in your languages of choice, you solve them as elegantly as you can, and you submit them for feedback from others while giving others feedback in kind. In doing just one exercise, I found that it challenged me to reflect deeply about why I prefer some coding idioms to others, and in critiquing my own and others' code, I was happy to learn a few new things about Ruby.

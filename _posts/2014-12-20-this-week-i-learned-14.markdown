@@ -1,7 +1,9 @@
 ---
 title: 'This Week I Learned #14'
 date: 2014-12-20 07:54 EST
-tags: ruby, sql
+tags:
+  - ruby
+  - sql
 ---
 
 How to handle advanced command-line arguments with Ruby's `OptionParser`, and efficiently copying data between tables with raw SQL.

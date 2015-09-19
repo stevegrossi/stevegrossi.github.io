@@ -1,7 +1,8 @@
 ---
 title: Devdocs.io
 date: 2013-08-12 00:00 EDT
-tags: documentation
+tags:
+  - documentation
 ---
 
 [Devdocs.io][1] is all of the API documentation for an expanding (and customizable!) list of web technologies including HTML, CSS, HTTP, JS, and even libraries like jQuery and Sass. Fully keyboard-accessible and incredibly snappy, it's my new best friend. I hope support for scripting languages is coming soon.

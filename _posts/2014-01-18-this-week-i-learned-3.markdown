@@ -1,7 +1,9 @@
 ---
 title: 'This Week I Learned #3'
 date: 2014-01-18 00:00 EST
-tags: rails, seo
+tags:
+  - rails
+  - seo
 ---
 
 A robots.txt gotcha, cleaning up asset output in Rails' logs, reversing a specific git commit (in a way that's itself reversible), displaying errors with ActiveAdmin, and—spoiler alert—the keyboard shortcut for "View Source" in Chrome on a Mac is <kbd>Cmd</kbd> + <kbd>Opt</kbd> + <kbd>u</kbd>

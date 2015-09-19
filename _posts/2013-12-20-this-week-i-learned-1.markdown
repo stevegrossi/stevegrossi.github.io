@@ -1,7 +1,10 @@
 ---
 title: 'This Week I Learned #1'
 date: 2013-12-20 00:00 EST
-tags: paperclip, ruby, sass
+tags:
+  - paperclip
+  - ruby
+  - sass
 ---
 
 This is the first post in what I hope will be a weekly feature on things I've learned which are neat enough to mention, but not big enough for their own post.

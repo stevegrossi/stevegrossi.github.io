@@ -1,7 +1,9 @@
 ---
 title: 'This Week I Learned #10'
 date: 2014-05-10 10:28 EDT
-tags: ruby, rails
+tags:
+  - ruby
+  - rails
 ---
 
 Lots of Ruby learning this week, including two tricks with arrays and why you might want to freeze a value, plus some surprising behavior (and how to work around it) with ActionView's `cycle()` method.

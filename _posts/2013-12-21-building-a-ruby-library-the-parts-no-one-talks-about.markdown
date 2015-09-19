@@ -1,7 +1,10 @@
 ---
 title: 'Building a Ruby Library: The Parts No One Talks About'
 date: 2013-12-21 00:00 EST
-tags: ruby, gems, best practices
+tags:
+  - ruby
+  - gems
+  - best practices
 ---
 
 [Mitchell Hashimoto's talk from Aloha Ruby Conf](https://speakerdeck.com/mitchellh/building-a-ruby-library-the-parts-no-one-talks-about) is an opinionated look at the simple, easy-to-overlook but important-to-get-right aspects of writing a Ruby library. Everybody understands the importance of an intuitive API and good tests, but Hashimoto has advice on:

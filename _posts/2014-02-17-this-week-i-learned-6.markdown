@@ -1,7 +1,9 @@
 ---
 title: 'This Week I Learned #6'
 date: 2014-02-17 00:00 EST
-tags: backbone, jquery
+tags:
+  - backbone
+  - jquery
 ---
 
 Getting started with Backbone.js and Underscore.js, and a jQuery trick for filtering empty values from an array.

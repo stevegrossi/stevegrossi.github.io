@@ -1,7 +1,8 @@
 ---
 title: 10 Timeframes
 date: 2013-01-05 23:42 UTC
-tags: perspective
+tags:
+  - perspective
 ---
 
 There are a lot of gems in this [luminous, humorous, and tender keynote](http://contentsmagazine.com/articles/10-timeframes/) by Paul Ford about how we think about time. But the most important point, not just within this piece but that I've read in a long time, is this:

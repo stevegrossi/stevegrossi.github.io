@@ -1,7 +1,9 @@
 ---
 title: Impossible Programs
 date: 2014-02-27 00:00 EST
-tags: ruby, computer science
+tags:
+  - ruby
+  - computer science
 ---
 
 Here is [a fascinating talk](http://vimeo.com/66849976)—from Tom Stuart at last year's Scottish Ruby Conference—on the subject of programs that are impossible to write in Ruby. Computers are logic machines, and Stuart takes us on a tour of many of the underlying problems with logic and how they manifest themselves in computer science, touching on things like undecideability, the halting problem, and Rice's theorem.

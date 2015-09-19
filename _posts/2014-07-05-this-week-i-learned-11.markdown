@@ -1,7 +1,10 @@
 ---
 title: "This Week I Learned #11"
 date: 2014-07-05 12:50 EDT
-tags: ruby, unix, dns
+tags:
+  - ruby
+  - unix
+  - dns
 ---
 
 This week I learned more Ruby tidbits from Exercism.io, including a new string method and a new use of Ruby's splat operator. Also, DNS debugging with some handy Unix utilities.

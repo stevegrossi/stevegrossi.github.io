@@ -1,7 +1,8 @@
 ---
 title: Hammock-Driven Development
 date: 2014-02-15 00:00 EST
-tags: problem solving
+tags:
+  - problem solving
 ---
 
 Part of what drives us as programmers is a desire to solve problems. We get requirements, and our brains immediately begin formulating solutions, which we analyze and from which we pluck the best one to implement. At least, that's how it's supposed to work. Then, there are hard problems: problems which are difficult to understand, problems which don't immediately suggest their solutions, and problems with no best solution but only tradeoffs.

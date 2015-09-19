@@ -1,7 +1,9 @@
 ---
 title: How To Write CSS That Scales
 date: 2014-09-06 08:35 EDT
-tags: css, architecture
+tags:
+  - css
+  - architecture
 ---
 
 I've been writing CSS for about eight years now, and every time I do it better than the last time. Which is to say, I've never gotten it right. So of course, what I'm about to share isn't The One Right Way™ to write CSS. But it is, I hope, a valuable collection of practices to avoid the many mistakes I've made and seen. Ultimately, what we want is for our code to scale: to continue to work well as we add more content, more code, and more people to the equation.

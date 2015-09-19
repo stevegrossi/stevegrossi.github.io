@@ -1,7 +1,8 @@
 ---
 title: Clean Architecture and Design
 date: 2014-06-02 08:43 EDT
-tags: architecture
+tags:
+  - architecture
 ---
 
 "Uncle" Bob Martin's talk at the 2013 Norwegian Developers Conference, entitled "[Clean Architecture and Design](http://vimeo.com/68215570)," completely changed the way I think about software architecture. In short, good architecture is less about the decisions you make and more about the decisions you *defer making*.

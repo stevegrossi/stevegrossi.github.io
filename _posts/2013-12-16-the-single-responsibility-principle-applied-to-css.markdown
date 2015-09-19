@@ -1,7 +1,9 @@
 ---
 title: The Single-Responsibility Principle Applied to CSS
 date: 2013-12-16 00:00 EST
-tags: css, maintainability
+tags:
+  - css
+  - maintainability
 ---
 
 Here's some [sound advice from Harry](http://csswizardry.com/2012/04/the-single-responsibility-principle-applied-to-css/) over at CSS Wizardry. When I first started writing CSS, I mistakenly made a religion of "clean markup," which I took to mean HTML with the fewest number of classes and IDs possible. But after years of building—and more importantly here, *maintaining*—websites, I'm beginning to see the virtues of this (and its accompanying CSS):

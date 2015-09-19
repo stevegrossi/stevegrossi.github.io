@@ -1,7 +1,9 @@
 ---
 title: Architecture Without an End State
 date: 2015-08-16 11:17 EDT
-tags: architecture, ruby
+tags:
+  - architecture
+  - ruby
 ---
 
 After he appeared on [Ruby Rogues](http://devchat.tv/ruby-rogues/217-rr-architecture-without-an-end-state-with-michael-nygard), I watched Michael Nygard's recent talk [Architecture Without an End State](https://vimeo.com/41763228) and found it fascinating. Nygard argues patiently and convincingly against the "One System To Rule Them All" approach to architecture, through which companies embark on multi-year plans to consolidate all of their data into a single system of record—projects which Nygard says dramatically that he has never seen reach completion. The turnover rate for CTOs is shorter than the time to complete such projects, so more commonly a new CTO will come in with a new plan (only to leave before its completion), relegating the existing plan to the dustbin of "legacy" projects.

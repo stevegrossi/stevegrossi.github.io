@@ -1,7 +1,9 @@
 ---
 title: 'This Week I Learned #7'
 date: 2014-03-01 00:00 EST
-tags: problem solving, rails
+tags:
+  - problem solving
+  - rails
 ---
 
 The most important rule of problem-solving and some lesser-known tricks with ActiveRecord's `has_many` macro.

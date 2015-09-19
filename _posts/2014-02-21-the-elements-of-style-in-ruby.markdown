@@ -1,7 +1,9 @@
 ---
 title: The Elements of Style in Ruby
 date: 2014-02-21 00:00 EST
-tags: ruby, style
+tags:
+  - ruby
+  - style
 ---
 
 Bozhidar Batsov, the man behind [Ruby's most popular style guide][1], has begun an excellent series of posts called ["The Elements of Style in Ruby"][2]. The series explores some thorny matters of taste, clarity, and performance about which anyone interested in writing the best Ruby code should at least have an opinion.

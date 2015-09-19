@@ -1,7 +1,9 @@
 ---
 title: Foreman Lets You Run Things Only When You Need Them
 date: 2014-03-15 00:00 EDT
-tags: postgresql, rails
+tags:
+  - postgresql
+  - rails
 ---
 
 [Maurício Linhares has a great post](http://mauricio.github.io/2014/02/09/foreman-and-environment-variables.html) espousing the virtues of [Foreman][1], a Ruby gem for process management. I've benefited from Foreman's `.env`-file way of managing environment variables, but aside from adding `web: bundle exec unicorn -p $PORT` to my Procfile I haven't really used Foreman for its primary purpose, managing processes.

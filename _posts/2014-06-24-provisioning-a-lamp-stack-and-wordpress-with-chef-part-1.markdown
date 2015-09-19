@@ -1,7 +1,9 @@
 ---
 title: "Provisioning a LAMP Stack and WordPress with Chef, Part 1: Apache, MySQL, and PHP"
 date: 2014-06-24 08:00 EDT
-tags: chef, wordpress
+tags:
+  - chef
+  - wordpress
 ---
 
 After years of getting less and less while paying more and more for shared hosting, I finally decided to spin up my own (virtual) server to host a few WordPress sites. I chose to provision the server with [Chef](http://www.getchef.com/), which lets you describe how you'd like the server set up with a handy Ruby <abbr title="Domain-specific Language">DSL</abbr> and Chef takes care of the rest. Chef lived up to its reputation for being incredibly powerful, but it took me longer than I'd hoped to really understand how to use it. What follows is the blog post I wish I'd had available before jumping in.

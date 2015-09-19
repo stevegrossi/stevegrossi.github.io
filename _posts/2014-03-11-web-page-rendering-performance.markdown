@@ -1,7 +1,8 @@
 ---
 title: Web Page Rendering Performance
 date: 2014-03-11 00:00 EDT
-tags: performance
+tags:
+  - performance
 ---
 
 Paul Lewis is a Developer Advocate on the Google Chrome team, and he's been on fire lately with a series of excellent articles on the nuances of web page performance from the perspective of the browser. If you do front-end development (like I do), and you don't know what frames, paints, and layers are (like I didn't), then Paul's articles are an excellent introduction to why your site isn't silky-smooth when scrolling or animating.

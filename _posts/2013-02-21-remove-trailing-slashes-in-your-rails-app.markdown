@@ -1,7 +1,10 @@
 ---
 title: Remove Trailing Slashes in Your Rails App
 date: 2013-02-21 23:53 UTC
-tags: rack, rails, seo
+tags:
+  - rack
+  - rails
+  - seo
 ---
 
 Aside from being inelegant, having your pages accessible both with and without a trailing slash is [an SEO no-no][1] because search engines can treat them as separate pages, diluting your page rank. For this reason, it's best to choose one and redirect the other to it.

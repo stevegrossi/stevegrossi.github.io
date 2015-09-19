@@ -1,7 +1,8 @@
 ---
 title: The State of Front-End Tooling
 date: 2013-11-08 00:00 EST
-tags: tooling
+tags:
+  - tools
 ---
 
 This is [a fantastic slide deck](https://speakerdeck.com/addyosmani/automating-front-end-workflow) rounding up the latest developments in front-end tooling with a focus on automation. The introductions to Grunt and Yeoman are worth the price of admission alone, and I learned a few new things of which Chrome Canary's dev tools are capable (in-browser Sass editing!)

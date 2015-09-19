@@ -1,7 +1,11 @@
 ---
 title: Best Practices for Paperclip Performance
 date: 2013-05-30 00:00 EDT
-tags: paperclip, performance, rails, s3
+tags:
+  - paperclip
+  - performance
+  - rails
+  - s3
 ---
 
 [Paperclip][1] is a great gem for handling file uploads in your Rails app, but there are some important steps you need to take to ensure the best performance when serving images.

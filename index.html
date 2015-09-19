@@ -7,8 +7,11 @@ layout: default
       <h1 class="post-title">
         <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
       </h1>
-      <h2 class="subhead post-date">
-        {{ post.date | date: "%B %e, %Y" }}
+      <h2 class="subhead post-meta">
+        <span class="post-date">{{ post.date | date: "%B %e, %Y" }}</span>
+        {% if post.tags %}
+          • <span class="post-tags">{{ post.tags | join: ", " }}</span>
+        {% endif %}
       </h2>
     </header>
     {{ post.excerpt }}

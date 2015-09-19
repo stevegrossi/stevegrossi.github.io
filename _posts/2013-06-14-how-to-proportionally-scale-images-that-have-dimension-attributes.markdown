@@ -1,7 +1,9 @@
 ---
 title: How to proportionally scale images that have dimension attributes
 date: 2013-06-14 00:00 EDT
-tags: images, responsive design
+tags:
+  - images
+  - responsive design
 ---
 
 A [useful post by Roger at 456 Berea St.][1] on proportionally scaling images even when they have width and height attributes hard-coded in the HTML (such as WordPress does automatically). I'd been using a PHP function to remove them on WordPress sites:

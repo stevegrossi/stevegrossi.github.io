@@ -1,7 +1,8 @@
 ---
 title: How to Count With ActiveRecord
 date: 2015-04-25 07:41 EDT
-tags: rails
+tags:
+  - rails
 ---
 
 Counting records returned from the database by ActiveRecord is quite a bit more complicated than you'd expect, but that's the price of Rails’ magic and the invisible efficiency it gives you behind the scenes. ActiveRecord has its own implementation of Ruby's `size`, `any?`, and `empty?` methods which behave differently than their array counterparts. Understanding how each works will help you write more efficient code when dealing with database records.

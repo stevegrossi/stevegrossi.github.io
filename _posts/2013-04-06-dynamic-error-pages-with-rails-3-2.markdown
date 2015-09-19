@@ -1,7 +1,9 @@
 ---
 title: Dynamic Error Pages With Rails 3.2
 date: 2013-04-06 23:56 UTC
-tags: rails, errors
+tags:
+  - rails
+  - errors
 ---
 
 I've long struggled with how best to implement dynamic error pages in Rails. The default solution, simply rendering static HTML files from the public root, is appropriately simple for 500 errors where your app may not be capable of rendering a dynamic page, but falls short for less grave errors, especially the common 404. I'll often want to render a 404 using my application's layout so as not to confuse users, include partials such as for a search form, and I recently worked on an internationalized app where I wanted to translate the 404 message. Rails will serve localized static pages (e.g. 404.en.html, 404.de.html), but I'd rather keep everything in my locale YAML files and render it with `I18n.t('not_found')`.
