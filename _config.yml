@@ -1,0 +1,31 @@
+# Site settings
+title: Notes on Web Craftsmanship
+email: hello@stevegrossi.com
+description: "Thoughts on building for the modern web in the very best ways."
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "http://work.stevegrossi.com"
+permalink: pretty
+paginate: 10
+paginate_path: "/page/:num/"
+twitter_username: stevegrossi
+github_username:  stevegrossi
+
+# Build settings
+markdown: kramdown
+
+# Exclude from _site
+exclude:
+  - CNAME
+  - README.markdown
+  - Gemfile
+  - Gemfile.lock
+
+# Default post options
+defaults:
+  -
+    scope:
+      path: "" # an empty string here means all files in the project
+      type: "posts"
+    values:
+      layout: "post"
+      excerpt_separator: <!--more-->
