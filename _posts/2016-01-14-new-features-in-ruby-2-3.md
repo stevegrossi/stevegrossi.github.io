@@ -193,7 +193,7 @@ Ruby 2.3 was [released on Christmas day](https://www.ruby-lang.org/en/news/2015/
     )
 
     steve.address.street #=> "1 Awesome Lane"
-    khal.address.street #=> nil
+    khal.address.street #=> NoMethodError: undefined method `street' for nil:NilClass
 
     # So we used to have to do
     steve && steve.address && steve.address.street #=> "1 Awesome L
