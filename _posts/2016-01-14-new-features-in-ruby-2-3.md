@@ -5,7 +5,9 @@ tags:
   - ruby
 ---
 
-Ruby 2.3 was [released on Christmas day](https://www.ruby-lang.org/en/news/2015/12/25/ruby-2-3-0-released/) so I'm a little late to the party, but I recently gave a talk at [my local Ruby meetup](http://indyrb.org/) about some nifty new additions to the language. (Many of them I learned about while preparing for the talk—success!) Here's what I'm excited about:
+Ruby 2.3 was [released on Christmas day](https://www.ruby-lang.org/en/news/2015/12/25/ruby-2-3-0-released/) so I'm a little late to the party, but I recently gave a talk at [my local Ruby meetup](http://indyrb.org/) about some nifty new additions to the language. (Many of them I learned about while preparing for the talk—success!) Here's what I'm excited about.
+
+<!--more-->
 
 ## Hash#fetch_values
 
