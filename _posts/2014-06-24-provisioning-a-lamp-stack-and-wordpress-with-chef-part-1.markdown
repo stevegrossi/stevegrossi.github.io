@@ -24,22 +24,28 @@ Chef comes in two flavors: solo and server. With Chef Solo, your computer pushes
 
 Recipes do most of the work with Chef. They're just Ruby files which make use of the Chef DSL. They might describe that a directory should exist and have certain permissions:
 
-    directory '/var/www/myapp' do
-      mode '755'
-    end
+```ruby
+directory '/var/www/myapp' do
+    mode '755'
+end
+```
 
 ...that a certain file should be in place:
 
-    template '/var/www/myapp/index.html' do
-      source 'index.html.erb'
-      variables(title: 'Hello, world!')
-    end
+```ruby
+template '/var/www/myapp/index.html' do
+  source 'index.html.erb'
+  variables(title: 'Hello, world!')
+end
+```
 
 ...that a service should be running:
 
-    service 'apache' do
-      action :start
-    end
+```ruby
+service 'apache' do
+  action :start
+end
+```
 
 or any of a number of other things. Basically, any change you would normally make to the server, you make to the recipe.
 
@@ -49,9 +55,11 @@ Cookbooks are collections of recipes, along with some extra goodies like default
 
 Cookbooks can use each other's recipes, so if you want to use someone else's cookbook but with minor changes, a common convention is to create a “wrapper cookbook” that does little more than pull in one of their recipes and overide a setting:
 
-    # site-cookbooks/my-apache/recipes/default.rb
-    include_recipe 'apache'
-    override['apache']['some_config'] = 'my_config'
+```ruby
+# site-cookbooks/my-apache/recipes/default.rb
+include_recipe 'apache'
+override['apache']['some_config'] = 'my_config'
+```
 
 ### Nodes
 
@@ -65,7 +73,9 @@ How do nodes know which attributes can be customized for a recipe? Within a reci
 
 Speaking of secrets, you shouldn't save these in plain text, of course (especially if sharing your recipe somewhere like Github). This is where Chef's "data bags" come in. They let you encrypt sensitive data and then retrieve it within recipes (or elsewhere):
 
-    mysql_pass = Chef::EncryptedDataBagItem.load("passwords", "mysql")
+```ruby
+mysql_pass = Chef::EncryptedDataBagItem.load("passwords", "mysql")
+```
 
 ### More
 
@@ -81,37 +91,43 @@ Next, create a directory and git repository to house your server configuration. 
 
 Start with a very simple Gemfile:
 
-    source 'http://rubygems.org'
-    ruby '2.1.2'
+```ruby
+source 'http://rubygems.org'
+ruby '2.1.2'
 
-    gem 'knife-solo', '~> 0.4.2'
-    gem 'librarian-chef', '~> 0.0.3'
+gem 'knife-solo', '~> 0.4.2'
+gem 'librarian-chef', '~> 0.0.3'
+```
 
 Knife is command-line tool you'll use to invoke Chef commands, and which pulls in Chef itself as a dependency. Librarian-chef is a tool like Bundler for installing cookbooks from an official repository. (I'd [read tutorials](http://adamcod.es/2013/06/04/deploy-a-basic-lamp-stack-digital-ocean-chef-solo.html) saying Chef wouldn't work with Bundler or newer versions of Ruby, but I didn't have any problems with either.)
 
 Upon installing these gems with `$ bundle install`, run `$ knife solo init .` from the project root to set up a typical Chef directory structure. This will give you a Cheffile which, similar to a Gemfile, is where you specify any cookbook dependencies. Let's add some now:
 
-    site 'http://community.opscode.com/api/v1'
+```ruby
+site 'http://community.opscode.com/api/v1'
 
-    cookbook 'apache2', '~> 1.10.4'
-    cookbook 'mysql', '~> 5.3.6'
-    cookbook 'php', '~> 1.4.6'
+cookbook 'apache2', '~> 1.10.4'
+cookbook 'mysql', '~> 5.3.6'
+cookbook 'php', '~> 1.4.6'
+```
 
 Running `$ librarian-chef install` will fetch them from the Opscode repository. Third-party cookbooks will be stored in the "cookbooks" directory of your project, and any of our own cookbooks we create will go in "site-cookbooks".
 
 At this point, we've fetched and installed some third-party cookbooks, but we're not actually using them yet. (Remember, we haven't yet interacted with the server at all.) In order to do so, we have to tell Chef about this "node." We'll do this by creating a JSON configuration file in the "nodes" directory of our project:
 
-    # nodes/123.45.67.890.json
-    {
-      "run_list": [
-        "recipe[apache2]",
-        "recipe[apache2::mod_php5]",
-        "recipe[mysql::client]",
-        "recipe[mysql::server]",
-        "recipe[php]",
-        "recipe[php::module_mysql]"
-      ]
-    }
+```js
+// nodes/123.45.67.890.json
+{
+  "run_list": [
+    "recipe[apache2]",
+    "recipe[apache2::mod_php5]",
+    "recipe[mysql::client]",
+    "recipe[mysql::server]",
+    "recipe[php]",
+    "recipe[php::module_mysql]"
+  ]
+}
+```
 
 Notice the JSON file is named after the IP address of our VPS. (You should be able to get that from your host, as I did from Digital Ocean.) Chef can also use a hostname, so you might create a DNS A-record pointing from, say, test-server.mywebsite.com to your VPS's IP address, and then naming this file `test-server.mywebsite.com.json`, which is a bit more human-readable.
 
@@ -149,14 +165,16 @@ Alas, things didn't go quite to smoothly on my first try. Instead, Chef was gett
 
 On that second try, everything worked out (I've never been so happy to see a 404 from Apache!) The 404 is because we haven't installed Apache's default site, so let's fix that now. Here, you can see the impressive power of chef. Instead of having to reinstall Apache or FTP a bunch of files, we simply add some additional configuration to our node file:
 
-    # nodes/IP_OR_HOSTNAME.json
-    "run_list": [
-      "recipe[apache2]"
-      // ...
-    ],
-    "apache": {
-      "default_site_enabled": true
-    }
+```js
+// nodes/IP_OR_HOSTNAME.json
+"run_list": [
+  "recipe[apache2]"
+  // ...
+],
+"apache": {
+  "default_site_enabled": true
+}
+```
 
 After the `"run_list"` array, we can add individual configuration options for our cookbooks. Here, we're just telling Apache that we want the default site to be installed. (In general, Chef cookbooks aim to provide the bare minimum so as to avoid installing anything unnecessary, so you may find yourself enabling a lot of non-default functionality in this way.)
 
@@ -174,14 +192,16 @@ After having Chef install Apache, I noticed that Chef began reporting errors lik
 
 which were preventing me from running `$ knife solo cook`. Inspecting my server, it appeared that Apache was maxxing out  the available 512MB of RAM. From what I've read, with a web server you kind of want Apache to use as much RAM as it can, but clearly this wouldn't work if it was prevent Chef from running. I think that by default Apache is tuned for more powerful servers than my little Digital Ocean box, so I had to dial it back in my node's Apache config:
 
-    # nodes/IP_OR_HOSTNAME.json
-    "apache": {
-      "prefork": {
-        "startservers": 2,
-        "serverlimit": 4,
-        "maxclients": 4
-      }
-    }
+```js
+// nodes/IP_OR_HOSTNAME.json
+"apache": {
+  "prefork": {
+    "startservers": 2,
+    "serverlimit": 4,
+    "maxclients": 4
+  }
+}
+```
 
 This is pretty extreme, but was necessary for now to get my server's RAM usage low enough for Chef to be able to run again. I'll certainly take a more nuanced approach to tuning Apache at a later date.
 
@@ -189,9 +209,11 @@ This is pretty extreme, but was necessary for now to get my server's RAM usage l
 
 Next let's make sure PHP is configured. We'd included some PHP recipes that should take care of ensuring PHP is installed and Apache is aware of it (and that PHP is aware of MySQL, which we'll address next):
 
-    "recipe[apache2::mod_php5]",
-    "recipe[php]",
-    "recipe[php::module_mysql]"
+```js
+"recipe[apache2::mod_php5]",
+"recipe[php]",
+"recipe[php::module_mysql]"
+```
 
 So let's SSH into the server and put a PHP test file in the web root.
 
@@ -214,13 +236,15 @@ To test that MySQL is installed, let's SSH in and open up a MySQL console:
 
 This should drop you into a nice MySQL console, and don't exit it just yet. Naturally, we'll want to change the default password that the cookbook provides. While we can and should provide that as an option in our node file (replacing "yoursecurepassword" with something actually secure):
 
-    # nodes/IP_OR_HOSTNAME.json
-    "run_list": [ // ...
-    "mysql": {
-      "server_root_password": "yoursecurepassword",
-      "server_repl_password": "yoursecurepassword",
-      "server_debian_password": "yoursecurepassword"
-    }
+```js
+// nodes/IP_OR_HOSTNAME.json
+"run_list": [ // ...
+"mysql": {
+  "server_root_password": "yoursecurepassword",
+  "server_repl_password": "yoursecurepassword",
+  "server_debian_password": "yoursecurepassword"
+}
+```
 
 We can't just run `$ knife solo cook` because Chef won't update the existing root password. In this case, we'll need to manually update it in the console as well with
 

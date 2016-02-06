@@ -264,43 +264,47 @@ Note that reports cost some processing power to generate, and can thus affect JM
 
 #### The `threads` Block
 
-    threads count: 10, loops: 1 do
+```ruby
+threads count: 10, loops: 1 do
 
-      extract name: 'authenticity_token',
-              regex: 'meta content="(.+?)" name="csrf-token"'
+  extract name: 'authenticity_token',
+          regex: 'meta content="(.+?)" name="csrf-token"'
 
-      think_time 3000, 2000
+  think_time 3000, 2000
 
-      # transaction 'Log In and View Lesson' do
-    end
+  # transaction 'Log In and View Lesson' do
+end
+```
 
 Within the `test` block and after the test-wide configuration, we'll include a `threads` block with configuration for each of the concurrent threads (i.e. simulated users) that JMeter will be running. `count: 10` tells JMeter to simulate ten users concurrently. The `extract` block tells JMeter to scan the HTML response for the CSRF token (with a regular expression), a unique string that Rails generates on each request and which will be required to submit form data. While not necessary, `think_time` introduces a delay between requests (as we did with Siege). The arguments tell JMeter to wait an average of 3 seconds between requests, with a random variance of 2 seconds (so between 1 and 5 seconds) for a given instance.
 
 #### The `transaction`, `visit`, and `submit` Block
 
-    transaction 'Log In and View All Books' do
-      
-      visit '/meta/log-in' do
-        assert contains: 'Sign In', scope: 'main'
-      end
+```ruby
+transaction 'Log In and View All Books' do
+  
+  visit '/meta/log-in' do
+    assert contains: 'Sign In', scope: 'main'
+  end
 
-      submit '/meta/log-in', {
-        always_encode: true,
-        fill_in: {
-          'utf8'               => '✓',
-          'authenticity_token' => '${authenticity_token}',
-          'email'              => 'test@example.com',
-          'password'           => 'p455w0rd',
-          'commit'             => 'Sign In',
-        }
-      } do
-        assert contains: 'Dashboard', scope: 'main'
-      end
+  submit '/meta/log-in', {
+    always_encode: true,
+    fill_in: {
+      'utf8'               => '✓',
+      'authenticity_token' => '${authenticity_token}',
+      'email'              => 'test@example.com',
+      'password'           => 'p455w0rd',
+      'commit'             => 'Sign In',
+    }
+  } do
+    assert contains: 'Dashboard', scope: 'main'
+  end
 
-      visit '/admin/books' do
-        assert contains: 'Born', scope: 'main'
-      end
-    end
+  visit '/admin/books' do
+    assert contains: 'Born', scope: 'main'
+  end
+end
+```
 
 Within the `threads` block, we'll group all of the actions a simulated user should take within a named `transaction` block. Within this block, we can use a `visit` block to submit a GET request (i.e. navigating to a page) and a `submit` block to submit a POST request (i.e. filling out a form). The two examples above will simulate visiting the log-in page and filling out and submitting the log-in form, after which the simulated user within this single JMeter thread will be logged into the app.
 

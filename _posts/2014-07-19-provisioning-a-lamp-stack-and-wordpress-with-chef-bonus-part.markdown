@@ -31,58 +31,70 @@ You may wonder what `/var/git/my_theme.git` refers to. At the momemt, nothing, b
 
 For this to work, we'll need Git installed on our server, so let's add `cookbook 'git'` to our Cheffile and run `$ librarian-chef install` to download it. We should also specify it as a dependency:
 
-    # site-cookbooks/my_site/metadata.rb
-    depends 'git'
+```ruby
+# site-cookbooks/my_site/metadata.rb
+depends 'git'
+```
 
 And add it to our node's `run_list`:
 
-    # nodes/IP_OR_HOSTNAME.json
-    {
-      "run_list": [
-        "recipe[git]"
+```ruby
+# nodes/IP_OR_HOSTNAME.json
+{
+  "run_list": [
+    "recipe[git]"
+```
 
 Before we get started building the recipe for our site, let's add one more attribute to our cookbook for the name of the Git repository, to avoid having to repeat it:
 
-    # site-cookbooks/test_site/attributes/default.rb
-    default[:test_site][:theme_name] = 'my_theme'
+```ruby
+# site-cookbooks/test_site/attributes/default.rb
+default[:test_site][:theme_name] = 'my_theme'
+```
 
 And now for the recipe:
 
-    # site-cookbooks/my_site/recipes/deploy.rb
-    
-    # Create a directory for the bare repository
-    bare_repo = "/var/git/#{node[:test_site][:theme_name]}.git/"
-    directory '/var/git/'
-    directory bare_repo
+```ruby
+# site-cookbooks/my_site/recipes/deploy.rb
 
-    # Create a directory for the theme
-    theme_dir = "#{node[:test_site][:app_root]}wp-content/themes/#{node[:test_site][:theme_name]}/"
-    directory theme_dir
+# Create a directory for the bare repository
+bare_repo = "/var/git/#{node[:test_site][:theme_name]}.git/"
+directory '/var/git/'
+directory bare_repo
 
-    # Create the bare repository
-    execute 'initialize_bare_repo' do
-      command "cd #{bare_repo} && git --bare init"
-      not_if { ::File.exists?(bare_repo + 'HEAD') }
-    end
+# Create a directory for the theme
+theme_dir = "#{node[:test_site][:app_root]}wp-content/themes/#{node[:test_site][:theme_name]}/"
+directory theme_dir
 
-    # Set the post-receive hook
-    template bare_repo + 'hooks/post-receive' do
-      source 'post-receive.erb'
-      mode '0777'
-      variables(deploy_to: theme_dir)
-    end
+# Create the bare repository
+execute 'initialize_bare_repo' do
+  command "cd #{bare_repo} && git --bare init"
+  not_if { ::File.exists?(bare_repo + 'HEAD') }
+end
+
+# Set the post-receive hook
+template bare_repo + 'hooks/post-receive' do
+  source 'post-receive.erb'
+  mode '0777'
+  variables(deploy_to: theme_dir)
+end
+```
 
 That final `template` block creates the `post-receive` hook we'll rely on to move our updated files into the right place. Git hooks like this are typically simple shell scripts which run automatically after certain events such as receiving a push. The Chef template for ours will look like this:
 
-    # site-cookbooks/my_site/templates/default/post-receive.erb
-    GIT_WORK_TREE=<%= @deploy_to %> git checkout -f
+```erb
+<%# site-cookbooks/my_site/templates/default/post-receive.erb %>
+GIT_WORK_TREE=<%= @deploy_to %> git checkout -f
+```
 
 And it simply moves our pushed theme files into the "wp-content/themes/my_theme" directory, which we supplied in the `template` block as the `deploy_to` variable.
 
 Now, all that remains is to include this "deploy.rb" recipe in our "default.rb":
 
-    # site-cookbooks/my_site/recipes/default.rb
-    include_recipe 'my_site::deploy'
+```ruby
+# site-cookbooks/my_site/recipes/default.rb
+include_recipe 'my_site::deploy'
+```
 
 for Chef to run the next time we
 

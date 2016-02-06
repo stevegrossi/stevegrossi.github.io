@@ -13,16 +13,18 @@ Adding environment-based HTTP authentication to a Rails app, how to filter taile
 
 At first I considered making the conditional `if Rails.env.staging?` but by using environment variables, it's easy to enable authentication in any environment (perhaps a production server before launch) without needing to push new code.
 
-    # application_controller.rb
-    before_filter :password_protect
+```ruby
+# application_controller.rb
+before_filter :password_protect
 
-    def password_protect
-      if ENV['HTTP_USERNAME'] && ENV['HTTP_PASSWORD']
-        authenticate_or_request_with_http_basic do |u, p|
-          u == ENV['HTTP_USERNAME'] && p == ENV['HTTP_PASSWORD']
-        end
-      end
+def password_protect
+  if ENV['HTTP_USERNAME'] && ENV['HTTP_PASSWORD']
+    authenticate_or_request_with_http_basic do |u, p|
+      u == ENV['HTTP_USERNAME'] && p == ENV['HTTP_PASSWORD']
     end
+  end
+end
+```
 
 ## How to Filter Tailed Logs
 
@@ -38,32 +40,40 @@ Extract booleans used in conditionals into variables. This is an idea from Peter
 
 So instead of
 
-    if (user.created_at < 10.minutes.ago && user.actions.empty?)
-      # Do something
-    end
+```ruby
+if (user.created_at < 10.minutes.ago && user.actions.empty?)
+  # Do something
+end
+```
 
 consider
 
-    user_is_recently_created = user.created_at < 10.minutes.ago
-    user_is_not_yet_active = user.actions.empty?
-    
-    if user_is_recently_created && user_is_not_yet_active
-      # Do something
-    end
+```ruby
+user_is_recently_created = user.created_at < 10.minutes.ago
+user_is_not_yet_active = user.actions.empty?
+
+if user_is_recently_created && user_is_not_yet_active
+  # Do something
+end
+```
 
 Of course, if you use these booleans in more than one place, you should consider moving them into the model to keep things DRY:
 
-    # app/models/user.rb
-    def recently_created?
-      created_at < 10.minutes.ago
-    end
+```ruby
+# app/models/user.rb
+def recently_created?
+  created_at < 10.minutes.ago
+end
 
-    def not_yet_active?
-      actions.empty?
-    end
+def not_yet_active?
+  actions.empty?
+end
+```
 
 So that you can write
 
-    if user.recently_created? && user.not_yet_active?
-      # Do something
-    end
+```ruby
+if user.recently_created? && user.not_yet_active?
+  # Do something
+end
+```

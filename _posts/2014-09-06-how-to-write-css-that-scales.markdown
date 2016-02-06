@@ -82,8 +82,10 @@ You can avoid all of these bad options if you just **give the module a generic c
 
 By this I mean `.listing h2` or `.button-box button`. As with many of the rules above, this makes your CSS inflexible and resistant to change. Eventually, a case will arise where your `.listing h2` styles need to apply to an `h3`, or `.button-box button` to apply to an `input` or `a` element. Or perhaps the `h2` styles for a `.listing h2` will need to be reused outside of a `.listing` container. A better alternative is to give sub-element styles their own class name:
 
-    .listing { ... }
-    .listing-heading { ... }
+```scss
+.listing { /* ... */ }
+.listing-heading { /* ... */ }
+```
 
 The latter could be an `h2`, an `h4`, or appear outside of a listing. In these cases, your CSS remains flexible and won't need to change just because the HTML does. This has the added benefit of avoiding the performance, specificity, and bloat issues raised in "Avoid Nesting Rules" above.
 
@@ -99,58 +101,68 @@ So what alternatives are there? First, always try to see the bigger picture. For
 
 If for whatever reason you still need a magic number, use a comment in vanilla CSS or some math or a variable in Sass to make it clear. For example, if you're working with an experimental 13-column grid and need something to span 3 columns:
 
-    // Huh?
-    width: 23.07692308%;
+```scss
+// Huh?
+width: 23.07692308%;
 
-    // Better with CSS
-    width: 23.07692308%; // 3/13 columns
+// Better with CSS
+width: 23.07692308%; // 3/13 columns
 
-    // Better with Sass
-    width: (3/13) * 100%; // 3/13 columns
+// Better with Sass
+width: (3/13) * 100%; // 3/13 columns
 
-    // Much better with Sass (no need for a comment)
-    $totalColumns: 13;
-    $columnWidth: (100% / $totalColumns);
-    width: 3 * columnWidth;
+// Much better with Sass (no need for a comment)
+$totalColumns: 13;
+$columnWidth: (100% / $totalColumns);
+width: 3 * columnWidth;
+```
 
 A common source of magic numbers is with media queries. Chances are, you've seen CSS with `@media screen and (min-width: 769px)` all over the place. To unclutter the CSS and make it clearer what this means, I find it helpful to use simple Sass mixins:
 
-    @mixin large-screens {
-      @media screen and (min-width: 769px) {
-        @content;
-      }
-    }
+```scss
+@mixin large-screens {
+  @media screen and (min-width: 769px) {
+    @content;
+  }
+}
+```
 
 With this, `769px` only has to be declared once, is easy to change as requirements or technology does, and helps declutter your style declarations:
 
-    .box {
-      font-size: 2em;
-      @include big-screens { font-size: 4em; }
-    }
+```scss
+.box {
+  font-size: 2em;
+  @include big-screens { font-size: 4em; }
+}
+```
 
 ### Keep All Style Declarations for a Selector in One Place
 
 If you need to change the styling for a class, you should only ever have to look in a single place. With CSS structured like this:
 
-    // style.css
-    .profile { ... }
+```scss
+// style.css
+.profile { /* ... */ }
 
-    // style.css (at the bottom)
-    .js-enabled .profile { ... }
+// style.css (at the bottom)
+.js-enabled .profile { /* ... */ }
 
-    // media_queries.css
-    @media screen and (min-width: 769px) {
-      .profile { ... }
-    }
+// media_queries.css
+@media screen and (min-width: 769px) {
+  .profile { /* ... */ }
+}
+```
 
 You have three different places to look if you need to change a style, which only slows you down and leads to mistakes. If you're using a preprocessor like Sass, you can have everything within a single rule for `.profile`:
 
-    // profile.css
-    .profile {
-      // ...
-      .js-enabled & { ... }
-      @include big-screens { ... }
-    }
+```scss
+// profile.css
+.profile {
+  // ...
+  .js-enabled & { /* ... */ }
+  @include big-screens { /* ... */ }
+}
+```
 
 This takes advatage of two awesome features of Sass: [referencing parents with the ampersand selector](http://thesassway.com/intermediate/referencing-parent-selectors-using-ampersand) and [nested media queries](http://thesassway.com/intermediate/responsive-web-design-in-sass-using-media-queries-in-sass-32).
 
@@ -160,37 +172,41 @@ The only exception to this rule is with legacy browser support. If you need to s
 
 `px` don't scale, literally. Most websites are or should be responsive these days, which means your CSS measurements are going to change based on screen size. What `em` (or `rem`) do is let you describe things in terms of ratios that work across screen sizes, as opposed to `px` which don't. This can save you a bunch of duplication, time, and inconsistency. Consider the following, styled with `px` measurements:
 
-    body {
-      font-size: 12px;
-    }
-    .headline {
-      font-size: 36px;
-      margin-bottom: 36px;
-    }
-    @media screen and (min-width: 769px) {
-      body {
-        font-size: 16px;
-      }
-      .headline {
-        font-size: 48px;
-        margin-bottom: 48px;
-      }
-    }
+```scss
+body {
+  font-size: 12px;
+}
+.headline {
+  font-size: 36px;
+  margin-bottom: 36px;
+}
+@media screen and (min-width: 769px) {
+  body {
+    font-size: 16px;
+  }
+  .headline {
+    font-size: 48px;
+    margin-bottom: 48px;
+  }
+}
+```
 
 Had `.headline` been styled with `em`s, nothing about it would need to change on larger screens:
 
-    body {
-      font-size: 12px;
-    }
-    .headline {
-      font-size: 3em;
-      margin-bottom: 3em;
-    }
-    @media screen and (min-width: 769px) {
-      body {
-        font-size: 16px;
-      }
-    }
+```scss
+body {
+  font-size: 12px;
+}
+.headline {
+  font-size: 3em;
+  margin-bottom: 3em;
+}
+@media screen and (min-width: 769px) {
+  body {
+    font-size: 16px;
+  }
+}
+```
 
 And really, with the wide range of display-densities out there, a pixel isn't even a pixel anymore. The only thing you really know about something `48px` is that it's 3x bigger than something `16px`. So why not just use `3em`?
 

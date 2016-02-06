@@ -28,8 +28,10 @@ Finally fed up with trying to visually parse Rails logs littered with lines like
 
 I found [quiet_assets][1], a fabulous little gem that does one thing and does it well: suppress asset logs like the above. Install it with
 
-    # Gemfile
-    gem 'quiet_assets', :group => :development
+```ruby
+# Gemfile
+gem 'quiet_assets', group: :development
+```
 
 and restart your server.
 
@@ -41,21 +43,25 @@ If you ever need to undo the changes made by a previous git commit, `git revert 
 
 [Active Admin][2] is a superbly handy gem for quickly creating admin interfaces for a Rails site. It handles all sorts of things out-of-the-box, including highlighting invalid form fields when there's an error. But sometimes you need to validate something that pertains to your model as a whole, not necessarily a single field. Perhaps something like this:
 
-    # app/models/post.rb
-    validate :translated_into_english
+```ruby
+# app/models/post.rb
+validate :translated_into_english
 
-    def translated_into_english
-      if translations.none?(&:in_english?)
-        errors.add(:base, "Requires a translation into English")
-      end
-    end
+def translated_into_english
+  if translations.none?(&:in_english?)
+    errors.add(:base, "Requires a translation into English")
+  end
+end
+```
 
 By default, Active Admin may not show this error, but one line in your form block will do the trick:
 
-    form do |f|
-      f.semantic_errors
-      # ... fields
-    end
+```ruby
+form do |f|
+  f.semantic_errors
+  # ... fields
+end
+```
 
 Now, any errors on `:base` will appear in a flash message at the top of the edit page.
 

@@ -14,18 +14,22 @@ The event really started Friday night with Installfest, where we invite Saturday
 
 Kudos to the Railsbridge folks (and its many contributors) for keeping the curriculum up-to-date. I was excited to see that it's geared toward the latest version of Rails, thanks to which I learned that with routes, **`root` now takes a 'controller#action' string** as well as a hash, so that:
 
-    # config/routes.rb
-    root to: 'pages#home'
+```ruby
+# config/routes.rb
+root to: 'pages#home'
 
-    # can now just be
-    root 'pages#home'
+# can now just be
+root 'pages#home'
+```
 
 Sure, you're saving only 4 characters, but they add up.
 
 After opening remarks by our tireless organizer, [Anna](https://twitter.com/Annamul), we broke into small groups based roughly around familiarity with programming. Another volunteer, Becky, and I led the group with the most familiarity: two database administrators and a mainframe programmer, all of whom I learned a thing or two from. The first thing I learned right away as we went over Ruby's data types and operators in the irb console. Having covered strings and integer multiplication, Anuja tried **multiplying a string by an integer**, which I was surprised to learn works:
 
-    > 'hello' * 4
-    => 'hellohellohellohello'
+```ruby
+'hello' * 4
+#=> 'hellohellohellohello'
+```
 
 It doesn't work the other way around, though (i.e. no `4 * 'hello'`) which led us to an interesting discussion of how most operators are methods in Ruby (`'hello' * 4` is basically `'hello'.*(4)`) and classes like Integer and String can define that method in different ways. String#* accepts an integer, whereas Integer#* does not accept a string.
 

@@ -10,10 +10,12 @@ A [useful post by Roger at 456 Berea St.][1] on proportionally scaling images ev
 
 <!--more-->
 
-    # functions.php
-    function remove_width_and_height_atts($html) {
-      return preg_replace('/(width|height)="\d*"\s/', "", $html);
-    }
+```php
+// functions.php
+function remove_width_and_height_atts($html) {
+  return preg_replace('/(width|height)="\d*"\s/', "", $html);
+}
+```
 
 But this is brittle. It would return invalid HTML if I had a data-attribute like `data-foo-height="300"`. I could make the regex more specific, but for speed and simplicity's sake I'd prefer not to muck about in the markup if CSS can do the job, and fortunately it can.
 
@@ -21,11 +23,13 @@ On a related note, [Google recommends setting width and height on all images][2]
 
 Anyway, even if we can't avoid repaints for flexible-width images, the recommended style rules for flexible-width images with dimension attributes are:
 
-    img {
-      width: auto; // IE8 needs me
-      max-width: 100%;
-      height: auto;
-    }
+```css
+img {
+  width: auto; /* IE8 needs me */
+  max-width: 100%;
+  height: auto;
+}
+```
 
  [1]: http://www.456bereastreet.com/archive/201306/how_to_proportionally_scale_images_that_have_dimension_attributes/
  [2]: https://developers.google.com/speed/docs/best-practices/rendering#SpecifyImageDimensions

@@ -15,36 +15,42 @@ This week I learned more Ruby tidbits from Exercism.io, including a new string m
 
 I've been [thoroughly engrossed in Exercism.io](/2014/06/20/collaborative-coding-with-exercism-io/), because even as I'm sharing my own knowledge, I'm constantly learning from others' solutions to problems. Case in point, I was doing an exercise that involved translating DNA to RNA, and thought I had a pretty elegant solution which looped over and changed the input string's characters based on a dictionary:
 
-    class Complement
-      COMPLEMENTS = {
-        'G' => 'C',
-        'C' => 'G',
-        'T' => 'A',
-        'A' => 'U'
-      }
+```ruby
+class Complement
+  COMPLEMENTS = {
+    'G' => 'C',
+    'C' => 'G',
+    'T' => 'A',
+    'A' => 'U'
+  }
 
-      def self.of_dna(sequence)
-        sequence.chars.map { |nucleotide|
-          COMPLEMENTS.fetch(nucleotide)
-        }.join
-      end
-    end
+  def self.of_dna(sequence)
+    sequence.chars.map { |nucleotide|
+      COMPLEMENTS.fetch(nucleotide)
+    }.join
+  end
+end
+```
 
 But after commenting on a few others, I learned of [Ruby's String#tr method](http://www.ruby-doc.org/core-2.1.2/String.html#method-i-tr), which directly translates a string by taking two arguments: a string of characters to change, and a string of characters to change them to. It's a bit of an oddball method---far narrower in application than something like String#gsub---but lo, I happened to be working on *the* textbook application for it, which let me solve this particular problem in half my original lines of code:
 
-    class Complement
-      DNA_RNA_MAPPINGS = ['GCTA', 'CGAU']
+```ruby
+class Complement
+  DNA_RNA_MAPPINGS = ['GCTA', 'CGAU']
 
-      def self.of_dna(sequence)
-        sequence.tr(*DNA_RNA_MAPPINGS)
-      end
-    end
+  def self.of_dna(sequence)
+    sequence.tr(*DNA_RNA_MAPPINGS)
+  end
+end
+```
 
 I also discovered another use Ruby's handy splat operator. Last time, [I wrote about using the splat (`*`) operator](/2014/05/10/this-week-i-learned-10/) to convert a range to an array of numbers. But here, it can also be used to explode an array into a list of arguments. In the example above, it would be clearer just to pass `'GCTA'` and `'CGAU'` into `sequence.tr`, but extracting them to a class constant and splatting them into arguments let me <abbr title="Don’t repeat yourself">DRY</abbr> out another method on the class, for converting back from RNA to DNA:
 
-    def self.of_rna(sequence)
-      sequence.tr(*DNA_RNA_MAPPINGS.reverse)
-    end
+```ruby
+def self.of_rna(sequence)
+  sequence.tr(*DNA_RNA_MAPPINGS.reverse)
+end
+```
 
 ## Benchmarking Ruby
 
@@ -54,20 +60,22 @@ I'd seen Ruby benchmarks used on Stack Overflow, but until now never bothered to
 
 Benchmarks are just Ruby files which you can run on the command line, e.g. below with with `ruby benchmark.rb`
 
-    # benchmark.rb
-    require 'benchmark'
+```ruby
+# benchmark.rb
+require 'benchmark'
 
-    Benchmark.bm(20) do |bm|
+Benchmark.bm(20) do |bm|
 
-      bm.report 'One alternative' do
-        100_000.times do
-          # the code to benchmark
-        end
-      end
-
-      # bm.report 'Another alternative'...
-
+  bm.report 'One alternative' do
+    100_000.times do
+      # the code to benchmark
     end
+  end
+
+  # bm.report 'Another alternative'...
+
+end
+```
 
 They consist of a `Benchmark.bm` block which will generate a table comparing the time-to-run for as many alternatives as you provide within `bm.report` blocks. `Benchmark.bm` takes an integer argument which is simply the width of the leftmost column of the table and which labels each row. Since the text of each label is the string argument to its `bm.report`, the integer passed to `Benchmark.bm` should just be larger than the length of the longest string passed to any `bm.report` block.
 

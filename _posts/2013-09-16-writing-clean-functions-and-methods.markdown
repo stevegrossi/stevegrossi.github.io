@@ -5,7 +5,7 @@ tags:
   - refactoring
 ---
 
-I've begun reading Robert Martin's [Clean Code: A Handbook of Agile Software Craftsmanship][1], and I'm so glad I have. I strongly believe that code is written not for computers but for other programmers (including one's future self), and Martin's book is rich with principles for how to write code with greater transparency of intention and execution.
+I've begun reading Robert Martin's [Clean Code: A Handbook of Agile Software Craftsmanship](http://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882?tag=stevgros-20), and I'm so glad I have. I strongly believe that code is written not for computers but for other programmers (including one's future self), and Martin's book is rich with principles for how to write code with greater transparency of intention and execution.
 
 <!--more-->
 
@@ -15,13 +15,15 @@ His third chapter, on functions, is especially rich, and I want to record just s
 
 This is the most important rule of clean code. Who hasn't had to make a change to a code base and come up against something like this:
 
-    def get(u, p)
-      # ...
-    end
+```ruby
+def get(u, p)
+  # ...
+end
 
-    def fetch(u, p)
-      # ...
-    end
+def fetch(u, p)
+  # ...
+end
+```
 
 There's a lot of unclarity here. What do `u` and `p` stand for? Why are there two methods whose names are synonyms? Much better to err on the side of verbosity by naming methods things like `get_transaction_from_external_api` or `get_random_published_photo_url`. The same goes for variables: for the sake of those who inherit your code, at least avoid single-letter variable names (with the possible exception of `i` for a simple index, since that's pretty conventional). Better still, name variables after what they are. If `@posts` is a collection of posts grouped by month, name it `@posts_by_month`, so someone interacting with that variable elsewhere will know what to expect.
 
@@ -39,7 +41,4 @@ Keep your methods short, even if you have to write more of them. Ideally, they s
 
 Long methods are harder to understand, test, and refactor, and they're likely to contain code which is duplicated elsewhere. One of the most rewarding coding habits I've picked up is to preemptively write short methods. Instead of a single, 10-line method which fetches data from an API, parses it, builds records from it, and inserts it into the database, I'll split each of those functions up into its own method and simply call them from the parent method. Not only does this make it more clear what's going on at each step of the way, but it makes debugging easier, and makes it simpler (and thus makes you more likely) to re-use some of these methods in the future.
 
-For more on the subject, I would highly recommend [Clean Code: A Handbook of Agile Software Craftsmanship][1]. Also, Katrina Owen has done a fabulous talk called "Therapeutic Refactoring" ([watch it here][2]) which walks through refactoring a particularly gnarly method and illustrates many of the principles at work here.
-
- [1]: http://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882?tag=stevgros-20
- [2]: http://confreaks.com/videos/1071-cascadiaruby2012-therapeutic-refactoring
+For more on the subject, I would highly recommend [Clean Code: A Handbook of Agile Software Craftsmanship][1]. Also, Katrina Owen has done a fabulous talk called "Therapeutic Refactoring" ([watch it here](http://confreaks.com/videos/1071-cascadiaruby2012-therapeutic-refactoring)) which walks through refactoring a particularly gnarly method and illustrates many of the principles at work here.

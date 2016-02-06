@@ -15,17 +15,19 @@ How Ruby's `super` really works, DRYing out Heroku toolbelt commands, passing Ru
 
 `super` is one of those things I'd seen in Ruby but never knew quite what it does. I'd seen it used within methods to jump out and call the instance's parent's method of the same name. Indeed, it does that, but I learned this week that it actually *returns* with the result of that method, which opens up some interesting possibilties. This came in handy when I wanted to add a boolean method to a child model (e.g. Dachshund) that also took into account the result of the same method on the parent model (e.g. Dog):
 
-    class Dog
-      def cute?
-        weight < 20.pounds
-      end
-    end
+```ruby
+class Dog
+  def cute?
+    weight < 20.pounds
+  end
+end
 
-    class Dachshund < Dog
-      def cute?
-        super && length > 2.feet
-      end
-    end
+class Dachshund < Dog
+  def cute?
+    super && length > 2.feet
+  end
+end
+```
 
 Here, `Dachshund#cute?` has its own truth conditions, but also respects the truth conditions of `Dog#cute?`.
 
@@ -41,9 +43,11 @@ Instead of
 
 Not only does this usually save me a fair bit of typing (I type these commands dozens of times each day), but it helps make my code more modular. I often include a Rake task in my Rails apps that copies the production database to staging. I typically copy-and-paste this rake file into new apps and find-and-replace the relevant hard-coded Heroku app names. Now, I can just include something like:
 
-    task :update_staging => [:backup_staging, :backup_production] do
-      system 'heroku pgbackups:restore DATABASE -r staging $(heroku pgbackups:url -r production)'
-    end
+```ruby
+task :update_staging => [:backup_staging, :backup_production] do
+  system 'heroku pgbackups:restore DATABASE -r staging $(heroku pgbackups:url -r production)'
+end
+```
 
 And it's good-to-go for any app. The only downside is that I can't find a way to include the `--confirm [APP NAME]` flag based on the Git remote, but I don't mind having to manually enter that as a safety-check before wiping that database with an import.
 
@@ -51,11 +55,13 @@ And it's good-to-go for any app. The only downside is that I can't find a way to
 
 Here's another one I'd seen but never needed to use until now:
 
-    begin
-      so_some_stuff
-    rescue DangerHighVoltageError => exception
-      notify(exception)
-    end
+```ruby
+begin
+  so_some_stuff
+rescue DangerHighVoltageError => exception
+  notify(exception)
+end
+```
 
 The hashrocket (`=>`) here lets you access the exception instance within the `rescue` block so you can act on it.
 

@@ -16,8 +16,10 @@ Regular expressions in PostgreSQL, a terser `where()` syntax for ActiveRecord as
 
 I needed to query a PostgreSQL database for records which matched certain #hashtags or @mentions. A simple `where('content LIKE ?', "##hashtag")` wouldn't be specific enough, because I didn't want queries for #bacon returning things like #baconlovers. As so often is the case, PostgreSQL was there for me with [pattern matching][1]. My regexes are a little too specific, but the general idea is this:
 
-    scope :hashtagged, ->(hashtag) { where("content ~* ?", "(?:^|\s)##{hashtag}(?:$|\s)") }
-    scope :mentioning, ->(handle) { where("content ~* ?", "(?:^|\s)@#{handle}(?:$|\s)") }
+```ruby
+scope :hashtagged, ->(hashtag) { where("content ~* ?", "(?:^|\s)##{hashtag}(?:$|\s)") }
+scope :mentioning, ->(handle) { where("content ~* ?", "(?:^|\s)@#{handle}(?:$|\s)") }
+```
 
 The `~` is the regular expression operator (think of Ruby's `=~`), and the trailing `*` makes it case-insensitive. In PostgreSQL, regular expressions aren't wrapped in forward slashes, but otherwise they work like regular expressions in other languages.
 
@@ -25,11 +27,15 @@ The `~` is the regular expression operator (think of Ruby's `=~`), and the trail
 
 I'm always on the lookout for opportunities to *do more* with *less code*, and this week I found a minor but handy opportunity to do so. While working on an app in which a user `has_many` "likeables" (a polymorphic relation) through a `likes` join table, I needed to get the "like" instance joining a user to a photo. I'd initially written
 
-    @user.likes.find_by(likeable_id: photo.id, likeable_type: photo.class.name)
+```ruby
+@user.likes.find_by(likeable_id: photo.id, likeable_type: photo.class.name)
+```
 
 But since Rails 3.2, polymorphic relations are smart enough to tease this out for themselves, so one can simply write:
 
-    @user.likes.find_by(likeable: photo)
+```ruby
+@user.likes.find_by(likeable: photo)
+```
 
 ## Rails Supports Signed Non-Session Cookies
 
@@ -37,7 +43,9 @@ I knew that when you push a value into the session cookie (e.g. `session[:user_i
 
 To solve this, Rails has a helper to sign cookies, which works like this:
 
-    cookies.signed[:secret] = { :value => "foo", :domain => "example.com") }
+```ruby
+cookies.signed[:secret] = { :value => "foo", :domain => "example.com") }
+```
 
 Now, if someone inspects their `user_id` cookie, instead of "1234" they'll see something like "BAhpBw%3D%3D--022a37ad45ed475783c1fc5dbc440748bb89fbdb". Good luck teasing a user_id out of (or back into) that. Rails signs the cookie with your app's `secret_token`, just like session cookies.
 

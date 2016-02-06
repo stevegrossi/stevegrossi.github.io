@@ -14,11 +14,13 @@ An assets gotcha to avoid when upgrading from Rails 3 to 4, keeping WordPress th
 
 This one caught me by surprise while I was trying out Google's [PageSpeed Insights Chrome extension][1]. Rails 4 seems to require a new configuration syntax to minify your text assets (like stylesheets and scripts). Newly generated Rails 4 apps will include it by default, but if you're upgrading from Rails 3 you have to adjust your config/environments/production.rb as shown:
 
-    Widgets::Application.configure do
-      # config.assets.compress = true <- remove the Rails 3 setting
-      config.assets.js_compressor  = :uglifier
-      config.assets.css_compressor = :sass
-    end
+```ruby
+Widgets::Application.configure do
+  # config.assets.compress = true <- remove the Rails 3 setting
+  config.assets.js_compressor  = :uglifier
+  config.assets.css_compressor = :sass
+end
+```
 
 ## How to Keep WordPress Theme Comments Using Sass’ Indented Syntax
 
@@ -26,9 +28,11 @@ Because I don't like typing semicolons or curly braces, I prefer Sass' indented 
 
 Like most everything else with indented syntax, comments are simply indented below the opening comment signifier:
 
-    /*!
-      Theme Name: Work
-      Author: Steve Grossi
+```sass
+/*!
+  Theme Name: Work
+  Author: Steve Grossi
+```
 
 And including the trailing exclamation mark makes sure Sass preserves the comment, even with Sass' "compressed" output.
 

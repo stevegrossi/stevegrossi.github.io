@@ -64,19 +64,25 @@ I ran Chrome DevTools' performance audit on a standard middleman installation an
 
 First, make sure your text assets are minified:
 
-    # config.rb
-    activate :minify_html
-    activate :minify_css
-    activate :minify_javascript
+```ruby
+# config.rb
+activate :minify_html
+activate :minify_css
+activate :minify_javascript
+```
 
 And make sure you're GZIPping text assets:
 
-    activate :gzip
+```ruby
+activate :gzip
+```
 
 Additionally, if your site makes heavy use of image assets, be sure to compress them as part of the build process. Middleman recommends:
 
-    # First: gem install middleman-smusher
-    require "middleman-smusher"
-    activate :smusher
+```ruby
+# First: gem install middleman-smusher
+require "middleman-smusher"
+activate :smusher
+```
 
 However, this will only work for PNG images. I like the [middleman-imageoptim](https://github.com/plasticine/middleman-imageoptim) plugin for great compression of many common image formats.

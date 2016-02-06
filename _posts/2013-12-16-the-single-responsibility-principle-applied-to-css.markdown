@@ -10,11 +10,15 @@ Here's some [sound advice from Harry](http://csswizardry.com/2012/04/the-single-
 
 <!--more-->
 
-    <nav class="wrapper menu fixed branded">...</nav>
+```html
+<nav class="wrapper menu fixed branded">...</nav>
+```
 
 over this:
 
-    <nav class="global-nav">...</nav>
+```html
+<nav class="global-nav">...</nav>
+```
 
 While I'd once have derided the former as unnecessarily complicated (under the mistaken assumption that one class name is simpler than four), when it comes to maintaining HTML and CSS like this, it's actually much simpler. Requirements change, and when the client decides they want a second menu fixed to the bottom of the page, all it may take is adding your existing `wrapper`, `menu`, and `fixed` classes to the new menu (and maybe a new `fixed-bottom` class) and you're off. Compare that with either duplicating code from your `.global-nav` style block, or extracting some common classes as we've already done in the above example here. Or, say the client requests a new content block with the same branding style as the navigation. You only have to add the `branded` class to that.
 
@@ -22,7 +26,9 @@ Something I've learned in writing Ruby code is that smaller is better when it co
 
 And if you still think HTML like another of Harry's examples,
 
-    <a href=/login/ class="btn btn-rev btn-lrg giga go brand-face">Log in</a>
+```html
+<a href=/login/ class="btn btn-rev btn-lrg giga go brand-face">Log in</a>
+```
 
 is unsightly, tools like Sass have features like [mixins][1] and [@extend-Only selectors][2] that give you all the benefits of single-responsibility CSS without having to include a bunch of classes in your markup.
 

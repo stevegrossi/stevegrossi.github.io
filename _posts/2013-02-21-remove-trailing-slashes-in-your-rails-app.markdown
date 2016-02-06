@@ -7,7 +7,7 @@ tags:
   - seo
 ---
 
-Aside from being inelegant, having your pages accessible both with and without a trailing slash is [an SEO no-no][1] because search engines can treat them as separate pages, diluting your page rank. For this reason, it's best to choose one and redirect the other to it.
+Aside from being inelegant, having your pages accessible both with and without a trailing slash is [an SEO no-no](http://www.seomoz.org/learn-seo/duplicate-content) because search engines can treat them as separate pages, diluting your page rank. For this reason, it's best to choose one and redirect the other to it.
 
 <!--more-->
 
@@ -15,15 +15,14 @@ I prefer no trailing slashes for many reasons. First, who wants unnecessary char
 
 There are plenty of ways to redirect trailing-slash URLs to their slashless counterparts at the server level (via Apache or Nginx), but for someone like me on Heroku with limited access to the server configuration, the **rack-rewrite** middleware provides a simple solution:
 
-    # Gemfile
-    gem 'rack-rewrite'
+```ruby
+# Gemfile
+gem 'rack-rewrite'
 
-    # config/application.rb
-    config.middleware.insert_before(Rack::Lock, Rack::Rewrite) do
-      r301 %r{^/(.*)/$}, '/$1'
-    end
+# config/application.rb
+config.middleware.insert_before(Rack::Lock, Rack::Rewrite) do
+  r301 %r{^/(.*)/$}, '/$1'
+end
+```
 
-Thanks to [Nance's Kitchen][2] for this one.
-
-[1]: http://www.seomoz.org/learn-seo/duplicate-content
-[2]: http://nanceskitchen.com/2010/05/19/seo-heroku-ruby-on-rails-and-removing-those-darn-trailing-slashes/
+Thanks to [Nance's Kitchen](http://nanceskitchen.com/2010/05/19/seo-heroku-ruby-on-rails-and-removing-those-darn-trailing-slashes/) for this one.

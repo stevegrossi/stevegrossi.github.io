@@ -28,17 +28,21 @@ In Ruby, we can write programs that may or may not run forever (for another exam
 
 But if this were possible—if we could write a program that reads another program and tells whether it will ever finish—then this second program, something like
 
-    def halts?(input)
-      // determine if the input program will ever finish
-    end
+```ruby
+def halts?(input)
+  # determine if the input program will ever finish
+end
+```
 
 would itself need to always finish to return the result. So we could write a program loops forever *if and only if its input program will finish*. Something like
 
-    def runforever(input)
-      while halts?(input)
-        // keep running
-      end
-    end
+```ruby
+def runforever(input)
+  while halts?(input)
+    # keep running
+  end
+end
+```
 
 But what if we give this program as input to itself? It finishes only if it never finishes, and it never finishes only if it finishes. Another paradox. This is known as **the halting problem** in computer science.
 
