@@ -21,14 +21,14 @@ body_class: resume
 
 ## Developer at Lesson.ly <span class="subhead">(November 2014–Present)</span>
 
-I recently joined [Lesson.ly](http://www.lesson.ly) as a Rails developer to help build the best way to train people online.
+I recently joined [Lesson.ly](http://www.lesson.ly) as a full-stack developer to help build the simplest, most impactful learning software out there.
 
 ## Developer at Alldayeveryday <span class="subhead">(January 2013–November 2014)</span>
 
 At Allday, I worked across the stack developing and deploying everything from Tumblr themes to global media platforms. I also championed the creation of a company wiki which helps the tech and strategy teams share information and resources about projects and technologies. Highlights include:
 
-- Lead developer of styld-by.com, a responsive, internationalized publishing platform for Gap's global media team
-- Sole developer of Gap's 2013 online holiday gift guide, an editorialized shopping experience backed by a custom CMS built on Rails 
+- Lead developer for styld-by.com, a responsive, internationalized publishing platform for Gap's global media team
+- Sole developer for Gap's 2013 online holiday gift guide, an editorialized shopping experience backed by a custom CMS built on Rails 
 - Co-developer of an HTML5 mobile web app for Nike's Global Media Summit using Rails and Backbone. Features included a live calendar, photo stream, and chat.
 
 ## Senior Coordinator of Online Projects at Cancer*Care* <span class="subhead">(July 2009–January 2013)</span>
