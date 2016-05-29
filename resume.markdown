@@ -1,6 +1,6 @@
 ---
 title: Resume
-body_class: resume
+layout: resume
 ---
 
 # Steve Grossi
