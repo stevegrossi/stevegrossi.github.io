@@ -1,18 +1,24 @@
 # Site settings
-title: Notes on Web Craftsmanship
+title: Steve Grossi at Work
 email: hello@stevegrossi.com
-description: "Thoughts on building for the modern web in the very best ways."
+description: Thoughts on software craftsmanship.
 baseurl: "" # the subpath of your site, e.g. /blog/
 url: "http://work.stevegrossi.com"
 permalink: pretty
 paginate: 10
 paginate_path: "/page/:num/"
-twitter_username: stevegrossi
-github_username:  stevegrossi
+twitter:
+  username: stevegrossi
+github:
+  username:  stevegrossi
+author:
+  picture: /img/stevegrossi.jpg
+  twitter: stevegrossi
 
 gems:
   - jekyll-paginate
   - jekyll-sitemap
+  - jekyll-seo-tag
 
 # Build settings
 kramdown:
