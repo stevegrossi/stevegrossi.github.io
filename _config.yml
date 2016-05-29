@@ -10,7 +10,9 @@ paginate_path: "/page/:num/"
 twitter_username: stevegrossi
 github_username:  stevegrossi
 
-gems: [jekyll-paginate]
+gems:
+  - jekyll-paginate
+  - jekyll-sitemap
 
 # Build settings
 kramdown:
