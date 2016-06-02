@@ -8,7 +8,11 @@ layout: default
       {{ page.date | date: "%B %e, %Y" }}
 
       {% if page.tags %}
-        &bull; on {{ page.tags | array_to_sentence_string }}
+        &bull; on
+        {% for tag in page.tags %}
+          {% if forloop.index == forloop.length %}and{% endif %}
+          <a href="/tags/#{{ tag | slugify }}">{{ tag }}</a>{% if forloop.index < forloop.length %},{% endif %}
+        {% endfor %}
       {% endif %}
     </p>
   </header>
