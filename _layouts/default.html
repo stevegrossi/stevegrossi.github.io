@@ -8,9 +8,18 @@
     {% include analytics.html %}
     {% include header.html %}
 
-    <div class="main" role="main">
+    <div class="Main" role="main">
+      <header class="Main-header">
+        <h1 class="Main-title">
+          {% unless page.title %}
+            {{ site.description }}
+          {% endunless %}
+        </h1>
+      </header>
 
-      {{ content }}
+      <div class="Main-body">
+        {{ content }}
+      </div>
 
     </div>
 

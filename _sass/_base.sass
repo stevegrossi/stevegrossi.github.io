@@ -1,15 +1,15 @@
 html
   overflow-y: scroll
+  background-color: $site-background
 
 body
-  background-color: $body-background
+  // background-color: $body-background
   font-family: $sans-stack
   font-size: 87.5%
   @media (min-width: 600px)
     font-size: 112.5%
   @media (min-width: 800px)
     font-size: 131.25%
-  max-width: 40em
   margin: 0 auto
   line-height: 1.5
   color: $text_color
@@ -80,9 +80,10 @@ mark
 
 blockquote
   margin: $baseline $baseline $baseline 0
-  color: $gray
   border-left: 4px solid $light-gray
   padding-left: 20px
+  color: $gray
+  font-style: italic
 
 ul, ol
   margin: $baseline
@@ -124,96 +125,8 @@ figcaption
   font-size: .875em
   color: $gray
 
-header[role="banner"]
-  margin: 0 5%
-  overflow: hidden
-  border-bottom: $default-border
-  h1
-    font-weight: normal
-    font-size: 1em
-    line-height: 1.5
-    margin-top: $baseline
-    @media (min-width: 600px)
-      float: left
-  a
-    text-decoration: none
-    color: $gray
-    strong
-      color: $dark-gray
-
-  .active
-    a
-      color: $dark-gray
-
-  nav
-    text-align: center
-    @media (min-width: 600px)
-      float: right
-      margin: $baseline 0
-    li
-      display: inline-block
-      margin: 0 1em
-      @media (min-width: 600px)
-        margin: 0 0 0 2em
-
-[role="main"]
-  padding: 0 5%
-
-.subhead
-  display: block
-  font-size: 1em
-  color: $gray
-  font-weight: normal
-  margin: 1em 0
-  h2 &
-    font-size: .75em
-
-.lede
-  text-align: center
-  font-size: 1.5em
-  color: $gray
-
-.site-footer
-  border-top: $default-border
-  color: $gray
-  text-align: center
-  padding: $baseline
-
-
-
 .gist table
   margin: 0
 
-.left
-  float: left
-  margin-right: 1em
-.right
-  float: right
-  margin-left: 1em
-.center
-  text-align: center
-
-// Yuck
-.resume
-  .main
-    h1
-      color: $red
-  .lede
-    color: $darker-gray
-
-#skills--values
-  color: $yellow
-#developer-at-lessonly-span-classsubheadnovember-2014presentspan
-  color: $blue
-#developer-at-alldayeveryday-span-classsubheadjanuary-2013november-2014span
-  color: mix(#fff, $blue, 20%)
-#senior-coordinator-of-online-projects-at-cancercare-span-classsubheadjuly-2009january-2013span
-  color: mix(#fff, $blue, 40%)
-
-#in-the-community
-  color: $green
-#new-york-university
-  color: $violet
-
-.highlight
-  background-color: #222
+#disqus_thread
+  margin-top: 4em

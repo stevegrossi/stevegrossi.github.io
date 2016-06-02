@@ -1,0 +1,47 @@
+.SiteHeader
+  padding: 0 5%
+  overflow: hidden
+  box-shadow: 0 1px 3px rgba(0,0,0,.1)
+  background-color: $body-background
+  position: relative // for z-positioning above .Main
+  text-align: center
+
+  @media (min-width: 600px)
+    text-align: inherit
+    padding-top: $baseline / 2
+    padding-bottom: $baseline / 2
+
+  h1
+    font-weight: normal
+    font-size: 1em
+    line-height: 1.5
+    margin: 0
+
+    @media (min-width: 600px)
+      float: left
+
+  a
+    text-decoration: none
+    color: $gray
+    padding: .5em
+    display: inline-block
+
+    strong
+      color: $dark-gray
+
+  .active
+    a
+      color: $dark-gray
+
+  nav
+    text-align: center
+
+    @media (min-width: 600px)
+      float: right
+
+    li
+      display: inline-block
+      margin: 0 1em
+
+      @media (min-width: 600px)
+        margin: 0 0 0 2em
