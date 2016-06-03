@@ -6,13 +6,13 @@ tags:
   - performance
 ---
 
-After a year of powering this site on a WordPress self-install, I recently switched to deploying this site as static HTML, published and kept organized by [Middleman](http://middlemanapp.com) and served up by Github pages. I've been quite pleased with the experience and results. Here's why I switched, and some things I learned in doing so.
+After a year of powering this site on a WordPress self-install, I recently switched to deploying this site as static HTML, published and kept organized by [Middleman](http://middlemanapp.com) and served up by Github pages. (*Update:* I’ve since switched to Jekyll for tighter integration with Github pages.) I’ve been quite pleased with the experience and results. Here's why I switched, and some things I learned in doing so.
 
 <!--more-->
 
 ## Why Static Sites?
 
-The past few years has brought a renewed interest in deploying static sites, meaning websites whose pages exist on the server as plain HTML files. I remember static sites from the earliest days of my career, and not fondly: back then it meant that when you needed to update something in the header or footer, you had to manually update every single HTML file in the project. Thankfully, that's not what I'm talking about here. The biggest difference between those static sites and today's are the tools used to create them—I've used **Jekyll** and **Middleman**—which let you develop in a fully dynamic environment with all of its advantages: includes, an asset pipeline, and even a blogging engine. It's only when you deploy your site that it's compiled down to static HTML, with all of its inherent advantages:
+The past few years has brought a renewed interest in deploying static sites, meaning websites whose pages exist on the server as plain HTML files. I remember static sites from the earliest days of my career, and not fondly: back then it meant that when you needed to update something in the header or footer, you had to manually update every single HTML file in the project. Thankfully, that's not what I'm talking about here. The biggest difference between those static sites and today's are the tools used to create them—I’ve used **Jekyll** and **Middleman**—which let you develop in a fully dynamic environment with all of its advantages: includes, an asset pipeline, and even a blogging engine. It's only when you deploy your site that it's compiled down to static HTML, with all of its inherent advantages:
 
 - **Host It Anywhere:** if you have a web server, you can host static HTML files. No worrying about database drivers or version compatability. And for that reason, there are many excellent, inexpensive static hosting options which open up like Amazon S3 or Github Pages.
 - **Performance Potential:** There are few things web servers can do faster than serve up static HTML files. That's not to say static sites are automatically faster, but most of the common performance pitfalls like numerous database queries or extensive server-side processing simply don't apply.
