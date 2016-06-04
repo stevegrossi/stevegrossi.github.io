@@ -1,3 +1,3 @@
 # work.stevegrossi.com
 
-You probably don't need to read me, actually.
+Honestly, you probably don't need to read me.
