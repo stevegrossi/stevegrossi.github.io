@@ -10,7 +10,7 @@ Elixir’s [Phoenix framework](http://www.phoenixframework.org/) is an ideal cho
 
 <!--more-->
 
-In the tutorial, we’ll use Elixir and Phoenix to build a chat app with two major features: a list of all users who are currently online and when they signed on, and of course the ability for online users to post messages to each other which update live. What we *won’t* worry about in this first post is authentication (registering an signing in) or persistence (saving messages so they’re there when you come back). I plan on tackling those in a later post, but for now let’s focus on the real-time aspects. Here’s what it will look like:
+In the tutorial, we’ll use Elixir and Phoenix to build a chat app with two major features: a list of all users who are currently online and when they signed on, and of course the ability for online users to post messages to each other which update live. What we *won’t* worry about in this first post is authentication (registering and signing in) or persistence (saving messages so they’re there when you come back). I plan on tackling those in a later post, but for now let’s focus on the real-time aspects. Here’s what it will look like:
 
 ![screenshot of the app showing chat messages and who’s online](https://raw.githubusercontent.com/stevegrossi/phoenix_chat/master/web/static/assets/images/screenshot.png)
 
