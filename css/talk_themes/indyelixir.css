@@ -1,0 +1,11 @@
+body { font-family: 'Source Sans Pro', sans-serif; }
+table { width: 100%; font-size: 24px; }
+a { color: #fff; }
+blockquote { color: rgba(255,255,255,.75); font-style: italic; font-size: .875em; }
+
+.remark-slide-content { background-color: #6b3c80; color: rgba(255,255,255,1); text-shadow: 0 .1em .1em rgba(0,0,0,.1); font-size: 2em; padding: .5em 2em; }
+
+.remark-code,
+.remark-inline-code { font-family: 'Source Code Pro', mono; border-radius: .25em; }
+
+.remark-inline-code { background-color: rgba(0,0,0,.2); font-size: .875em; padding: .1em .25em; }

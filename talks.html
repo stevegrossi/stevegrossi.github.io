@@ -1,0 +1,11 @@
+---
+layout: default
+---
+<h1>Talks</h1>
+<ul>
+{% for talk in site.talks %}
+  <li>
+    <a href="{{ talk.url | prepend: site.baseurl }}">{{ talk.title }}</a>
+  </li>
+{% endfor %}
+</ul>

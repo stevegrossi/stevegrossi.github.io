@@ -1,0 +1,844 @@
+---
+title: "This is Your Brain on Elixir"
+layout: talk
+talk_theme: indyelixir
+---
+
+class: center, middle
+
+![Indy Elixir](http://www.indyelixir.org/images/indyelixir.svg)
+
+# This is Your Brain on Elixir
+
+### Steve Grossi @ Lesson.ly
+
+---
+
+# The Rundown
+
+1. What is Elixir?
+2. Why Elixir?
+3. Syntax Crash Course
+
+---
+
+# What is Elixir?
+
+- Created by José Valim in 2012
+- Functional programming
+- Compiles to Erlang bytecode (interoperable)
+- runs on the Erlang VM ("the BEAM")
+- Erlang symantics, with a friendlier syntax, more powerful metaprogramming, and an expanded standard library.
+
+The best of Erlang, but even better.
+
+---
+
+# What is this Erlang?
+
+- Developed in 1986 by Ericsson for use in telecom switches
+- Process-based actor model
+- Use in Tech
+  - Whatsapp bought for $19B, [50 engineers supporting 900M users](http://www.wired.com/2015/09/
+    whatsapp-serves-900-million-users-50-engineers/)
+  - Facebook chat
+  - DNSimple’s DNS servers
+
+Battle-tested, highly-available, low-maintenance, high-performance.
+
+---
+
+class: center, middle
+
+# Why Elixir?
+
+---
+
+# 10. Scalable
+
+| Framework            | Throughput (req/s) | Latency (ms) | Consistency (σ ms) |
+| :--------------------| -----------------: | -----------: | -----------------: |
+| Play (Scala)         |          66405.81  |        2.72  |             10.25  |
+| Gin (Go)             |          59001.07  |        1.84  |              1.35  |
+| Plug (Elixir)        |          53815.76  |        2.67  |              4.07  |
+| Phoenix (Elixir)     |          31417.81  |        3.52  |              3.50  |
+| Express Cluster (js) |          26244.35  |        3.92  |              3.25  |
+| Martini (Go)         |          12493.48  |       10.15  |             10.70  |
+| Sinatra (Ruby)       |           8334.84  |        7.46  |              3.38  |
+| Express (js)         |           9477.14  |       10.56  |              1.39  |
+| Rails (Ruby)         |           3452.58  |       17.96  |              7.73  |
+
+From [github.com/mroth/phoenix-showdown](https://github.com/mroth/phoenix-showdown)
+
+---
+
+# 9. Erlang &amp; OTP
+
+30 years of optimization and problems solved.
+
+Full-featured:
+
+| Technical Need           | Non-Elixir Solution | Elixir/OTP Solution |
+|:-------------------------|:--------------------|:--------------------|
+| Process monitoring       | Nagios, God, etc.   | supervision trees   |
+| In-memory store          | Memcached           | agents              |
+| Persistent key-val store | Redis               | Erlang Term Storage |
+| Relational Database      | PostgreSQL          | Mnesia              |
+| Document database        | MongoDB             | Mnesia              |
+| Hot code swapping        | `¯\_(ツ)_/¯`        | Erlang Releases     |
+
+Nice when space/dependencies are limited...
+
+---
+
+# 8. Testing &amp; Docs
+
+- TDD-friendly
+- fast: tests run concurrently with `async: true`
+
+```elixir
+# ExUnit example
+defmodule SpeciesTest do
+
+  describe "Species.identify" do
+
+    test "returns “Klingon” for beings of type :klingon" do
+      being = %Being{type: :klingon}
+      assert Species.identify(being) == "Klingon"
+    end
+  end
+end
+```
+
+---
+
+# 8. Testing &amp; Docs
+
+- `@moduledoc` for module-level documentation
+- `@doc` for function-level documentation
+- `#` comments for inline documentation
+
+![Elixir docs for String](http://elixir-lang.org/images/contents/string-help.png)
+
+---
+
+# 8. Testing &amp; Docs
+
+Beautiful HTML `ExDoc`s hosted on [hexdocs.pm](http://hexdocs.pm)
+
+![example docs on hexdocs.pm](https://d13yacurqjgara.cloudfront.net/users/37317/screenshots/2244394/screen_shot_2015-09-14_at_23.02.54.png)
+
+---
+
+# 8. Testing &amp; Docs
+
+```elixir
+defmodule Enterprise.PhotonTorpedos do
+  # ...
+  @doc """
+  Arms the given number of photon torpedos.
+
+  ## Examples
+
+      iex> Enterprise.PhotonTorpedos.arm(2)
+      {:ok, [%Enterprise.PhotonTorpedo{armed: true},
+             %Enterprise.PhotonTorpedo{armed: true}]}
+
+  """
+  def arm(torpedo_count) do
+    # ...
+end
+
+# In your module
+defmodule Enterprise.PhotonTorpedos.Test do
+  doctest Enterprise.PhotonTorpedos
+end
+```
+
+---
+
+# 7. The Pipe Operator: `|>`
+
+```elixir
+# Yuck...
+Twitter.create_new_post(
+  detect_new_kittens(
+    JSON.parse(
+      HTTP.get("/api/kittens.json")
+    ), max: 3
+  )
+)
+
+# Ehh...
+response        = HTTP.get("/api/kittens.json")
+parsed_response = JSON.parse(response)
+new_kittens     = detect_new_kittens(parsed_response, max: 3)
+Twitter.create_new_post(new_kittens)
+
+# Yum.
+HTTP.get("/api/kittens.json")
+|> JSON.parse
+|> detect_new_kittens(max: 3)
+|> Twitter.create_new_post
+```
+
+---
+
+# 6. Metaprogramming
+
+- at compile time: no performance cost
+- `quote`/`unquote`
+- direct AST access (you can pattern match!)
+- macros with `defmacro`
+
+```elixir
+iex> quote do: sum(1, 2 + 3, 4)
+{:sum, [], [1, {:+, [context: Elixir, import: Kernel], [2, 3]}, 4]}
+```
+
+---
+
+# 5. Pattern Matching
+
+```elixir
+# Extract deeply nested data
+%{"params" => %{"user" => user_params}} = response
+
+# Handle edge cases gracefully with multiple clauses
+case Antimatter.check_levels do
+  {:ok, 0} -> Logger.warn "Where’d the antimatter go?!"
+  {:ok, level} -> Logger.info "Antimatter Level: #{level}"
+  {:error, reason} -> Logger.warn "Error measuring antimatter: #{reason}"
+end
+
+# More complex logic
+def eval([{a, _}, {a, _}, {a, _}, {a, _}, {b, _}]), do: :four_of_a_kind
+def eval([{b, _}, {a, _}, {a, _}, {a, _}, {a, _}]), do: :four_of_a_kind
+def eval([{a, _}, {a, _}, {a, _}, {b, _}, {b, _}]), do: :full_house
+def eval([{b, _}, {b, _}, {a, _}, {a, _}, {a, _}]), do: :full_house
+# etc.
+# from http://blog.tokafish.com/playing-poker-with-elixir-part-1/
+```
+
+---
+
+# 4. Modular
+
+- Umbrella apps: SOA-ready
+- Multiple OTP “applications” per app
+- Easy to split applications
+- Libraries, too: Phoenix, Phoenix pubsub, Plug
+
+---
+
+# 3. Explicit
+
+Optional type checking with [Dialyzer](http://erlang.org/doc/man/dialyzer.html)/[Dialyxir](https://github.com/jeremyjh/dialyxir)
+
+```shell
+$ mix dialyzer
+board.ex:6: Function new_from_file/1 has no local return
+board.ex:13: The call 'Elixir.Life.Board':insert(#{},0,0,string()) breaks the contract ('Elixir.Board':t(),'Elixir.Integer','Elixir.Integer',elixir:char_list()) -> 'Elixir.Board':t()
+board.ex:16: Invalid type specification for function 'Elixir.Life.Board':insert/4. The success typing is (#{},non_neg_integer(),non_neg_integer(),string()) -> #{}
+life.ex:20: Function iterations/1 will never be called
+# From http://learningelixir.joekain.com/elixir-type-specs/
+```
+
+Typespecs (docs &amp; Dialyzer hints):
+
+```elixir
+@spec multiply(number, number) :: number
+def multiply(a, b) do
+  # ...
+```
+
+
+---
+
+# 3. Explicit
+
+Document and enforce public APIs with behaviors
+
+```elixir
+defmodule Parser do
+  @callback parse(String.t) :: any
+  @callback extensions() :: [String.t]
+end
+
+defmodule JSONParser do
+  @behaviour Parser
+
+  def parse(str), do: # ... parse JSON
+  def extensions, do: ["json"]
+end
+
+defmodule YAMLParser do
+  @behaviour Parser
+
+  def parse(str), do: # ... parse YAML
+  def extensions, do: ["yml"]
+end
+```
+
+---
+
+# 3. Explicit
+
+Polymorphism through protocols
+
+```elixir
+defprotocol Blank do
+  @doc "Returns true if data is considered blank/empty"
+  def blank?(data)
+end
+
+# Implementation for native types
+defimpl Blank, for: Integer do
+  def blank?(_), do: false
+end
+
+# Structs and custom types
+defimpl Blank, for: Enterprise.CaptainsLog.LogEntry do
+  def blank?(entry), do: entry.duration == 0
+end
+```
+
+---
+
+# 2. Easy Concurrency
+
+- lightweight (millions of processes)
+- immutable data
+- actor model
+- transparent distribution across multiple nodes
+
+
+
+---
+
+# 1. Functional
+
+- Simpler to reason about
+- Simpler to test (less setup)
+- Avoids mutable state (e.g. your router)
+- Separate data and behavior
+- Lower complexity-to-scale ratio
+
+> “The problem with object-oriented languages is they’ve got all this implicit environment that they carry around with them. You wanted a banana but what you got was a gorilla holding the banana and the entire jungle.”
+>
+> — Joe Armstrong, creator or Erlang
+
+---
+
+class: center, middle
+
+# How to Elixir
+
+---
+
+# The IEx shell
+
+- `iex` to enter
+- Ctrl+C twice to exit
+- `iex -S mix` within an Elixir project
+- `h Module`, `h Module.function` for help
+- `i whatever` to inspect
+
+```shell
+$ iex
+Erlang/OTP 19 [erts-8.0] [source] [64-bit] [smp:4:4] [async-threads:10] [hipe] [kernel-poll:false]
+
+Interactive Elixir (1.3.1) - press Ctrl+C to exit (type h() ENTER for help)
+iex(1)>
+```
+
+---
+
+# Basic Math
+
+```elixir
+iex> 1 + 1
+2
+
+# Scientific notation!
+iex> 2.0e5 / 5.0e4
+4.0
+
+# Division operator always returns a float
+# Unlike e.g. Ruby, where 5 / 2 = 2 (rounded down)
+iex> 5 / 2
+2.5
+
+# Use `div` to return an integer and `rem` for the remainder
+iex> div(5, 2)
+2
+iex> rem(5, 2)
+1
+
+iex> abs(-11)
+11
+```
+
+---
+
+# Atoms
+
+Constants whose name is its own value (like Ruby symbols)
+
+```elixir
+iex> :steve
+:steve
+
+iex> is_atom(:hydrogen)
+true
+```
+
+---
+
+# Strings
+
+```elixir
+# double-quoted, UTF-8 encoded
+iex> "すし🍣"
+"すし🍣"
+
+# Great case support
+String.upcase("hellö")
+"HELLÖ"
+
+# Strings are stored as binary
+iex> is_binary("💩")
+true
+
+# Concatenation operator
+iex> "Hello" &lt;&gt; " " &lt;&gt; "there!"
+"Hello there!"
+```
+
+---
+
+# Booleans
+
+```elixir
+# `true` and `false` are shortcuts for the symbols
+iex> :true
+true
+
+# Equality
+iex> false == :false
+true
+
+# Truthy operators: &amp;&amp;, || !
+iex> "true" || :one
+1
+
+iex> false || :one
+:one
+
+# Strict operators: and, or, not
+iex> "true" or :one
+** (ArgumentError) argument error: "true"
+
+iex> false or :one
+:one
+```
+
+---
+
+# Tuples
+
+```elixir
+# Can contain anything
+iex> tuple = {:ok, "Result", true}
+{:ok, "Result", true}
+
+iex> elem(tuple, 1)
+"Result"
+
+iex> tuple_size(tuple)
+3
+```
+
+Stored contiguously in memory:
+
+- getting a value by index is fast
+- determining size is fast
+- updating or adding elements is slow
+- good for small, static collections
+
+---
+
+# (Linked) Lists
+
+```elixir
+# Can contain anything
+iex> list = [3.14, "π", :pie]
+
+# Heads and tails
+iex> hd(list)
+3.14
+
+iex> tl(list)
+["π", :pie]
+
+# Pattern matching
+iex> message = ["H", "A", "I"]
+["H", "A", "I"]
+
+iex> [head | tail] = message
+["H", "A", "I"]
+
+iex> head
+"H"
+
+iex> tail
+["A", "I"]
+```
+
+---
+
+# (Linked) Lists
+
+```elixir
+# So technically...
+iex> message = ["H" | ["A" | ["I" | []]]]
+["H", "A", "I"]
+
+# Appending
+iex> ["O" | message]
+["O", "H", "A", "I"]
+
+# Adding
+iex> [1, 2, 3] ++ [4, 5]
+[1, 2, 3, 4, 5]
+
+# Subtracting: matches left-to-right
+iex> [1, true, "oh", true] -- [1, true]
+["oh", true]
+```
+
+- Updating, prepending, iterating all fast
+- Accessing by index is slow
+- Typically, use lists for larger dynamic collections
+
+---
+
+# 2D Collections: Keyword Lists
+
+
+List of 2-item tuples: keys are atoms, ordered, and not necessarily unique. Used for lists of options.
+
+```elixir
+# Handy syntax
+iex> [{:foo, "bar"}, {:hello, "world"}]
+[foo: "bar", hello: "world"]
+
+# e.g.
+render conn, "index.html", posts: posts, filter: :published
+
+# or Ecto
+query = from account in "accounts",
+    where: account.active == true,
+    where: account.email == "me@myemail.com"
+    select: account.name
+```
+
+---
+
+# 2D Collections: Maps
+
+Your go-to key-value data structure (e.g. hash). All types can be keys and values. Keys are unique.
+
+```elixir
+# All types can be a key or value
+iex> user = %{"name" => "Steve", :cool? => true}
+%{:cool? => true, "name" => "Steve"}
+
+# Get value
+iex> user["name"]
+"Steve"
+
+# Handy getter for symbols
+iex> user.cool?
+true
+
+# Updating values
+iex> updated_user = %{user | cool?: false}
+%{:cool? => false, "name" => "Steve"}
+```
+
+---
+
+# 2D Collections: Structs
+
+Named maps with their own module: can provide defaults.
+
+```elixir
+# Declaring default keys and values
+defmodule Post do
+  defstruct title: "Untitled", published: false
+end
+
+# Module name between % and {}
+iex> %Post{title: "My Fancy Post"}
+%Post{published: false, title: "My Fancy Post"}
+```
+
+- compile-time guarantees of key validity
+- more specific pattern-matching
+- naming things is good for clarity!
+
+---
+
+# Anonymous Functions
+
+```elixir
+iex> multiply = fn a, b -> a * b end
+#Function<12.52032458/2 in :erl_eval.expr/5>
+
+iex> is_function(multiplydd
+true
+
+iex> multiply.(2, 4)
+8
+
+# Functions can be passed around like any value
+iex> shout_result = fn func, arg1, arg2 -> "#{func.(arg1, arg2)}!" end
+#Function<6.71889879/1 in :erl_eval.expr/5>
+
+iex> shout_result.(multiply, 2, 3)
+"6!"
+
+# Composable
+iex> square = fn a -> multiply.(a, a) end
+
+iex> square.(5)
+25
+```
+
+---
+
+# Anonymous Functions
+
+```elixir
+# Multiple bodies
+iex> handle_response = fn
+...>   {:ok, response} -> "Got it: #{response}"
+...>   {:error, reason} -> "Nope! #{reason}"
+...> end
+
+iex> handle_response.({:ok, "Success!"})
+"Got it: Success!"
+
+iex> handle_response.({:error, "Nothing is real."})
+"Nope! Nothing is real."
+
+# Errors if no matching clause
+iex> handle_response.(nil)
+** (FunctionClauseError) no function clause matching in...
+
+# Though we could add a catch-all clause
+iex> handle_response = fn
+...>   {:ok, response} -> "Got it: #{response}"
+...>   {:error, reason} -> "Nope! #{reason}"
+...>   _ -> "Unknown response"
+...> end
+```
+
+---
+
+# Named Functions
+
+```elixir
+# called through modules, e.g.
+iex> String.upcase "pew!"
+"PEW!"
+
+# Define modules with `defmodule`
+defmodule Phaser do
+  # default args with `\\`, also guard clauses!
+  def fire!(times \\ 3) when is_integer(times) do
+    String.duplicate("PEW!", times)
+  end
+  # Multiple function bodies
+  def fire!(input) do
+    {:error, "I cannot fire #{input}"}
+  end
+end
+
+iex> Phaser.fire!(2)
+"PEW!PEW!""
+
+iex> Phaser.fire!("🍌")
+{:error, "I cannot fire 🍌"}
+```
+
+---
+
+# Named Functions
+
+How do we iterate without mutation?
+
+```js
+// Mutation in JS for example
+function repeatIt(string, times = 3) {
+  newString = ""
+  for (var i = 0; i < times; i++) {
+    newString += string
+  }
+  return newString
+}
+
+repeatIt("Hello", 4)
+"HelloHelloHelloHello"
+```
+
+Recursion!
+
+---
+
+# Named Functions
+
+```elixir
+# Nested, namespaced modules
+defmodule IndyElixir.Repeat do
+
+  def it(string, times \\ 3) when is_binary(string) do
+    do_it(string, "", times)
+  end
+  def it(_, _), do: raise "That’s not a string!"
+
+  defp do_it(_original_string, new_string, 0), do: new_string
+  defp do_it(original_string, new_string, counter) do
+    do_it(original_string, new_string &lt;&gt; original_string, counter - 1)
+  end
+end
+
+iex> IndyElixir.Repeat.it("Hello", 4)
+"HelloHelloHelloHello"
+
+iex> IndyElixir.Repeat.it(1)
+** (RuntimeError) That’s not a string!
+```
+
+---
+
+# Named Functions
+
+```elixir
+# Nested, namespaced modules
+defmodule IndyElixir.Repeat do
+
+  def it(string, times \\ 3) when is_binary(string) do
+    do_it(string, "", times)
+  end
+  def it(_, _), do: raise "That’s not a string!"
+
+  defp do_it(_original_string, new_string, 0), do: new_string
+  defp do_it(original_string, new_string, counter) do
+    do_it(original_string, new_string &lt;&gt; original_string, counter - 1)
+  end
+end
+
+# 1. it("Hello", 4)
+# 2. do_it("Hello", "", 4)
+# 3. do_it("Hello", "Hello", 3)
+# 4. do_it("Hello", "HelloHello", 2)
+# 5. do_it("Hello", "HelloHelloHello", 1)
+# 6. do_it("Hello", "HelloHelloHelloHello", 0)
+```
+
+---
+
+# Recursion with lists
+
+```elixir
+defmodule IndyElixir do
+  def map(list, func) do
+    do_map(list, func)
+  end
+
+  defp do_map([], new_list, _func), do: new_list
+  defp do_map([head | tail], new_list \\ [], func) do
+    do_map(tail, new_list ++ [func.(head)], func)
+  end
+end
+
+IndyElixir.map([1, 2, 3], fn num -> num * 2 end)
+[2, 4, 6]
+
+# 1.    map([1, 2, 3],            func)
+# 2. do_map([1, 2, 3], [],        func)
+# 3. do_map(   [2, 3], [2],       func)
+# 4. do_map(      [3], [2, 4]     func)
+# 5. do_map(       [], [2, 4, 6], func)
+```
+
+---
+
+# The Enum module
+
+Recursion is cool, but not all the time.
+
+```elixir
+iex> Enum.map [1, 2, 3], &amp;(&amp;1 * 2) # Syntax!
+[2, 4, 6]
+
+iex> Enum.all? ["foo", "bar", "hello"], &amp;(String.length(&amp;1) > 1)
+true
+
+iex> Enum.any? ["foo", "bar", "hello"], &amp;(String.length(&amp;1) == 5)
+true
+
+iex> Enum.each ["one", "two", "three"], &amp;IO.puts/1 # More syntax!
+one
+two
+three
+:ok
+
+# etc.
+```
+
+---
+
+# Processes
+
+```elixir
+defmodule LoudRepeater do
+  def listen do
+    receive do
+      message -> IO.puts String.upcase(message) <> "!"
+      listen
+    end
+  end
+end
+
+iex> repeater = spawn(LoudRepeater, :listen, [])
+#PID<0.118.0>
+
+iex> send(repeater, "Hi, there")
+HI, THERE!
+```
+
+---
+
+class: center, middle
+
+# `System.halt/1`
+
+---
+
+# Bonus: Your Brain *in* Elixir
+
+![](https://elixirforum.com/uploads/default/original/1X/ff66d4e594f6a0011e23a8ecf7dbb961d2a26068.png)
+
+---
+
+# Additional Resources
+
+- [Elixir Should Take Over the World by Jessica Kerr](https://www.youtube.com/watch?v=X25xOhntr6s) (keynote)
+- [Elixir School](https://elixirschool.com) (tutorials)
+- [Elixir’s own “Getting Started” guide](http://elixir-lang.org/getting-started/introduction.html) (tutorials)
+- [Adventures in Robotics with Elixir by Jean-François Cloutier](https://www.youtube.com/watch?v=N_PXas9LtzU) (talk)
+- [Elixir Fountain](http://elixirfountain.com/) (podcast)
+- [Elixir Sips](http://elixirsips.com/) (video tutorials)

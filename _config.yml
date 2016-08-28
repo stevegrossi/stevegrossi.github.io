@@ -32,6 +32,11 @@ exclude:
   - Gemfile
   - Gemfile.lock
 
+# Collections
+collections:
+  talks:
+    output: true
+
 # Default post options
 defaults:
   -
