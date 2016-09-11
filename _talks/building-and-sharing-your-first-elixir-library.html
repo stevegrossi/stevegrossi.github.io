@@ -596,6 +596,32 @@ $ mix hex.publish docs
 
 ---
 
+# New Version?
+
+```elixir
+# mix.exs
+def project do
+  [
+    app: :fibonacci,
+    version: "0.2.0", # Updated
+```
+
+then
+
+```shell
+$ mix hex.publish
+```
+
+Probably also want to
+
+```shell
+$ git commit -m "Sweet new v0.2 stuff"
+$ git tag v0.2.0
+$ git push &amp;&amp; git push --tags
+```
+
+---
+
 # The End
 
 - [github.com/stevegrossi/fibonacci](https://github.com/stevegrossi/fibonacci)
