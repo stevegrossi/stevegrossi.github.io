@@ -213,12 +213,12 @@ let render = (presences) => {
 // Channels
 let room = socket.channel("room:lobby")
 room.on("presence_state", state => {
-  Presence.syncState(presences, state)
+  presences = Presence.syncState(presences, state)
   render(presences)
 })
 
 room.on("presence_diff", diff => {
-  Presence.syncDiff(presences, diff)
+  presences = Presence.syncDiff(presences, diff)
   render(presences)
 })
 
@@ -229,7 +229,7 @@ room.join()
 
 Beneath the `// Channels` comment, we tell the JavaScript about the `"room:lobby"` channel and join it. We need to handle two events as far as `Presence` is concerned. `"presence_state"` is when the server sends us the state of everyone online, which happens when we first connect and if we ever disconnect. We also handle the `"presence_diff"` event, which the server will send when someone joins or leaves and contains just the difference we need to adjust for. In both cases, Phoenix’s `Presence` JavaScript has special functions to do the heavy lifting for us: both `syncState` and `syncDiff` will set our `presences` object to the current state of who’s online, which we then `render` as HTML for display.
 
-That’s it for presence! Before moving on to the chat segment of this tutorial, you can test what we’ve got so far by viewing our chat app as different users, for example opening <`http://localhost:4000?name=Steve`> and <`http://localhost:4000?name=Jane`> in different browser tabs and watching the “Who’s Online” section of each tab update live.
+That’s it for presence! Before moving on to the chat segment of this tutorial, you can test what we’ve got so far by viewing our chat app as different users, for example opening <http://localhost:4000?name=Steve> and <http://localhost:4000?name=Jane> in different browser tabs and watching the “Who’s Online” section of each tab update live.
 
 ## Setting up Chat
 
