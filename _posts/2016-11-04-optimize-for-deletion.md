@@ -8,6 +8,8 @@ tags:
 
 I just watched Greg Young’s talk [The Art of Destroying Software](https://vimeo.com/108441214). It’s a compelling, unconventional argument for changing the way we write code to maximize our ability to delete it. Young’s rule of thumb is 1 week: *don’t write any self-contained part of your system that would take more than a week for someone unfamiliar with it to rewrite from scratch.*
 
+<!--more-->
+
 The maxim to prefer lots of small components to fewer large ones isn’t new. Young acknowledges that this idea goes back decades to [the Unix philosophy](https://en.wikipedia.org/wiki/Unix_philosophy) and the intent behind Erlang’s lots-of-tiny-processes actor model. (Marvin Minsky’s 1988 *The Society of Mind* suggests our minds are even structured thus.) And yet we don’t.
 
 > Teams inherently want to build programs that are too big and too complex.
