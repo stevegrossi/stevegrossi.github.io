@@ -19,9 +19,9 @@ layout: resume
 - Continuous delivery with a CI system like Travis
 - Infrastructure-as-code with Chef
 
-## Developer at Lesson.ly <span class="subhead">(November 2014–Present)</span>
+## Developer at Lessonly <span class="subhead">(November 2014–Present)</span>
 
-I recently joined [Lesson.ly](http://www.lesson.ly) as a full-stack developer to help build the simplest, most impactful learning software out there.
+I recently joined [Lessonly](http://www.lessonly.com) as a full-stack developer to help build the simplest, most impactful learning software out there.
 
 ## Developer at Alldayeveryday <span class="subhead">(January 2013–November 2014)</span>
 

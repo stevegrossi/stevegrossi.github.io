@@ -5,7 +5,7 @@ tags:
   - perspective
 ---
 
-I've been building websites professionally for about 10 years now, and for most of my career have focused on getting better at writing clear, valuable, maintainable code. In many of my roles, I've been the sole developer on a project, so that was the best I could do. But since joining [Lesson.ly](http://www.lesson.ly/) and working on a growing team, I've come to realize that there’s only so much a single developer can do, and that by empowering my team, I can produce better, more lasting work than I could just by putting my nose to the grindstone.
+I've been building websites professionally for about 10 years now, and for most of my career have focused on getting better at writing clear, valuable, maintainable code. In many of my roles, I've been the sole developer on a project, so that was the best I could do. But since joining [Lessonly](http://www.lessonly.com/) and working on a growing team, I've come to realize that there’s only so much a single developer can do, and that by empowering my team, I can produce better, more lasting work than I could just by putting my nose to the grindstone.
 
 <!--more-->
 
