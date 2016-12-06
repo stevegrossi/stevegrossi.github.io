@@ -1,0 +1,505 @@
+---
+title: "Processes and Supervision in Elixir"
+layout: talk
+talk_theme: indyelixir
+---
+
+class: center, middle
+
+![Indy Elixir](http://www.indyelixir.org/images/indyelixir.svg)
+
+# Processes and <br>Supervision in Elixir
+
+### Steve Grossi @ Lessonly
+
+---
+
+# The plan...
+
+- `spawn`, `send` and `receive`
+- Agent
+- GenServer
+- Building a reminders application
+
+---
+
+## `spawn`, `send` and `receive`
+
+```elixir
+iex> friend = spawn(fn -> :ok end)
+#PID<0.84.0>
+
+iex> send(friend, :hi)
+:hi
+
+iex> Process.alive?(friend)
+false
+```
+
+Processes die when they’re done executing their function.
+
+---
+
+## `spawn`, `send` and `receive`
+
+```elixir
+iex> friend = spawn fn ->
+...(1)>   receive do
+...(1)>     :hi -> IO.puts("Oh, hello there!")
+...(1)>   end
+...(1)> end
+#PID<0.87.0>
+iex> Process.alive?(friend)
+true
+iex> send(friend, :hi)
+Oh, hello there!
+:hi
+iex> Process.alive?(friend)
+false
+```
+
+Processes stay alive while receiving, but die once they've received a message.
+
+---
+
+## `spawn`, `send` and `receive`
+
+```elixir
+defmodule Friend do
+
+  def listen do
+    receive do
+      :hi ->
+        IO.puts("Hello there!")
+        listen()
+      _ ->
+        nil
+    end
+  end
+end
+```
+
+Need to recursively call a named function to stay alive indefinitely.
+
+---
+
+## `spawn`, `send` and `receive`
+
+```elixir
+iex> friend = spawn fn -> Friend.listen() end
+#PID<0.108.0>
+iex> send(friend, :hi)
+Hello there!
+:hi
+iex> send(friend, :hi)
+Hello there!
+:hi
+iex> send(friend, :hi)
+Hello there!
+:hi
+```
+
+A friend indeed!
+
+---
+
+## `spawn`, `send` and `receive`
+
+A shortcut for spawning named functions:
+
+```elixir
+# friend = spawn fn -> Friend.listen() end
+
+iex> friend = spawn(Friend, :listen, []) # [] = No args
+#PID<0.119.0>
+iex> send(friend, :hi)
+Hello there!
+:hi
+```
+
+What can we use this friend for...
+
+---
+
+## Holding State In Processes
+
+```elixir
+defmodule Friend do
+
+  def listen(state \\ %{}) do
+    receive do
+      {:set, key, value} ->
+        new_state = Map.put(state, key, value)
+        listen(new_state)
+      {:get, key} ->
+        IO.puts(Map.get(state, key))
+        listen(state)
+      _ ->
+        nil
+    end
+  end
+end
+```
+
+---
+
+## Holding State In Processes
+
+```elixir
+iex> friend = spawn(Friend, :listen, [])
+#PID<0.119.0>
+iex> send(friend, {:set, "Foo", "bar"})
+{:set, "Foo", "bar"}
+iex> send(friend, {:get, "Foo"})
+bar
+{:get, "Foo"}
+iex>
+```
+
+---
+
+## Agents
+
+Agents are friends!
+
+```elixir
+iex> {:ok, friend} = Agent.start(fn -> %{} end)
+{:ok, #PID<0.127.0>}
+iex> Process.alive? friend
+true
+iex> Agent.update(friend, fn(state) -> Map.put(state, "Foo", "Bar") end)
+:ok
+iex> Agent.get(friend, fn(state) -> Map.get(state, "Foo") end)
+"Bar"
+```
+
+Our API is still a little verbose, but Agents are handy. Can return values.
+
+---
+
+## Agents
+
+Agents can be named:
+
+```elixir
+iex> {:ok, bond} = Agent.start(fn -> %{} end, name: :bond)
+{:ok, #PID<0.122.0>}
+iex> Process.whereis(:bond)
+{:ok, #PID<0.122.0>}
+iex> Agent.update(:bond, fn(state) -> Map.put(state, "Foo", "Bar") end)
+:ok
+iex> Agent.get(:bond, fn(state) -> Map.get(state, "Foo") end)
+"Bar"
+```
+
+If an agent dies in the line of duty, you can spin up another with the same name and continue the mission (but you lose the state).
+
+---
+
+## GenServer
+
+Agent is built on GenServer (another friend)
+
+```elixir
+defmodule Friend do
+  use GenServer
+
+  def start_link do
+    GenServer.start_link(__MODULE__, %{}, name: __MODULE__)
+  end
+
+  # Callbacks
+
+  def handle_cast({:set, key, value}, state) do
+    new_state = Map.put(state, key, value)
+    {:noreply, new_state}
+  end
+
+  def handle_call({:get, key}, _sender, state) do
+    response = Map.get(state, key)
+    {:reply, response, state}
+  end
+end
+```
+
+---
+
+## GenServer
+
+```elixir
+iex> Friend.start_link
+{:ok, #PID<0.119.0>}
+iex> GenServer.cast(Friend, {:set, "foo", "bar"})
+:ok
+iex> GenServer.call(Friend, {:get, "foo"})
+"bar"
+```
+
+---
+
+## GenServer
+
+Can provide a really nice API:
+
+```elixir
+defmodule Friend do
+  use GenServer
+
+  def start_link do
+    GenServer.start_link(__MODULE__, %{}, name: __MODULE__)
+  end
+
+  def set(key, value) do
+    GenServer.cast(__MODULE__, {:set, key, value})
+  end
+
+  def get(key) do
+    GenServer.call(__MODULE__, {:get, key})
+  end
+
+  # Callbacks
+  # ...
+```
+
+---
+
+## GenServer
+
+Can provide a really nice API:
+
+```elixir
+iex> Friend.start_link
+{:ok, #PID<0.119.0>}
+iex> Friend.set("foo", "bar")
+:ok
+iex> Friend.get("foo")
+"bar"
+```
+
+---
+
+# Supervision
+
+We can avoid calling `Friend.start_link` (and get other benefits) by making our application a supervisor:
+
+```sh
+mix new . --sup
+```
+
+Only overwrite `mix.exs` and `reminders.ex`.
+
+---
+
+# Supervision
+
+```elixir
+# mix.exs:
+def application do
+  [applications: [:logger],
+   mod: {Reminders, []}]
+end
+
+# reminders.ex
+defmodule Reminders do
+
+  def start(_type, _args) do
+    import Supervisor.Spec, warn: false
+
+    children = [
+      worker(Friend, []),
+    ]
+
+    opts = [strategy: :one_for_one, name: Reminders.Supervisor]
+    Supervisor.start_link(children, opts)
+  end
+end
+```
+
+---
+
+# Supervision
+
+Run `iex -S mix`:
+
+```elixir
+iex> friend = Process.whereis(Friend)
+#PID<0.144.0> # Already started!
+iex> Friend.set("foo", "bar")
+:ok
+iex> Friend.get("foo")
+"bar"
+iex> Process.exit(friend, :kill)
+true
+
+iex> Process.whereis(Friend)
+#PID<0.150.0> # Restarted!
+iex> Friend.get("foo")
+nil
+```
+
+---
+
+class: center, middle
+
+# Keeping Track of Reminders
+
+---
+
+## Keeping Track of Reminders
+
+- We’ll interact via console to keep it simple
+- Hold state in a GenServer
+- API: `Client.remind_me(message, seconds_in_future)`
+- `IO.puts` when timer elapses
+
+---
+
+## The Client
+
+```elixir
+defmodule Reminders.Client do
+  use GenServer
+
+  def start_link do
+    GenServer.start_link(__MODULE__, nil, name: __MODULE__)
+  end
+
+  def remind_me(message, seconds_in_future) do
+    GenServer.cast(__MODULE__, {:new, message, seconds_in_future})
+  end
+
+  def handle_cast({:new, message, seconds_in_future}, state) do
+    milliseconds = seconds_in_future * 1000
+    Process.send_after(self(), {:reminder, message}, milliseconds)
+    {:noreply, state}
+  end
+
+  def handle_info({:reminder, message}, state) do
+    IO.puts("REMINDER: #{message}")
+    {:noreply, state}
+  end
+end
+```
+
+---
+
+## The Client
+
+```elixir
+iex> Reminders.Client.new("Get milk!", 3)
+:ok
+# 3 seconds later...
+REMINDER: Get milk!
+```
+
+---
+
+## The Client
+
+However...
+
+- If the `Reminders.Client` dies, we lose all pending reminders
+- We can’t add more `Reminders.Client` processes if they need to share state
+
+So...
+
+We can extract a `Reminders.Store` process to hold reminders
+
+---
+
+## The Store
+
+What do we need it to do?
+
+- Store a list of reminders
+- Return any reminders for in the past
+  - and remove them from the list
+
+```elixir
+children = [
+  worker(Reminders.Store, []),
+  worker(Reminders.Client, []),
+]
+```
+
+---
+
+## The Store
+
+Saving reminders:
+
+```elixir
+defmodule Reminders.Store do
+  use GenServer
+
+  def save({message, timestamp}) do
+    GenServer.cast(__MODULE__, {:save, {message, timestamp}})
+  end
+
+  def handle_cast({:save, {message, timestamp}}, state) do
+    new_state = [{message, timestamp} | state]
+    {:noreply, new_state}
+  end
+end
+```
+
+---
+
+## The Store
+
+Removing and returning past reminders:
+
+```elixir
+def pop_past_reminders do
+  GenServer.call(__MODULE__, :pop_past_reminders)
+end
+
+def handle_call(:pop_past_reminders, _caller, state) do
+  past_reminders = Enum.filter(state, fn({_message, timestamp}) ->
+    timestamp <= :os.system_time(:seconds)
+  end)
+  new_state = state -- past_reminders
+  {:reply, past_reminders, new_state}
+end
+```
+
+---
+
+## Client, Meet Store
+
+Client still needs to keep time:
+
+```elixir
+def init(state) do
+  run_clock()
+  {:ok, state}
+end
+
+def handle_cast({:new, message, seconds_in_future}, state) do
+  remind_at = :os.system_time(:seconds) + seconds_in_future
+  Store.save({message, remind_at})
+  {:noreply, state}
+end
+
+def handle_info(:tick, state) do
+  Enum.each(Store.pop_past_reminders, fn({message, _timestamp}) ->
+    IO.puts("REMINDER: #{message}")
+  end)
+  run_clock()
+  {:noreply, state}
+end
+```
+
+---
+
+## Next Steps
+
+- How else might we break this up?
+- What if the store dies?
+- How can we increase throughput?
+
+---
+
+## Links
+
+- https://github.com/stevegrossi/reminders
