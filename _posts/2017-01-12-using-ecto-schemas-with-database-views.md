@@ -68,7 +68,7 @@ The first step is actually creating the view in the database. This requires some
 $ mix ecto.gen.migration create_streaks_view
 ```
 
-This will create a file in `priv/repo/migrations`. Unfortunately, there aren’t yet any great tools like Thoughtbot's [scenic](https://github.com/thoughtbot/scenic) library for Rails that make working with database views easier in Ecto. So we're going to have to write some SQL, but this is the only time. We can run raw SQL in migrations by using the `execute` function.
+This will create a file in `priv/repo/migrations`. Unfortunately, there aren’t yet any great tools like Thoughtbot's [scenic](https://github.com/thoughtbot/scenic) library for Rails that make working with database views easier in Ecto. (**Update**: keep an eye on [this issue](https://github.com/elixir-ecto/ecto/issues/1805).) So we're going to have to write some SQL, but this is the only time. We can run raw SQL in migrations by using the `execute` function.
 
 Because different SQL is required for creating and destroying database views, we'll need separate `up` and `down` functions defined, instead of the default `change`. The migration will look something like this (see the entire file [on Github](https://github.com/stevegrossi/habits/blob/master/priv/repo/migrations/20170111012241_add_streaks_view.exs)):
 
