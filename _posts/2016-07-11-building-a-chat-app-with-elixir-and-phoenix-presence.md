@@ -249,7 +249,7 @@ end
 
 All we’re doing here is listening for messages of the type `"message:new"` (which we’ll send with JavaScript below) and `broadcast!`-ing them to everyone connected to the current room (including ourselves) after adding some additional metadata like who posted the message and when. Note that users in the chat room aren’t technically talking to each other. Rather, they’re sending messages to our app and our app is sending those messages back out to the other users. This gives us a degree of control that would likely matter more if, for example, our chat app were instead a game server and we wanted to ensure that the messages a user sends—move left, move right, attack—were moves they’re actually allowed to make.
 
-Back [in `app.js`](https://github.com/stevegrossi/phoenix_chat/blob/chat/web/static/js/app.js#L62), we have to wire up the `<input>` to listen for the `Enter` key (keyCode 13) and use `room.push()` to send whatever the user’s typed to the server:
+Back [in `app.js`](https://github.com/stevegrossi/phoenix_chat/blob/master/web/static/js/app.js#L62), we have to wire up the `<input>` to listen for the `Enter` key (keyCode 13) and use `room.push()` to send whatever the user’s typed to the server:
 
 ```js
 // web/static/js/app.js
