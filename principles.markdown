@@ -20,3 +20,7 @@ Writing code is easy. One of the most valuable lessons of experience is knowing 
 ## Small is beautiful.
 
 But even more importantly, it’s understandable. Break big things up into smaller parts: ideally each part should do exactly one thing. Our job is to manage complexity, not add to it.
+
+## Tests Are More Important than Code
+
+On any long-lived project, your code will change constantly. Tests are proof that your system does what it needs to, and are far more valuable over time than the particular way in which it performs a given task, which will change.
