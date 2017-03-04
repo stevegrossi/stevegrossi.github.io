@@ -10,7 +10,7 @@ layout: default
       {% if page.tags %}
         &bull; on
         {% for tag in page.tags %}
-          {% if forloop.index == forloop.length %}and{% endif %}
+          {% if forloop.last == true and forloop.first == false %}and{% endif %}
           <a href="/tags/#{{ tag | slugify }}">{{ tag }}</a>{% if forloop.index < forloop.length and forloop.length > 2 %},{% endif %}
         {% endfor %}
       {% endif %}
