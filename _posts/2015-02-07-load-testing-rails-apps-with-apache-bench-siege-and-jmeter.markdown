@@ -112,7 +112,7 @@ A public blog is one thing, but what about benchmarking a dashboard page that re
 
     $ ab -n 10 -c 5 -A username:password http://beta.stevegrossi.com/on
 
-But you're (hopefully) using more sophisticated, session-based authentication, especially with a Rails app. In this case, you'll just need to give Apache Bench an authenticated cookie to use on your behalf. I'm sure there's an easier way to do this with cURL, but I find it simplest to use Chrome developer tools to inspect the cookie header sent after I log in. First, log into the website you want to test and open up the dev tools' Resources tab. Under the Cookies toggle, click the name of your site and you'll see all of the cookies set by your site. For a Rails site, look for one that looks like `_mywebsite_session`. You'll want to copy its value for use in a minute, and to do so, **make sure you click on the value three (3) times** before copying. The full cookie value may have a newline in it, so just right-clicking it and choosing "Copy" or only clicking twice will not select the entire cookie value, just the first line of it. (This left me stumped for a while.) 
+But you're (hopefully) using more sophisticated, session-based authentication, especially with a Rails app. In this case, you'll just need to give Apache Bench an authenticated cookie to use on your behalf. I'm sure there's an easier way to do this with cURL, but I find it simplest to use Chrome developer tools to inspect the cookie header sent after I log in. First, log into the website you want to test and open up the dev tools' Resources tab. Under the Cookies toggle, click the name of your site and you'll see all of the cookies set by your site. For a Rails site, look for one that looks like `_mywebsite_session`. You'll want to copy its value for use in a minute, and to do so, **make sure you click on the value three (3) times** before copying. The full cookie value may have a newline in it, so just right-clicking it and choosing "Copy" or only clicking twice will not select the entire cookie value, just the first line of it. (This left me stumped for a while.)
 
 To run Apache Bench against a page that requires you to be logged in, simply pass in the `-C` flag along with the quoted cookie key and value in the format "key=value", i.e.
 
@@ -236,7 +236,7 @@ My, that's a lot of buttons. Fortunately, for us Rubyists there's a gem, [ruby-j
     #!/usr/bin/env ruby
     require 'ruby-jmeter'
 
-We'll make it executable with `$ chmod +x jmeter.rb` and run our test with `./jmeter.rb`. 
+We'll make it executable with `$ chmod +x jmeter.rb` and run our test with `./jmeter.rb`.
 
 ### The jmeter-ruby DSL
 
@@ -244,7 +244,7 @@ We'll make it executable with `$ chmod +x jmeter.rb` and run our test with `./jm
 
     test do
       defaults domain: 'beta.stevegrossi.com'
-      
+
       cookies clear_each_iteration: true
 
       # threads(options) do ...
@@ -258,7 +258,7 @@ This block will contain some configuration for the test as a whole: in this case
 
 The `test` block will end with either `end.jmx`, which generates an XML test plan which can be imported into JMeter or shared with your teammates, or `end.run` to immediately run the saved XML test plan with JMeter. I'll be running the test plan immediately, though at first with `.run(gui: true)` to open the JMeter interface in order to see what's going on.
 
-At the end of the `test` block, we'll include some DSL methods for generating reports. JMeter offers many kinds of reports for parsing the data it generates, but I've included two of the simplest here. `view_results_tree` will display all of the requests (and nested sub-requests for linked assets) made in the test, which is useful for debugging. `summary_report` will show us 
+At the end of the `test` block, we'll include some DSL methods for generating reports. JMeter offers many kinds of reports for parsing the data it generates, but I've included two of the simplest here. `view_results_tree` will display all of the requests (and nested sub-requests for linked assets) made in the test, which is useful for debugging. `summary_report` will show us some overall stats on how our app behaved during the test ([more on summary reports here](https://automation-performance.blogspot.in/2015/08/jmeterunderstanding-summary-report.html)).
 
 Note that reports cost some processing power to generate, and can thus affect JMeter's ability to generate large numbers of requests. For that reason, you may want to disable these reports (and the GUI entirely) once you have a working load test you're happy with.
 
@@ -282,7 +282,7 @@ Within the `test` block and after the test-wide configuration, we'll include a `
 
 ```ruby
 transaction 'Log In and View All Books' do
-  
+
   visit '/meta/log-in' do
     assert contains: 'Sign In', scope: 'main'
   end
