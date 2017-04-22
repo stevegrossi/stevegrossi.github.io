@@ -16,7 +16,6 @@ author:
   twitter: stevegrossi
 
 gems:
-  - jekyll-paginate
   - jekyll-sitemap
   - jekyll-seo-tag
 

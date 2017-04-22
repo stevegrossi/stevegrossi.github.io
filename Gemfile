@@ -6,7 +6,6 @@ gem "jekyll", "~> 3.2.0"
 group :jekyll_plugins do
   gem "github-pages"
   gem "jekyll-compose"
-  gem "jekyll-paginate"
   gem "jekyll-sitemap"
   gem "jekyll-seo-tag"
 end

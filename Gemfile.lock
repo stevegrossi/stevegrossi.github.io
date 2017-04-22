@@ -139,7 +139,6 @@ DEPENDENCIES
   github-pages
   jekyll (~> 3.2.0)
   jekyll-compose
-  jekyll-paginate
   jekyll-seo-tag
   jekyll-sitemap
 
