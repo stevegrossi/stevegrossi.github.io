@@ -1,0 +1,608 @@
+---
+title: "Elixir In The Real World with Nerves"
+layout: talk
+talk_theme: indyelixir
+---
+
+class: center, middle
+
+![Indy Elixir](http://www.indyelixir.org/images/indyelixir.svg)
+
+# Elixir In The Real World <br>with Nerves
+
+### Steve Grossi @ Lessonly
+
+---
+
+# The Plan
+
+1. What is Nerves?
+2. Talk to the world (blink an LED)
+3. Connect to the network
+4. Host a web app on the LAN
+5. Shout it to the world (Tweet button)
+
+---
+
+class: center, middle
+
+# 1. What is Nerves?
+
+## Tools to run Elixir on embedded hardware
+
+---
+
+# What Is Nerves?
+
+**A Platform**
+<br>A 12MB Linux distro that uses erlinit to boot directly into your OTP app
+
+**A Framework**
+<br>IO, network, hardware drivers and more
+
+**A Toolset**
+<br>mix tasks for managing builds, configuration, firmware
+
+[nerves-project.org](http://nerves-project.org/)
+
+---
+
+# My Hardware
+
+<div class="right third"><img src="/img/talks/nerves/raspberry-pi-3.jpg" alt="Raspberry Pi 3"></div>
+
+- A Raspberry Pi 3
+- Power supply
+- Micro SD card (with adapter)
+- Breadboard w/ jumper wires
+- LEDs
+- Pushbutton switch
+
+---
+
+# Installing Nerves
+
+## Dev Dependencies
+
+```sh
+$ brew update
+$ brew install erlang
+$ brew install elixir
+$ brew install fwup squashfs coreutils
+```
+
+[hexdocs.pm/nerves/installation.html](https://hexdocs.pm/nerves/installation.html)
+
+---
+
+# Installing Nerves
+
+## Nerves
+
+```sh
+$ mix local.hex
+$ mix local.rebar
+$ mix archive.install https://github.com/nerves-project/archives/raw/master/nerves_bootstrap.ez
+```
+
+---
+
+# mix nerves.new
+
+The Nerves bootstrap archive gives us a `nerves.new` Mix task:
+
+```sh
+$ mix nerves.new hello_nerves
+```
+
+Then we specify target hardware and fetch deps:
+
+```sh
+$ cd hello_nerves
+$ export MIX_TARGET=rpi3
+$ mix deps.get
+```
+
+---
+
+# Nerves Projects
+
+They’re Just Mix Projects!
+
+```sh
+/hello_nerves
+  /config
+    config.exs (application config)
+  /lib
+    /hello_nerves
+      application.ex
+    hello_nerves.ex
+  /rel
+    config.exs (release config)
+  /test
+  mix.exs
+  mix.lock
+  README.md
+```
+
+Consider umbrella projects, too.
+
+---
+
+class: center, middle
+
+# 2. Talk to the World
+
+## Blink an LED
+
+---
+
+# Adding the `elixir_ale` Dependency
+
+```elixir
+# Specify target specific dependencies
+def deps("host"), do: []
+def deps(target) do
+  [
+    {:nerves_runtime, "~> 0.1.0"},
+    {:"nerves_system_#{target}", "~> 0.11.0", runtime: false},
+    {:elixir_ale, "~> 0.5.7"}
+  ]
+end
+```
+
+And `$ mix deps.get`
+
+---
+
+# Config
+
+```elixir
+# config/config.exs
+config :hello_nerves, :led_pin, pin: 26
+```
+
+![Raspberry Pi 3 pin schematic](https://camo.githubusercontent.com/91f3a4ad684d6555f171ba3c982f9a80c6bf3981/68747470733a2f2f70696e6f75742e78797a2f7265736f75726365732f7261737062657272792d70692d70696e6f75742e706e67)
+
+https://pinout.xyz
+
+---
+
+# Config
+
+We can also specify hardware-specific config:
+
+```elixir
+# import_config "#{Mix.Project.config[:target]}.exs"
+```
+
+---
+
+# Our OTP App
+
+```elixir
+@led_pin Application.get_env(:hello_nerves, :led_pin)
+
+def start(_type, _args) do
+  Logger.debug "Starting pin #{@led_pin} as output"
+  {:ok, pin} = Gpio.start_link(@led_pin, :output)
+
+  spawn fn -> blink_led_forever(pin) end
+
+  {:ok, self()}
+end
+
+defp blink_led_forever(pin) do
+  Logger.debug "Blinking pin #{@led_pin}"
+  Gpio.write(pin, 1)
+  :timer.sleep(500)
+  Gpio.write(pin, 0)
+  :timer.sleep(500)
+
+  blink_led_forever(pin)
+end
+```
+
+---
+
+# Building &amp; Burning Firmware
+
+Build the firmware:
+
+```sh
+$ mix firmware
+```
+
+Burn it to the SD card:
+
+```sh
+$ mix firmware.burn
+
+Discovered devices:
+0) 29.81 GiB found at /dev/rdisk3
+1) 115.69 GiB found at /dev/rdisk2
+Which device do you want to burn to? 0
+100%
+Elapsed time: 1.429s
+```
+
+---
+
+class: center, middle
+
+# Demo Time!
+
+---
+
+class: center, middle
+
+# 3. Connecting to the Network
+
+## Internet, meet Thing
+
+---
+
+# nerves_interim_wifi
+
+```elixir
+def deps(target) do
+  [
+    {:nerves_runtime, "~> 0.1.0"},
+    {:"nerves_system_#{target}", "~> 0.11.0", runtime: false},
+    {:elixir_ale, "~> 0.5.7"},
+    {:nerves_interim_wifi, "~> 0.2.0"},
+```
+
+and `$ mix deps.get`
+
+---
+
+# Kernel Modules
+
+Often platform-specific:
+
+```elixir
+# mix.exs
+def project do
+  [app: :hello_nerves,
+   # ...
+   kernel_modules: kernel_modules(@target),
+   # ...
+end
+
+# Broadcom wifi driver
+def kernel_modules("rpi3"), do: ["brcmfmac"]
+def kernel_modules("rpi2"), do: ["8192cu"]
+def kernel_modules("rpi"), do: ["8192cu"]
+def kernel_modules(_), do: []
+```
+
+---
+
+# Configuration
+
+```elixir
+# config/config.exs
+config :hello_nerves, :wlan0,
+  ssid: "network",
+  key_mgmt: :"WPA-PSK", # :NONE if no password
+  psk: "password"
+```
+
+---
+
+# Our OTP App
+
+```elixir
+@interface :wlan0
+@kernel_modules Mix.Project.config[:kernel_modules] || []
+
+def start(_type, _args) do
+  # ...
+  children = [
+    worker(Task, [fn -> init_kernel_modules() end], restart: :transient, id: Nerves.Init.KernelModules),
+    worker(Task, [fn -> init_network() end], restart: :transient, id: Nerves.Init.Network),
+  ]
+  # ...
+end
+
+def init_kernel_modules() do
+  Enum.each(@kernel_modules, &amp; System.cmd("modprobe", [&amp;1]))
+end
+
+def init_network() do
+  opts = Application.get_env(:hello_nerves, @interface)
+  Nerves.InterimWiFi.setup(@interface, opts)
+end
+```
+
+---
+
+class: center, middle
+
+# Burn Firmware and Demo
+
+---
+
+class: center, middle
+
+# 4. Host a Web App on the LAN
+
+## What’s going on in there?
+
+---
+
+# Plug and Cowboy
+
+```elixir
+# mix.exs
+def deps(target) do
+  [
+    {:nerves_runtime, "~> 0.1.0"},
+    {:"nerves_system_#{target}", "~> 0.11.0", runtime: false},
+    {:elixir_ale, "~> 0.5.7"},
+    {:nerves_interim_wifi, "~> 0.2.0"},
+    {:cowboy, "~> 1.0.0"},
+    {:plug, "~> 1.0"}
+```
+
+and `$ mix deps.get`
+
+---
+
+# Add Plug to our Application
+
+```elixir
+children = [
+  worker(Task, [fn -> init_kernel_modules() end], restart: :transient, id: Nerves.Init.KernelModules),
+  worker(Task, [fn -> init_network() end], restart: :transient, id: Nerves.Init.Network),
+  Plug.Adapters.Cowboy.child_spec(:http, HelloNerves.Router, [], [port: 4000])
+]
+```
+
+---
+
+# Our Plug Router
+
+```elixir
+defmodule HelloNerves.Router do
+  use Plug.Router
+
+  plug Plug.Logger
+  plug :match
+  plug :dispatch
+
+  get "/" do
+    send_resp(conn, 200, "Hello from Nerves!")
+  end
+
+  match _ do
+    send_resp(conn, 404, "Oops!")
+  end
+end
+```
+
+---
+
+class: center, middle
+
+# Burn Firmware and Demo
+
+---
+
+# Update App State via the Web
+
+Time to split our app up a bit:
+
+```elixir
+children = [
+  worker(Task, [fn -> init_kernel_modules() end], restart: :transient, id: Nerves.Init.KernelModules),
+  worker(Task, [fn -> init_network() end], restart: :transient, id: Nerves.Init.Network),
+  Plug.Adapters.Cowboy.child_spec(:http, HelloNerves.Router, [], [port: 4000]),
+  worker(HelloNerves.Store, []),
+  worker(HelloNerves.Blinker, [])
+]
+```
+
+---
+
+# The Store
+
+```elixir
+defmodule HelloNerves.Store do
+
+  @defaults %{
+    blink_ms: 1000
+  }
+
+  def start_link do
+    Agent.start_link(fn -> @defaults end, name: __MODULE__)
+  end
+
+  def get(key) do
+    Agent.get(__MODULE__, &amp;Map.get(&amp;1, key))
+  end
+
+  def put(key, value) do
+    Agent.update(__MODULE__, &amp;Map.put(&amp;1, key, value))
+  end
+end
+```
+
+---
+
+# The Store in Use
+
+```elixir
+# lib/hello_nerves/blinker.ex
+defp blink_led_forever(pin) do
+  Logger.debug "Blinking pin #{@led_pin}"
+  blink_ms = HelloNerves.Store.get(:blink_ms) # New!
+  Gpio.write(pin, 1)
+  :timer.sleep(blink_ms)
+  Gpio.write(pin, 0)
+  :timer.sleep(blink_ms)
+
+  blink_led_forever(pin)
+end
+```
+
+---
+
+# The New Plug Router Function
+
+```elixir
+get "/blink/:milliseconds" do
+  HelloNerves.Store.put(:blink_ms, String.to_integer(milliseconds))
+  send_resp(conn, 200, "Set blink duration: #{milliseconds}ms")
+end
+```
+
+---
+
+class: center, middle
+
+# Burn Firmware and Demo
+
+---
+
+class: center, middle
+
+# 5. Shout It to the World
+
+## Tweetus ex Machina
+
+---
+
+# Detecting Button Presses
+
+![button circuit with pulldown resistor](https://grantwinney.com/content/images/2016/05/Simple-Button-Circuit-with-pulldown-res.png)
+
+[thanks grantwinney.com ](https://grantwinney.com/using-pullup-and-pulldown-resistors-on-the-raspberry-pi/)
+
+---
+
+# Configuration
+
+```elixir
+# config/config.exs
+config :hello_nerves, :input_pin, 16
+```
+
+---
+
+# New `Listener` Process
+
+```elixir
+defmodule HelloNerves.Listener do
+  require Logger
+
+  @input_pin Application.get_env(:hello_nerves, :input_pin)
+
+  def start_link do
+    Logger.debug "Starting input on pin #{@input_pin}"
+    {:ok, pid} = Gpio.start_link(@input_pin, :input)
+
+    spawn fn -> listen_forever(pid) end
+
+    {:ok, self()}
+  end
+
+  # ...
+```
+
+---
+
+# New `Listener` Process
+
+```elixir
+defmodule HelloNerves.Listener do
+  # ...
+
+  defp listen_forever(pid) do
+    Gpio.set_int(pid, :both)
+    loop()
+  end
+
+  defp loop do
+    receive do
+      {:gpio_interrupt, p, :rising} ->
+        Logger.debug "Received rising event on pin #{p}"
+      {:gpio_interrupt, p, :falling} ->
+        Logger.debug "Received falling event on pin #{p}"
+    end
+    loop()
+  end
+```
+
+---
+
+# Connecting to Twitter
+
+```elixir
+# mix.exs
+def deps(target) do
+  # ...
+  {:extwitter, "~> 0.8"},
+  # Are these really necessary?
+  {:oauther, "~> 1.1.0"},
+  {:poison, "~> 2.2.0"},
+
+# config/config.exs
+config :extwitter, :oauth, [
+  consumer_key: "app_key",
+  consumer_secret: "app_secret",
+  access_token: "my_token",
+  access_token_secret: "my_token_secret"
+]
+```
+
+---
+
+# Updating the Listener Process
+
+```elixir
+defmodule HelloNerves.Listener do
+  # ...
+  defp loop do
+    receive do
+      {:gpio_interrupt, p, :rising} ->
+        Logger.debug "Received rising event on pin #{p}"
+        set_time() # I’ll explain this in a sec...
+        ExTwitter.update """
+          I posted this tweet at @indyelixir
+          by pressing a button on a Raspberry Pi!
+          Thanks @NervesProject! #myelixirstatus
+        """
+```
+
+---
+
+# So, about Time...
+
+The pi doesn’t know what time it is. OAuth depends on an accurate clock.
+
+```elixir
+defp set_time do
+  Logger.info "Setting system time"
+  response = HTTPoison.get! "http://api.timezonedb.com/v2/get-time-zone?key=my_api_key&format=json&by=zone&zone=America/Indiana/Indianapolis"
+  json = Poison.decode!(response.body)
+  dt_string = json["formatted"]
+  Logger.debug "Setting date #{inspect(dt_string)}"
+  System.cmd("date", ["-s", dt_string])
+end
+```
+
+---
+
+class: center, middle
+
+# Burn Firmware and Demo
+
+---
+
+# Additional Resources
+
+- [nerves-project.org](http://nerves-project.org/)
+- [“Building Devices with Elixir and Erlang using Nerves”](https://www.youtube.com/watch?v=aIGVOFwYtHE) - Justin Schneck @ Erlang Factory 2017
+- [“Get Cooking With Nerves”](https://www.youtube.com/watch?v=O39ipRsXv3Y) - Garth Hitchens @ ElixirDaze 2017
