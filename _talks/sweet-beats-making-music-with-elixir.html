@@ -1,0 +1,547 @@
+---
+title: "Sweet Beats: Making Music with Elixir"
+layout: talk
+talk_theme: indyelixir
+---
+
+class: center, middle
+
+![Indy Elixir](http://www.indyelixir.org/images/indyelixir.svg)
+
+# Sweet Beats:<br> Making Music with Elixir
+
+### Steve Grossi @ Lessonly
+
+---
+
+## SoX
+
+![](http://sox.sourceforge.net/screenshot1.png)
+
+http://sox.sourceforge.net
+
+---
+
+## SoX
+
+Simple:
+
+```sh
+$ play -qn synth pluck C
+```
+
+Specify a duration, octave, sharps and flats:
+
+```sh
+$ play -qn synth 2.0 pluck Cb2
+$ play -qn synth 4.0 pluck B#5
+```
+
+Docs: http://sox.sourceforge.net/sox.html
+
+---
+
+## SoX
+
+Synthesizing sound:
+
+```sh
+$ play -qn synth 2.0 sine C
+$ play -qn synth 2.0 square C
+$ play -qn synth 2.0 triangle C
+$ play -qn synth 2.0 sawtooth C
+$ play -qn synth 2.0 trapetz C
+$ play -qn synth 2.0 exp C
+$ play -qn synth 2.0 whitenoise C
+$ play -qn synth 2.0 pinknoise C
+$ play -qn synth 2.0 brownnoise C
+```
+
+Docs: http://sox.sourceforge.net/sox.html
+
+---
+
+## Generating Tones
+
+```elixir
+defmodule SweetBeats do
+
+  @tempo 250
+
+  # SweetBeats.song("BAGABBB AAA BDD BAGABBBBAABAG")
+  def song(notes) do
+    notes
+    |> String.graphemes
+    |> Enum.each(fn(note) ->
+         spawn fn -> note(note) end
+         :timer.sleep(@tempo)
+       end)
+  end
+
+  # SweetBeats.note("A")
+  def note(" "), do: nil
+  def note(note) do
+    System.cmd("play", ["-qn", "synth", "1", "pluck", note])
+  end
+end
+```
+
+---
+
+## Playing Samples
+
+```elixir
+defmodule SweetBeats do
+
+  @tempo 250
+
+  # SweetBeats.beats(~w(snare1 kick3 kick3 kick3))
+  def beats(files) do
+    files
+    |> Enum.each(fn(sample) ->
+         spawn fn -> play_sample(sample) end
+         :timer.sleep(@tempo)
+       end)
+    beats(files)
+  end
+
+  # SweetBeats.play_sample("snare1")
+  def play_sample(" "), do: nil
+  def play_sample(filename) do
+    System.cmd("play", ["-q", "media/#{filename}.wav"])
+  end
+end
+```
+
+---
+
+## Put It All Together
+
+```elixir
+defmodule SweetBeats do
+
+  def composition do
+    spawn fn -> song("BAGABBB AAA BDD BAGABBBBAABAG") end
+    spawn fn -> beats(~w(snare1 kick3 kick3 kick3)) end
+    spawn fn -> beats(["kick1", " " ," ", "clap"]) end
+    spawn fn -> beats([" ", " " ,"tom2", "tom1"]) end
+  end
+end
+```
+
+---
+
+## Rhythm &amp; Melody Modules
+
+```elixir
+defmodule SweetBeats do
+  # ...
+  def start(_type, _args) do
+    import Supervisor.Spec, warn: false
+
+    # Define workers and child supervisors to be supervised
+    children = [
+      # Starts a worker by calling: SweetBeats.Worker.start_link(arg1, arg2, arg3)
+      worker(Melody, ["BAGABBB AAA BDD BAGABBBBAABAG   "]),
+      worker(Rhythm, ["kick3",   "X X X X "], id: 1),
+      worker(Rhythm, ["snare2",  "    X   "], id: 2),
+      worker(Rhythm, ["hihat1",  " X   X  "], id: 3),
+      worker(Rhythm, ["hihat2",  "   X   X"], id: 4),
+    ]
+
+    # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
+    # for other strategies and supported options
+    opts = [strategy: :one_for_one, name: SweetBeats.Supervisor]
+    Supervisor.start_link(children, opts)
+  end
+end
+```
+
+---
+
+## Rhythm &amp; Melody Modules
+
+```elixir
+defmodule SweetBeats.Rhythm do
+
+  def start_link(sample_file, notation) do
+    pid = spawn_link(__MODULE__, :play, [sample_file, notation])
+    {:ok, pid}
+  end
+
+  def play(sample_file, notation) do
+    notation
+    |> String.graphemes
+    |> Enum.each(fn(note) ->
+         spawn fn -> play_sample(sample_file, note) end
+         :timer.sleep(@tempo)
+       end)
+
+    play(sample_file, notation)
+  end
+
+  defp play_sample(_sample_file, " "), do: nil
+  defp play_sample(sample_file, _note) do
+    System.cmd("play", ["-q", "media/#{sample_file}.wav"])
+  end
+end
+```
+
+---
+
+## Rhythm &amp; Melody Modules
+
+```elixir
+defmodule SweetBeats.Melody do
+
+  def start_link(notation) do
+    pid = spawn_link(__MODULE__, :play, [notation])
+    {:ok, pid}
+  end
+
+  def play(notation) do
+    notation
+    |> String.graphemes
+    |> Enum.each(fn(note) ->
+         spawn fn -> note(note) end
+         :timer.sleep(@tempo)
+       end)
+
+    play(notation)
+  end
+
+  defp note(" "), do: nil
+  defp note(note) do
+    System.cmd("play", ["-qn", "synth", "1", "pluck", note])
+  end
+end
+```
+
+---
+
+## Sharps and Flats
+
+```elixir
+defmodule SweetBeats do
+  # ...
+  def start(_type, _args) do
+    import Supervisor.Spec, warn: false
+
+    # Define workers and child supervisors to be supervised
+    children = [
+      worker(Melody, [~w(D# . A# . A# G# A# . G# F# G# . G# F# D# F# )]),
+      worker(Rhythm, ["kick2.wav",   ~w(X . . X . . . .)], id: 1),
+      worker(Rhythm, ["kick1.wav",   ~w(X . . . X . . .)], id: 2),
+      worker(Rhythm, ["hihat1.wav",  ~w(X X . X . . X .)], id: 3),
+      worker(Rhythm, ["hihat2.wav",  ~w(. . X . . X . .)], id: 4),
+      worker(Rhythm, ["snare2.wav",  ~w(. . . . X . . X)], id: 5),
+      worker(Rhythm, ["clap.wav"  ,  ~w(. . . . X . . .)], id: 6),
+    ]
+```
+
+`SweetBeats.Melody` now uses `Enum.each` rather than `Enum.graphemes`
+
+---
+
+## Instrument Modules &amp; Behaviours
+
+```elixir
+# lib/instrument/guitar.ex
+defmodule SweetBeats.Instrument.Guitar do
+  @behaviour SweetBeats.Instrument
+
+  @duration "1"
+
+  def play_note(note) do
+    System.cmd("play", ["-qn", "synth", @duration, "pluck", note])
+  end
+end
+```
+
+The behaviour module:
+
+```elixir
+# lib/instrument.ex
+defmodule SweetBeats.Instrument do
+  @callback play_note(String.t) :: any
+end
+```
+
+---
+
+## Instrument Modules &amp; Behaviours
+
+```elixir
+defmodule SweetBeats do
+  # ...
+  def start(_type, _args) do
+    import Supervisor.Spec, warn: false
+    children = [
+      worker(Melody, [SweetBeats.Instrument.Guitar, ~w(
+        D# . .  . A# . . . A# . G# . A# . .  .
+        G# . F# . G# . . . G# . F# . D# . F# .
+      )]),
+      worker(Rhythm, ["kick2.wav",   ~w(X . . X . . . .)], id: 1),
+      worker(Rhythm, ["kick1.wav",   ~w(X . . . X . . .)], id: 2),
+      worker(Rhythm, ["hihat1.wav",  ~w(X X . X . . X .)], id: 3),
+      worker(Rhythm, ["hihat2.wav",  ~w(. . X . . X . .)], id: 4),
+      worker(Rhythm, ["snare2.wav",  ~w(. . . . X . . X)], id: 5),
+      worker(Rhythm, ["clap.wav"  ,  ~w(. . . . X . . .)], id: 6),
+    ]
+```
+
+---
+
+## More Instruments!
+
+```elixir
+defmodule SweetBeats.Instrument.Organ do
+  @behaviour SweetBeats.Instrument
+
+  @duration "0.5"
+
+  def play_note(note) do
+    System.cmd("play", ["-qn", "synth", "sine", note, "fade", "0.1", @duration, "0.1"])
+  end
+end
+
+defmodule SweetBeats.Instrument.Synth do
+  @behaviour SweetBeats.Instrument
+
+  @duration "0.25"
+
+  def play_note(note) do
+    System.cmd("play", ["-qn", "synth", @duration, "square", note])
+  end
+end
+```
+
+---
+
+## Improving Timing
+
+```elixir
+defmodule SweetBeats do
+  # ...
+  def start(_type, _args) do
+    import Supervisor.Spec, warn: false
+
+    children = [
+      worker(Rhythm, ["snare1.wav",   ~w(. . . . . . . X)], id: 1),
+      worker(Rhythm, ["snare1.wav",   ~w(. . . . . . . X)], id: 2),
+      worker(Rhythm, ["snare1.wav",   ~w(. . . . . . . X)], id: 3),
+      worker(Rhythm, ["snare1.wav",   ~w(. . . . . . . X)], id: 4),
+      worker(Rhythm, ["snare1.wav",   ~w(. . . . . . . X)], id: 5),
+      worker(Rhythm, ["snare1.wav",   ~w(. . . . . . . X)], id: 6),
+      worker(Rhythm, ["snare1.wav",   ~w(. . . . . . . X)], id: 7),
+      worker(Rhythm, ["snare1.wav",   ~w(. . . . . . . X)], id: 8),
+      worker(Rhythm, ["snare1.wav",   ~w(. . . . . . . X)], id: 9),
+      worker(Rhythm, ["snare1.wav",   ~w(. . . . . . . X)], id: 10),
+    ]
+```
+
+---
+
+## Improving Timing with `Registry`
+
+```elixir
+defmodule SweetBeats do
+  # ...
+  def start(_type, _args) do
+    import Supervisor.Spec, warn: false
+
+    children = [
+      # Elixir 1.4!
+      worker(Registry, [:duplicate, SweetBeats.Registry]),
+
+      worker(Metronome, []),
+
+      worker(Rhythm, ["snare1.wav",   ~w(. . . . . . . X)], id: 1),
+      worker(Rhythm, ["snare1.wav",   ~w(. . . . . . . X)], id: 2),
+      worker(Rhythm, ["snare1.wav",   ~w(. . . . . . . X)], id: 3),
+      worker(Rhythm, ["snare1.wav",   ~w(. . . . . . . X)], id: 4),
+      worker(Rhythm, ["snare1.wav",   ~w(. . . . . . . X)], id: 5),
+      worker(Rhythm, ["snare1.wav",   ~w(. . . . . . . X)], id: 6),
+      worker(Rhythm, ["snare1.wav",   ~w(. . . . . . . X)], id: 7),
+      worker(Rhythm, ["snare1.wav",   ~w(. . . . . . . X)], id: 8),
+      worker(Rhythm, ["snare1.wav",   ~w(. . . . . . . X)], id: 9),
+      worker(Rhythm, ["snare1.wav",   ~w(. . . . . . . X)], id: 10),
+    ]
+```
+
+---
+
+```elixir
+defmodule SweetBeats.Melody do
+  use GenServer
+
+  @rest "."
+
+  def start_link(instrument \\ Guitar, notes) do
+    GenServer.start_link(__MODULE__, {instrument, notes})
+  end
+
+  def init(state) do
+    {:ok, _} = Registry.register(SweetBeats.Registry, "track", [])
+    {:ok, state}
+  end
+
+  def handle_info(:play, {instrument, [head | tail]}) do
+    play_note(instrument, head)
+    shifted_notes = tail ++ [head]
+    {:noreply, {instrument, shifted_notes}}
+  end
+
+  defp play_note(_instrument, @rest), do: nil
+  defp play_note(instrument, note) do
+    spawn(Kernel, :apply, [instrument, :play_note, [note]])
+  end
+end
+```
+
+---
+
+```elixir
+defmodule SweetBeats.Rhythm do
+  use GenServer
+
+  @rest "."
+
+  def start_link(sample_file, notes) do
+    GenServer.start_link(__MODULE__, {sample_file, notes})
+  end
+
+  def init(state) do
+    {:ok, _} = Registry.register(SweetBeats.Registry, "track", [])
+    {:ok, state}
+  end
+
+  def handle_info(:play, {sample_file, [head | tail]}) do
+    play_sample(sample_file, head)
+    shifted_notes = tail ++ [head]
+    {:noreply, {sample_file, shifted_notes}}
+  end
+
+  defp play_sample(_sample_file, @rest), do: nil
+  defp play_sample(sample_file, _note) do
+    spawn(System, :cmd, ["play", ["-q", "samples/#{sample_file}"]])
+  end
+end
+```
+
+---
+
+```elixir
+defmodule SweetBeats.Metronome do
+  use GenServer
+
+  @tempo 125 # milliseconds, i.e. eighth notes
+
+ def start_link do
+   GenServer.start_link(__MODULE__, %{}, name: __MODULE__)
+ end
+
+ def init(state) do
+   start_timer()
+   {:ok, state}
+ end
+
+ def handle_info(:tick, state) do
+   Registry.dispatch(SweetBeats.Registry, "track", fn tracks ->
+     for {pid, _} <- tracks, do: send(pid, :play)
+   end)
+
+   {:noreply, state}
+ end
+
+ defp start_timer() do
+   :timer.send_interval(@tempo, __MODULE__, :tick)
+ end
+end
+```
+
+---
+
+## Tempo as an Argument
+
+```elixir
+defmodule SweetBeats do
+  # ...
+  def start(_type, _args) do
+    import Supervisor.Spec, warn: false
+
+    children = [
+      worker(Registry, [:duplicate, SweetBeats.Registry]),
+      worker(Metronome, [250]),
+      worker(Melody, [SweetBeats.Instrument.Synth, ~w(
+        E5 . B4 C5 D5 . C5 B4
+        A4 . A4 C5 E5 . D5 C5
+        B4 .  . C5 D5 . E5 .
+        C5 . A4 .  A4 . .  .
+        .  D5 . F5 A5 . G5 F5
+        E5 . .  C5 E5 . D5 C5
+        B4 . B4 C5 D5 . E5 .
+        C5 . A4 .  A4 .  .  .
+      )]),
+```
+
+(And a new tune)
+
+---
+
+## Correcting for Drift without `Registry`
+
+```elixir
+defmodule SweetBeats do
+  # ...
+  def start(_type, _args) do
+    import Supervisor.Spec, warn: false
+
+    start_time = :os.system_time(:microsecond)
+    children = [
+      worker(Melody, [start_time, SweetBeats.Instrument.Synth, ~w(
+        E5 . B4 C5
+        D5 . C5 B4
+      )]),
+      worker(Rhythm, [start_time, "kick2.wav",   ~w(X . . X . . . .)], id: 1),
+      worker(Rhythm, [start_time, "kick1.wav",   ~w(X . . . X . . .)], id: 2),
+      worker(Rhythm, [start_time, "hihat1.wav",  ~w(X X . X . . X .)], id: 3),
+      worker(Rhythm, [start_time, "hihat2.wav",  ~w(. . X . . X . .)], id: 4),
+      worker(Rhythm, [start_time, "snare2.wav",  ~w(. . . . X . . X)], id: 5),
+      worker(Rhythm, [start_time, "clap.wav"  ,  ~w(. . . . X . . .)], id: 6),
+    ]
+```
+
+---
+
+## Correcting for Drift without `Registry`
+
+```elixir
+defmodule SweetBeats.Melody do
+  use GenServer
+
+  @rest "."
+  @microseconds_between_notes 250_000
+
+  def start_link(start_time, instrument \\ Guitar, notes) do
+    GenServer.start_link(__MODULE__, {start_time, instrument, notes})
+  end
+
+  def handle_info(:play, {start_time, instrument, [head | tail]}) do
+    play_note(instrument, head)
+    shifted_notes = tail ++ [head]
+    delta = :os.system_time(:microsecond) - start_time
+    time_to_next_note = @microseconds_between_notes - delta
+    Process.send_after(self(), :play, round(time_to_next_note / 1000))
+    next_start_time = :os.system_time(:microsecond) + time_to_next_note
+    {:noreply, {next_start_time, instrument, shifted_notes}}
+  end
+```
+
+---
+
+## Related Links
+
+- The repo: [github.com/stevegrossi/sweet_beats](https://github.com/stevegrossi/sweet_beats)
+- [The SoX docs](http://sox.sourceforge.net/sox.html)
+- Elixir 1.4’s [`Registry` module](https://hexdocs.pm/elixir/Registry.html)
