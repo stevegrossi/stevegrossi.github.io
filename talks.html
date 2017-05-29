@@ -1,11 +1,25 @@
 ---
 layout: default
 ---
-<h1>Talks</h1>
-<ul>
-{% for talk in site.talks %}
-  <li>
-    <a href="{{ talk.url | prepend: site.baseurl }}">{{ talk.title }}</a>
-  </li>
+
+{% for talk in site.talks reversed %}
+  <article class="Teaser">
+    <header class="Teaser-header">
+      <h1 class="Teaser-title">
+        <a href="{{ talk.url | prepend: site.baseurl }}">{{ talk.title }}</a>
+      </h1>
+      <p class="Post-meta">{{ talk.date | date: "%B %e, %Y" }}</p>
+    </header>
+    <div class="Teaser-body">
+      <ul>
+        <li><a href="{{ talk.url | prepend: site.baseurl }}">Slides</a></li>
+        {% if talk.repo %}
+          <li><a href="{{talk.repo}}">Code</a></li>
+        {% endif %}
+        {% if talk.youtube_id %}
+          <li><a href="https://www.youtube.com/watch?v={{talk.youtube_id}}">Video</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </article>
 {% endfor %}
-</ul>
