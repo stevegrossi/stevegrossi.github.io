@@ -6,13 +6,13 @@ layout: default
   <article class="Teaser">
     <header class="Teaser-header">
       <h1 class="Teaser-title">
-        <a href="{{ talk.url | prepend: site.baseurl }}">{{ talk.title }}</a>
+        <a href="{{ talk.url }}">{{ talk.title }}</a>
       </h1>
       <p class="Post-meta">{{ talk.date | date: "%B %e, %Y" }}</p>
     </header>
     <div class="Teaser-body">
       <ul>
-        <li><a href="{{ talk.url | prepend: site.baseurl }}">Slides</a></li>
+        <li><a href="{{ talk.url }}">Slides</a></li>
         {% if talk.repo %}
           <li><a href="{{talk.repo}}">Code</a></li>
         {% endif %}

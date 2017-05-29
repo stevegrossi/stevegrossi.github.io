@@ -35,6 +35,7 @@ exclude:
 collections:
   talks:
     output: true
+    permalink: /talks/:title
 
 # Default post options
 defaults:
