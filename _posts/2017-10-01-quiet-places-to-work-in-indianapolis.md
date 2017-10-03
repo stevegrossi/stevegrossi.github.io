@@ -18,7 +18,7 @@ After [reading *Deep Work*](http://www.stevegrossi.com/on/deep-work), a compelli
 
 [Holliday Park](https://www.hollidaypark.org/plan-your-visit/) is a treasure: if you ever want escape to the woods without leaving the city, it’s the perfect place. The Park has several charming hiking trails along the White River and adjacent gorges. I like to park at the Blickman Education Trail off Meridian just north of the White River and hike into Holliday Park from the east.
 
-The Nature Center pictured above is centered around a bird sanctuary (which the local chipmunks and turtles take advantage of as well). With ample, comfortable seating and an onobstructed view of the birds, the main viewing area is a wonderful place to work. If the chipmunks playing becomes too distracting, an adjacent room holds the Nature Library with a view of the surrounding woods. I find it’s usually unoccupied, and often stow my headphones to enjoy the sounds of the birds outside.
+The Nature Center pictured above is laid out around a bird sanctuary (which the local chipmunks and turtles take advantage of as well). With ample, comfortable seating and an onobstructed view of the birds, the main viewing area is a wonderful place to work. If the chipmunks playing becomes too distracting, an adjacent room holds the Nature Library with a view of the surrounding woods. I find it’s usually unoccupied, and often stow my headphones to enjoy the sounds of the birds outside.
 
 Amenities include restrooms and water fountains, though Wi-Fi is notably (some might say thankfully) lacking, so be prepared to tether or let your coworkers know you’ll be off the grid.
 
@@ -30,7 +30,7 @@ Amenities include restrooms and water fountains, though Wi-Fi is notably (some m
 
 ![](/img/2017-10-01-quiet-places-to-work-in-indianapolis/butler_library_top_floor.jpg)
 
-Built in 1963, Butler University’s main [Irwin Library](https://www.butler.edu/library/spaces/irwin) is a beautiful example of mid-century modern architecture both inside and out. The first thing you notice upon entering is the central atrium and fountain around which the stacks and study spaces are centered. I loved exploring the library, which has a diverse array of reading and work spaces scattered throughout. My favorite was the desks and comfortable chairs on the top floor with a view of the campus. And the carrels are perfect when you want to focus solely on your work.
+Built in 1963, Butler University’s main [Irwin Library](https://www.butler.edu/library/spaces/irwin) is a beautiful example of mid-century modern architecture both inside and out. The first thing you notice upon entering is the central atrium and fountain around which the stacks and study spaces rise. I loved exploring the library, which has a diverse array of reading and work spaces scattered throughout. My favorite was the desks and comfortable chairs on the top floor with a view of the campus. And the carrels are perfect when you want to focus solely on your work.
 
 Amenities include restrooms, water fountains, Wi-Fi, and vending machines, as well as the restaurants and shops you’d expect from a college campus within walking distance.
 
@@ -42,7 +42,7 @@ Amenities include restrooms, water fountains, Wi-Fi, and vending machines, as we
 
 Nestled deep in the woods of the IMA’s 100 Acres sculpture park, the [Ruth Lilly Visitor’s Pavillion](http://www.imamuseum.org/page/ruth-lilly-visitors-pavilion) is an incredibly cool building. With floor-to-ceiling glass windows and skylights behind a sculpted wooden ceiling, the main room fills with natural light filtered through the forest canopy above. Stow your headphones if you like—with bird feeders outside, you can hear birdsong among the other sounds of the woods.
 
-Delightfully isolated, it can be hard to find. Whether coming from the museum itself or (my preferred way on bike) the Central Canal Towpath, enter the 100 Acres across from an orange footbridge and follow signs through the woods. The 100 Acres are full of art and wonderful to explore if you need a break from work or someplace to eat a bag lunch.
+Delightfully isolated, it can be hard to find. Whether coming from the museum itself or (my preferred way on bike) the Central Canal Towpath, enter the 100 Acres across from an orange footbridge and follow signs through the woods. (If driving, the 100 Acres has its own parking lot off 38th street.) The 100 Acres are full of art and wonderful to explore if you need a break from work or someplace to eat a bag lunch.
 
 Amenities include restrooms and Wi-Fi, and the museum itself (a walk across the bridge) offers water fountains and a café. My only disappointment was the desk chairs which, like most modern concept chairs, are as uncomfortable as they are cool, so be sure to get up and walk around from time to time. However, there are comfy leather chairs too if you don’t mind your laptop living up to its name. One word of advice: perhaps avoid sitting directly across from the entrance. As I was the only one there, visitors often assumed I was on staff and walked up to ask me questions, and I didn’t know enough to be helpful!
 
