@@ -76,7 +76,7 @@ Amenities include Wi-Fi, restrooms, water fountains, and vending machines, and y
 
 While much smaller than the main University Library, the [Ruth Lilly Law Library](https://mckinneylaw.iu.edu/library/) at IUPUI’s McKinney School of Law has become one of my favorite places to work. Surrounded by the bound artifacts of centuries of legal scholarship (not to mention law students hard-at-work), I find the Law Library especially encouraging of deep focus and attention. The second floor (a quiet floor, with conversation discouraged) is home to a gorgeous reading room (pictured above) with wooden tables and shelves, natural light, and views of downtown. The next floor up offers tables and carrels for a more isolated work environment.
 
-Amenities include restrooms, Wi-Fi, and an outdoor seating area that’s great for eating a bag lunch on a nice day.
+Amenities include restrooms, Wi-Fi, a cafeteria, and an outdoor seating area that’s great for eating a bag lunch on a nice day.
 
 ## In Sum
 
