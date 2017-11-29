@@ -411,6 +411,11 @@ String.upcase("hellö")
 iex> is_binary("💩")
 true
 
+# Interpolation
+iex> name = "Steve"
+iex> "Hello, #{name}"
+"Hello, Steve"
+
 # Concatenation operator
 iex> "Hello" &lt;&gt; " " &lt;&gt; "there!"
 "Hello there!"
@@ -597,7 +602,7 @@ iex> %Post{title: "My Fancy Post"}
 iex> multiply = fn a, b -> a * b end
 #Function<12.52032458/2 in :erl_eval.expr/5>
 
-iex> is_function(multiplydd
+iex> is_function(multiply)
 true
 
 iex> multiply.(2, 4)
