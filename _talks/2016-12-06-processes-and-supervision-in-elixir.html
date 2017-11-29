@@ -18,21 +18,426 @@ class: center, middle
 
 # The plan...
 
-- `spawn`, `send` and `receive`
-- Agent
-- GenServer
-- Building a reminders application
+1. What is Elixir?
+  - History
+  - Quick Syntax Primer
+2. Process &amp; Supervision
+  - `spawn`, `send` and `receive`
+  - Agent
+  - GenServer
+3. Building a sample application
 
 ---
 
-## `spawn`, `send` and `receive`
+class: center, middle
+
+# What is Elixir?
+
+---
+
+# What is Elixir?
+
+- Created by José Valim in 2012
+- Dynamic, functional, immutable
+- Compiles to Erlang bytecode (interoperable)
+- runs on the Erlang VM ("the BEAM")
+- Erlang symantics, with a friendlier syntax, more powerful metaprogramming, and an expanded standard library.
+
+The best of Erlang, but even better.
+
+---
+
+# What is Erlang?
+
+- Developed in 1986 by Ericsson for use in telecom switches
+- Process-based actor model
+- OTP
+- In the news: Whatsapp bought for $19B, [50 engineers supporting 900M users](http://www.wired.com/2015/09/
+    whatsapp-serves-900-million-users-50-engineers/)
+
+Battle-tested, highly-available, low-maintenance, high-performance.
+
+---
+
+class: center, middle
+
+# “Let It Crash.”
+
+---
+
+class: center, middle
+
+# Quick Syntax Primer
+
+---
+
+# The IEx shell
+
+- `iex` to enter
+- Ctrl+C twice to exit
+- `iex -S mix` within an Elixir project
+- `h Module`, `h Module.function` for help
+- `i whatever` to inspect
+
+```shell
+$ iex
+Erlang/OTP 19 [erts-8.0] [source] [64-bit] [smp:4:4] [async-threads:10] [hipe] [kernel-poll:false]
+
+Interactive Elixir (1.3.1) - press Ctrl+C to exit (type h() ENTER for help)
+iex(1)>
+```
+
+---
+
+# Basic Math
 
 ```elixir
-iex> friend = spawn(fn -> :ok end)
-#PID<0.84.0>
+iex> 1 + 1
+2
 
-iex> send(friend, :hi)
-:hi
+# Scientific notation!
+iex> 2.0e5 / 5.0e4
+4.0
+
+# Division operator always returns a float
+# Unlike e.g. Ruby, where 5 / 2 = 2 (rounded down)
+iex> 5 / 2
+2.5
+
+# Use `div` to return an integer and `rem` for the remainder
+iex> div(5, 2)
+2
+iex> rem(5, 2)
+1
+
+iex> abs(-11)
+11
+```
+
+---
+
+# Atoms
+
+Constants whose name is its own value (like Ruby symbols)
+
+```elixir
+iex> :steve
+:steve
+
+iex> is_atom(:hydrogen)
+true
+```
+
+---
+
+# Strings
+
+```elixir
+# double-quoted, UTF-8 encoded
+iex> "すし🍣"
+"すし🍣"
+
+# Great case support
+String.upcase("hellö")
+"HELLÖ"
+
+# Strings are stored as binary
+iex> is_binary("💩")
+true
+
+# Interpolation
+iex> name = "Steve"
+iex> "Hello, #{name}"
+"Hello, Steve"
+
+# Concatenation operator
+iex> "Hello" &lt;&gt; " " &lt;&gt; "there!"
+"Hello there!"
+```
+
+---
+
+# Booleans
+
+```elixir
+# `true` and `false` are shortcuts for the symbols
+iex> :true
+true
+
+# Equality
+iex> false == :false
+true
+
+# Truthy operators: &amp;&amp;, || !
+iex> "true" || :one
+1
+
+iex> false || :one
+:one
+
+# Strict operators: and, or, not
+iex> "true" or :one
+** (ArgumentError) argument error: "true"
+
+iex> false or :one
+:one
+```
+
+---
+
+# Tuples
+
+```elixir
+# Can contain anything
+iex> tuple = {:ok, "Result", true}
+{:ok, "Result", true}
+
+iex> elem(tuple, 1)
+"Result"
+
+iex> tuple_size(tuple)
+3
+```
+
+Stored contiguously in memory:
+
+- getting a value by index is fast
+- determining size is fast
+- updating or adding elements is slow
+- good for small, static collections
+
+---
+
+# (Linked) Lists
+
+```elixir
+# Can contain anything
+iex> list = [3.14, "π", :pie]
+
+# Heads and tails
+iex> hd(list)
+3.14
+
+iex> tl(list)
+["π", :pie]
+
+# Pattern matching
+iex> message = ["H", "A", "I"]
+["H", "A", "I"]
+
+iex> [head | tail] = message
+["H", "A", "I"]
+
+iex> head
+"H"
+
+iex> tail
+["A", "I"]
+```
+
+---
+
+# (Linked) Lists
+
+```elixir
+# So technically...
+iex> message = ["H" | ["A" | ["I" | []]]]
+["H", "A", "I"]
+
+# Appending
+iex> ["O" | message]
+["O", "H", "A", "I"]
+
+# Adding
+iex> [1, 2, 3] ++ [4, 5]
+[1, 2, 3, 4, 5]
+
+# Subtracting: matches left-to-right
+iex> [1, true, "oh", true] -- [1, true]
+["oh", true]
+```
+
+- Updating, prepending, iterating all fast
+- Accessing by index is slow
+- Typically, use lists for larger dynamic collections
+
+---
+
+# 2D Collections: Keyword Lists
+
+
+List of 2-item tuples: keys are atoms, ordered, and not necessarily unique. Used for lists of options.
+
+```elixir
+# Handy syntax
+iex> [{:foo, "bar"}, {:hello, "world"}]
+[foo: "bar", hello: "world"]
+
+# e.g.
+render conn, "index.html", posts: posts, filter: :published
+
+# or Ecto
+query = from account in "accounts",
+    where: account.active == true,
+    where: account.email == "me@myemail.com"
+    select: account.name
+```
+
+---
+
+# 2D Collections: Maps
+
+Your go-to key-value data structure (e.g. hash). All types can be keys and values. Keys are unique.
+
+```elixir
+# All types can be a key or value
+iex> user = %{"name" => "Steve", :cool? => true}
+%{:cool? => true, "name" => "Steve"}
+
+# Get value
+iex> user["name"]
+"Steve"
+
+# Handy getter for symbols
+iex> user.cool?
+true
+
+# Updating values
+iex> updated_user = %{user | cool?: false}
+%{:cool? => false, "name" => "Steve"}
+```
+
+---
+
+# 2D Collections: Structs
+
+Named maps with their own module: can provide defaults.
+
+```elixir
+# Declaring default keys and values
+defmodule Post do
+  defstruct title: "Untitled", published: false
+end
+
+# Module name between % and {}
+iex> %Post{title: "My Fancy Post"}
+%Post{published: false, title: "My Fancy Post"}
+```
+
+- compile-time guarantees of key validity
+- more specific pattern-matching
+- naming things is good for clarity!
+
+---
+
+# Anonymous Functions
+
+```elixir
+iex> multiply = fn a, b -> a * b end
+#Function<12.52032458/2 in :erl_eval.expr/5>
+
+iex> is_function(multiply)
+true
+
+iex> multiply.(2, 4)
+8
+
+# Functions can be passed around like any value
+iex> shout_result = fn func, arg1, arg2 -> "#{func.(arg1, arg2)}!" end
+#Function<6.71889879/1 in :erl_eval.expr/5>
+
+iex> shout_result.(multiply, 2, 3)
+"6!"
+
+# Composable
+iex> square = fn a -> multiply.(a, a) end
+
+iex> square.(5)
+25
+```
+
+---
+
+# Anonymous Functions
+
+```elixir
+# Multiple bodies
+iex> handle_response = fn
+...>   {:ok, response} -> "Got it: #{response}"
+...>   {:error, reason} -> "Nope! #{reason}"
+...> end
+
+iex> handle_response.({:ok, "Success!"})
+"Got it: Success!"
+
+iex> handle_response.({:error, "Nothing is real."})
+"Nope! Nothing is real."
+
+# Errors if no matching clause
+iex> handle_response.(nil)
+** (FunctionClauseError) no function clause matching in...
+
+# Though we could add a catch-all clause
+iex> handle_response = fn
+...>   {:ok, response} -> "Got it: #{response}"
+...>   {:error, reason} -> "Nope! #{reason}"
+...>   _ -> "Unknown response"
+...> end
+```
+
+---
+
+# Named Functions
+
+```elixir
+# called through modules, e.g.
+iex> String.upcase "pew!"
+"PEW!"
+
+# Define modules with `defmodule`
+defmodule Phaser do
+  # default args with `\\`, also guard clauses!
+  def fire!(times \\ 3) when is_integer(times) do
+    String.duplicate("PEW!", times)
+  end
+  # Multiple function bodies
+  def fire!(input) do
+    {:error, "I cannot fire #{input}"}
+  end
+end
+
+iex> Phaser.fire!(2)
+"PEW!PEW!""
+
+iex> Phaser.fire!("🍌")
+{:error, "I cannot fire 🍌"}
+```
+
+---
+
+class: center, middle
+
+# Processes &amp; Supervision
+
+---
+
+## What is a Process?
+
+- Not an OS process
+- Scheduled by the BEAM
+- More like a function call
+- Share nothing
+- Extremely lightweight: easily spawn millions
+- Messages &amp; mailboxes
+
+---
+
+## `spawn`
+
+```elixir
+iex> friend = spawn(fn -> IO.puts("I'm alive!") end)
+I'm alive!
+#PID<0.84.0>
 
 iex> Process.alive?(friend)
 false
@@ -42,7 +447,7 @@ Processes die when they’re done executing their function.
 
 ---
 
-## `spawn`, `send` and `receive`
+## `send` and `receive`
 
 ```elixir
 iex> friend = spawn fn ->
@@ -64,7 +469,7 @@ Processes stay alive while receiving, but die once they've received a message.
 
 ---
 
-## `spawn`, `send` and `receive`
+## `send` and `receive`
 
 ```elixir
 defmodule Friend do
@@ -81,11 +486,11 @@ defmodule Friend do
 end
 ```
 
-Need to recursively call a named function to stay alive indefinitely.
+Anonymous functions cannot recurse. We need to recursively call a named function to stay alive indefinitely.
 
 ---
 
-## `spawn`, `send` and `receive`
+## `send` and `receive`
 
 ```elixir
 iex> friend = spawn fn -> Friend.listen() end
@@ -119,7 +524,7 @@ Hello there!
 :hi
 ```
 
-What can we use this friend for...
+Now, to put our friend to work...
 
 ---
 
@@ -288,7 +693,7 @@ We can avoid calling `Friend.start_link` (and get other benefits) by making our 
 mix new . --sup
 ```
 
-Only overwrite `mix.exs` and `reminders.ex`.
+Only overwrite `mix.exs` and `app_name.ex`.
 
 ---
 
@@ -469,12 +874,14 @@ end
 
 ## Client, Meet Store
 
-Client still needs to keep time:
-
 ```elixir
 def init(state) do
   run_clock()
   {:ok, state}
+end
+
+defp run_clock do
+  Process.send_after(self(), :tick, :timer.seconds(1))
 end
 
 def handle_cast({:new, message, seconds_in_future}, state) do
@@ -496,8 +903,8 @@ end
 
 ## Next Steps
 
-- How else might we break this up?
-- What if the store dies?
+- How might we break this up further?
+- What if the store goes down?
 - How can we increase throughput?
 
 ---
@@ -505,3 +912,15 @@ end
 ## Links
 
 - https://github.com/stevegrossi/reminders
+
+---
+
+class: center, middle
+
+## `Process.exit(steve, :normal)`
+
+[@stevegrossi](https://twitter.com/stevegrossi)
+
+[work.stevegrossi.com](http://work.stevegrossi.com)
+
+Want more Elixir?<br>[www.indyelixir.org](http://www.indyelixir.org)
