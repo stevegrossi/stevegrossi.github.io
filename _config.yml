@@ -15,7 +15,7 @@ author:
   picture: /img/stevegrossi.jpg
   twitter: stevegrossi
 
-gems:
+plugins:
   - jekyll-sitemap
   - jekyll-seo-tag
 
