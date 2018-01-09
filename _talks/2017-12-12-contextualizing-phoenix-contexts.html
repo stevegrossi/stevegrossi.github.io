@@ -1,0 +1,435 @@
+---
+title: "Contextualizing Phoenix Contexts"
+layout: talk
+talk_theme: indyelixir
+---
+
+class: center, middle
+
+![Indy Elixir](http://www.indyelixir.org/images/indyelixir.svg)
+
+# Contextualizing <br>Phoenix Contexts
+
+### Steve Grossi @ Lessonly
+
+---
+
+.right.third[
+  ![A puggle (it’ll make sense later)](https://upload.wikimedia.org/wikipedia/commons/5/53/Old_Puggle.jpg)
+  .caption[A puggle (it’ll make sense later)]
+]
+
+## Summary
+
+1. What are “Contexts”?
+2. Why the change?
+3. Why not?
+4. Using Contexts
+5. Migrating to Contexts
+
+---
+
+## What Are Contexts?
+
+---
+
+## What Are Contexts Not?
+
+---
+
+## What Are Contexts Not?
+
+They’re not a new idea, even in Elixir:
+
+> Contexts are dedicated modules that expose and group related functionality. For example, anytime you call Elixir’s standard library, be it `Logger.info/1` or `Stream.map/2`, you are accessing different contexts. Internally, Elixir’s logger is made of multiple modules, such as `Logger.Config` and `Logger.Backends`, but we never interact with those modules directly. *We call the `Logger` module the context, exactly because it exposes and groups all of the logging functionality.*
+
+—<https://hexdocs.pm/phoenix/contexts.html>
+
+---
+
+## What Are Contexts Not?
+
+They’re not required unless you use the generators:
+
+```elixir
+# Phoenix 1.2
+mix phx.gen.html CreditCard credit_cards number:string
+
+# Phoenix 1.3       👇
+mix phx.gen.html Payments CreditCard credit_cards number:string
+```
+
+(But you should use them anyway!)
+
+---
+
+## What Are Contexts Not?
+
+They’re not code or magic, just modules and functions.
+
+```elixir
+# mix phx.gen.context Payments CreditCard credit_cards number:string
+defmodule Puggle.Payments do
+  @moduledoc """
+  The Payments context.
+  """
+
+  @doc """
+  Returns the list of credit_cards.
+
+  ## Examples
+
+      iex> Payments.list_credit_cards()
+      [%CreditCard{}, ...]
+
+  """
+  def list_credit_cards do
+    Repo.all(CreditCard)
+  end
+```
+
+---
+
+## What Are Contexts?
+
+An interface layer:
+
+```elixir
+# Phoenix 1.2: Controller -> Repo
+def show(conn, %{"id" => id}) do
+  user = Repo.get!(User, id)
+  render(conn, "show.html", user: user)
+end
+```
+
+```elixir
+# Phoenix 1.3: Controller -> Context -> Repo
+def show(conn, %{"id" => id}) do
+  user = Accounts.get_user!(id)
+  render(conn, "show.html", user: user)
+end
+
+# Context module
+defmodule Accounts to
+  def get_user!(id), do: Repo.get!(User, id)
+end
+```
+
+---
+
+class: center, middle
+
+# Why The Change?
+
+---
+
+## Why? Avoids Duplication
+
+```elixir
+# Phoenix 1.2
+defmodule PuggleWeb.UserController do
+  def create(conn, %{"user" => user_params}) do
+    changeset = User.changeset(%User{}, user_params)
+    {:ok, user} = Repo.insert(changeset)
+    Puggle.Email.welcome_email(user.email) |> Mailer.deliver_now
+    Intercom.add_user(user)
+    conn
+    |> put_flash(:info, "User created successfully.")
+    |> redirect(to: user_path(conn, :index))
+  end
+
+defmodule PuggleWeb.API.V1.UserController do
+  def create(conn, %{"user" => user_params}) do
+    changeset = User.changeset(%User{}, user_params)
+    {:ok, user} = Repo.insert(changeset)
+    Puggle.Email.welcome_email(user.email) |> Mailer.deliver_now
+    Intercom.add_user(user)
+    render conn, "show.json", user: user
+  end
+```
+
+---
+
+## Why? Avoids Duplication
+
+```elixir
+# Phoenix 1.3
+defmodule PuggleWeb.UserController do
+  def create(conn, %{"user" => user_params}) do
+    {:ok, _user} = Accounts.create_user(user_params)
+    conn
+    |> put_flash(:info, "User created successfully.")
+    |> redirect(to: user_path(conn, :index))
+  end
+
+defmodule PuggleWeb.API.V1.UserController do
+  def create(conn, %{"user" => user_params}) do
+    {:ok, user} = Accounts.create_user(user_params)
+    render conn, "show.json", user: user
+  end
+
+defmodule Puggle.Accounts do
+  def create_user(user_params) do
+    changeset = User.changeset(%User{}, user_params)
+    {:ok, user} = Repo.insert(changeset)
+    Puggle.Email.welcome_email(user.email) |> Mailer.deliver_now
+    Intercom.add_user(user)
+    {:ok, user}
+  end
+```
+
+---
+
+## Why? Console Convenience!
+
+```elixir
+iex> Accounts.create_user(%{name: "Steve"})
+iex> # vs.
+iex> Repo.insert(User.changeset(%User{}, %{name: "Steve"}))
+```
+
+---
+
+## Why? Keep Related Code Together
+
+```sh
+# Phoenix 1.2
+web/
+  models/
+    company.ex # Ecto schema
+    # ...
+    user.ex    # Ecto schema
+lib/
+  sync_account_service.ex
+```
+
+```sh
+# Phoenix 1.3
+lib/
+  puggle/
+    accounts/
+      accounts.ex             # The context
+      company.ex              # Ecto schema
+      user.ex                 # Ecto schema
+      sync_account_service.ex # other related files
+```
+
+---
+
+## Why? Elixir Conventions
+
+Phoenix 1.2:
+
+```sh
+lib/ # Where most Elixir apps put their code
+web/ # Where Phoenix 1.2 puts your code
+```
+
+Phoenix 1.3:
+
+```sh
+lib/
+  my_app/     # your business logic
+  my_app_web/ # HTTP stuff (e.g. controllers)
+```
+
+---
+
+## Why? Phoenix Is Not Your App
+
+> “Phoenix is not your application” —[Lance Halvorsen](https://www.youtube.com/watch?v=lDKCSheBc-8)
+
+Phoenix 1.2:
+
+```sh
+web/           # Phoenix stuff
+  models/      # Oh, hey, Business Logic 👋
+  controllers/ # HTTP
+  views/       # HTTP
+  endpoint.ex  # HTTP
+```
+
+Phoenix 1.3:
+
+```sh
+lib/
+  my_app/     # Business logic
+  my_app_web/ # Phoenix/HTTP stuff
+```
+
+---
+
+## Why? “Ubiquitous Language”
+
+.right.third[![Domain-Driven Design (2003) by Eric Evans](http://images.amazon.com/images/P/B00794TAUG.01.LZZZZZZZ.jpg)]
+
+- From *Domain-Driven Design* (2003) by Eric Evans
+- A common language between developers, end users, and the business folks in between
+
+```elixir
+Orders.ship_order(order_id)
+
+# vs.
+
+%ShipmentRequest{order_id: order_id}
+|> ShipmentRequest.changeset()
+|> Repo.insert()
+```
+
+---
+
+## Why? A Path to Service Extraction
+
+```sh
+# Payments Context
+puggle/
+  lib/
+    puggle/
+      payments/
+```
+
+```sh
+# Payments umbrella app
+puggle/
+  apps/
+    core/
+    payments/
+```
+
+```sh
+# separate Payments service
+puggle/
+puggle_payments/ # own project!
+  lib/
+    puggle/
+    puggle_web/
+```
+
+---
+
+## Why? Easier to Test
+
+```elixir
+# Controller test
+test "lists all users", %{conn: conn} do
+  conn = get conn, user_path(conn, :index)
+  assert html_response(conn, 200) =~ "Listing Users"
+end
+
+# Context test
+test "list_users/0 returns all users" do
+  user = user_fixture()
+  assert Accounts.list_users() == [user]
+end
+```
+
+Possibility for redundant coverage, though.
+
+---
+
+## Why? Separate Ecto Schemas
+
+```elixir
+defmodule Puggle.Owners.Dog do
+  schema "dogs" do
+    belongs_to :owner, Puggle.Owners.Owner
+    field :name, :string
+    field :good_dog, :boolean # Admin-only info
+
+    timestamps()
+  end
+end
+
+
+owner
+|> Ecto.assoc(:dogs)
+|> Repo.all
+|> Poison.encode!
+# {name: "Fido", good_dog: false} 😡
+# Whoops, sorry!
+```
+
+---
+
+## Why? Separate Ecto Schemas
+
+```elixir
+defmodule Puggle.Owners.Dog do
+  schema "dogs" do
+    belongs_to :owner, Puggle.Owners.Owner
+    field :name, :string
+
+    timestamps()
+  end
+end
+
+defmodule Puggle.Admin.Owners.Dog do
+  schema "dogs" do
+    belongs_to :owner, Puggle.Owners.Owner
+    field :name, :string
+    field :good_dog, :boolean
+
+    timestamps()
+  end
+end
+```
+
+---
+
+## Why Not?
+
+```sh
+mix phx.gen.context Ummmm
+```
+
+A little more thinking up front (But it’s easy to change your mind!)
+
+> If you’re stuck when trying to come up with a context name when the grouped functionality in your system isn’t yet clear, you can simply use the plural form of the resource you’re creating...As you grow your application and the parts of your system become clear, you can simply rename the context to a more refined name at a later time.
+>
+> — [the docs](https://hexdocs.pm/phoenix/contexts.html)
+
+---
+
+## Why Not?
+
+More naming = more potential for [naming collisions](https://twitter.com/mileszs/status/939956746096971776)
+
+![](/img/talks/contextualizing-phoenix-contexts/miles-quotes.png)
+
+---
+
+class: center, middle
+
+# Using Contexts
+
+---
+
+## Using Contexts
+
+Examples:
+
+```elixir
+# Contexts + HTML stuff like Controllers and templates
+mix phx.gen.html Accounts User users name:string email:string
+
+# Context + API stuff like Controller with JSON output
+mix phx.gen.json Blog Post posts title:string body:text
+
+# Just a context, no web stuff
+mix phx.gen.context Blog Author authors name:string
+```
+
+> "If you are unsure, you should prefer explicit modules (contexts) between resources."
+>
+> — [the docs](https://hexdocs.pm/phoenix/contexts.html)
+
+---
+
+## References
+
+- https://hexdocs.pm/phoenix/contexts.html
+- Keynote: https://m.youtube.com/watch?v=tMO28ar0lW8
+- http://michal.muskala.eu/2017/05/16/putting-contexts-in-context.html
+- https://elixirforum.com/t/how-would-you-explain-phoenix-contexts-to-a-newbie/5947/10
+- https://elixirforum.com/t/phoenix-contexts-learning-resources/5930
+- https://robots.thoughtbot.com/lessons-from-using-phoenix-1-3
