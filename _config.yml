@@ -3,7 +3,7 @@ title: Steve Grossi at Work
 email: hello@stevegrossi.com
 description: Thoughts on software craftsmanship.
 baseurl: "" # the subpath of your site, e.g. /blog/
-url: "http://work.stevegrossi.com"
+url: "https://work.stevegrossi.com"
 permalink: pretty
 paginate: 10
 paginate_path: "/page/:num/"
