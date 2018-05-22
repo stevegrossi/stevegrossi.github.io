@@ -1,0 +1,410 @@
+---
+title: "Great Success: Dynamic Type Checking in Erlang and Elixir"
+layout: talk
+talk_theme: indyelixir
+---
+
+class: center, middle
+
+# Great Success: <br>Dynamic Type Checking <br>in Erlang and Elixir
+
+### Steve Grossi @ Lessonly
+
+---
+
+## Summary
+
+1. What are types?
+2. Static vs. Dynamic Type Systems
+3. Gradual Typing with Dialyzer
+4. Dialyzer in Action
+
+---
+
+## What are Types?
+
+- Categories of expression (or "thing") in your system.
+- Basic data types provided by the language (e.g. strings, integers, arrays/lists, hashes/maps)
+- More complex (often custom) types composed of basic data types
+
+```elixir
+iex> i 5
+Data type
+  Integer
+
+iex> i [1, 2, 3]
+Data type
+  List
+```
+
+---
+
+## Type Systems
+
+A set of rules for which types are allowed where.
+
+```php
+// e.g. php
+function add(Integer $left, Integer $right) {
+  return $left + $right;
+}
+```
+
+```java
+// e.g. Java
+void processStringList(List<String> stringList) {
+  // process a list of strings
+}
+```
+
+---
+
+## Static Type Systems
+
+In a static type system, the compiler checks for type mismatches in your code, and guarantees that if code compiles, there are none.
+
+```java
+// e.g. Java
+void processStringList(List<String> stringList) {
+  // process a list of strings
+}
+// Will not compile if passed a list of integers
+```
+
+---
+
+## Dynamic Type Systems
+
+In a dynamic type system, type errors are raised at runtime when they're encountered.
+
+```php
+function add(Integer $left, Integer $right) {
+  return $left + $right;
+}
+
+add("Hello", "world");
+// Fatal error: Uncaught TypeError: Argument 1 passed
+// to add() must be an instance of Integer, string given
+```
+
+---
+
+## Static Type Systems
+
+**Benefits**
+
+- Catch type-related bugs at the source before you ship
+- Potential for compiler optimizations based on types
+- Documentation for other developers
+
+**Drawbacks**
+
+- Can be a lot of work, especially at the start. You have more choices to make. (Type inference helps)
+- May reject some correct programs ("any sound, decidable type system must be incomplete", [Remy 2017](http://gallium.inria.fr/~remy/mpri/cours1.pdf))
+
+---
+
+## Dynamic Type Systems
+
+**Benefits**
+
+- Freedom!
+
+**Drawbacks**
+
+- Freedom!
+
+---
+
+## Strong vs. Weak Type Systems
+
+No consensus on what these mean. Maybe don't use them.
+
+- Some equate strong with static type systems.
+- Some equate weak with implicit type conversion (below).
+- Generally refer to the strictness of the type system.
+
+```js
+// Adding strings to integers in JavaScript
+> 1 + "2"
+"12"
+```
+
+```ruby
+# Adding integers to Dates in Ruby
+> Date.today + 1
+#=> #<Date: 2018-05-23>
+```
+
+---
+
+class: center, middle
+
+## Can we have the best of both worlds?
+
+---
+
+## Erlang and Elixir are Dynamically Typed
+
+```elixir
+defmodule Adder do
+  def add(left, right) do
+    left + right
+  end
+
+  def add_strings do
+    add("Hello", "World") # Compiles!
+  end
+end
+
+# iex> Adder.add(1, 2)
+# 3
+#
+# iex> Adder.add_strings
+# ** (ArithmeticError) bad argument in arithmetic expression
+```
+
+---
+
+## Runtime Type Checking With Guard Clauses
+
+```elixir
+defmodule Adder do
+  def add(left, right) when is_integer(left) and is_integer(right) do
+    left + right
+  end
+  def add(left, right) do
+    raise "Invalid input: expected integers"
+  end
+
+  def add_strings do
+    add("Hello", "World") # Compiles!
+  end
+end
+
+# iex> Adder.add_strings
+# ** (RuntimeError) Invalid input: expected integers
+```
+
+...but no compile-time help.
+
+---
+
+## Enter Dialyzer
+
+A command-line tool for BEAM languages for performing **optimistic type-checking** according to inferred and explicit type annotations prior to runtime.
+
+Obvious acronym 😉:
+
+> a DIscrepancy AnaLYZer for ERlang programs.
+
+—[Docs](http://erlang.org/doc/man/dialyzer.html)
+
+---
+
+## Enter Dialyzer
+
+Explicit type annotation:
+
+```elixir
+defmodule Adder do
+
+  @spec add(number(), number()) :: number()
+  def add(left, right) do
+    left + right
+  end
+
+  def hello_world do
+    add("Hello", "world")
+  end
+end
+
+# $ mix dialyzer
+#
+# lib/adder.ex:9: The call 'Elixir.Adder':add(...) will never return
+# since the success typing is (number(),number()) -> number()
+# and the contract is (number(),number()) -> number()
+```
+
+---
+
+## Enter Dialyzer
+
+Inference from language features (`+` requires numbers):
+
+```elixir
+defmodule Adder do
+
+  def add(left, right) do
+    left + right
+  end
+
+  def hello_world do
+    add("Hello", "world")
+  end
+end
+
+# $ mix dialyzer
+#
+# lib/adder.ex:9: The call 'Elixir.Adder':add(...) will never return
+# since it differs in the 1st and 2nd argument
+# from the success typing arguments: (number(),number())
+```
+
+---
+
+## Enter Dialyzer
+
+Inference from guard clauses:
+
+```elixir
+defmodule Adder do
+
+  def add(left, right) when is_integer(left) and is_integer(right) do
+    # whatever...
+  end
+
+  def hello_world do
+    foo("Hello", "world")
+  end
+end
+
+# $ mix dialyzer
+#
+# lib/adder.ex:9: The call 'Elixir.Adder':add(...) will never return
+# since it differs in the 1st and 2nd argument from
+# the success typing arguments: (integer(),integer())
+```
+
+---
+
+## Gradual/Optimistic Type Checking
+
+### Gradual
+
+Relies on some type inference, add annotations to get more value
+
+### Optimistic
+
+Will only flag what's provably wrong, and assumes in ambiguous situations you know what you're doing
+
+---
+
+## Comparison with Static Type Systems
+
+**Benefits**
+
+- ✅ Catch type-related bugs at the source before you ship
+- 🚫 Potential for compiler optimizations based on types
+- ✅ Documentation for other developers
+
+**Drawbacks**
+
+- 🚫 🎉 Can be a lot of work, especially at the start.
+- 🚫 🎉 May reject some correct programs
+
+---
+
+## Success Typing With Dialyzer
+
+**Drawbacks**
+
+- Takes a while to generate PLT for new Elixir/Erlang versions
+- Can only annotate functions
+  - (not variables like `int foo;`)
+- Output often verbose, sometimes cryptic:
+
+```sh
+$ mix dialyzer
+lib/adder.ex:7: Function hello_world/0 has no local return
+lib/adder.ex:8: The call 'Elixir.Adder':foo(#{#<72>(8, 1, 'integer',
+['unsigned', 'big']), #<101>(8, 1, 'integer', ['unsigned', 'big']),
+#<108>(8, 1, 'integer', ['unsigned', 'big']), #<108>(8, 1, 'integer',
+['unsigned', 'big']),#<111>(8, 1, 'integer', ['unsigned', 'big'])}#,
+<<_:40>>) will never return since it differs in the 1st and 2nd
+argument from the success typing arguments: (integer(),integer())
+```
+
+---
+
+## Custom Types
+
+```elixir
+defmodule DialyzerTest do
+
+  @type method        :: :get | :put | :post | :delete
+  @type url           :: binary()
+  @type payload       :: %Payload{method: method(), url: url()}
+  @type response_body :: binary()
+
+  @spec make_request(payload()) :: response_body()
+  def make_request(payload) do
+    "<html>...</html>"
+  end
+
+  def test do
+    make_request("http://example.com")
+  end
+end
+
+# $ mix dialyzer
+# The call 'Elixir.DialyzerTest':make_request(<<_:144>>)
+# breaks the contract (payload()) -> response_body()
+```
+
+---
+
+## Custom Types
+
+```elixir
+defmodule Payload do
+  @typep method       :: :get | :put | :post | :delete
+  @typep url          :: binary()
+  @type t             :: %Payload{method: method(), url: url()}
+  defstruct [:method, :url]
+end
+
+defmodule DialyzerTest do
+  @type response_body :: binary()
+
+  @spec make_request(Payload.t()) :: response_body()
+  def make_request(payload) do
+    "<html></html>"
+  end
+
+  def test do
+    make_request("http://example.com")
+  end
+end
+
+# $ mix dialyzer
+# The call 'Elixir.DialyzerTest':make_request(<<_:144>>)
+# breaks the contract ('Elixir.Payload':t()) -> response_body()
+```
+
+---
+
+## Conclusion
+
+- A nice tool in the toolbox.
+- Type specs are for people too.
+- You still need tests.
+
+---
+
+class: center, middle
+
+![Indy Elixir](https://www.indyelixir.org/images/indyelixir.svg)
+
+# Want to learn more?
+
+[indyelixir.org](http://www.indyelixir.org)
+
+[Next Meetup is July 3!](https://www.meetup.com/indyelixir/events/250372114/)
+
+---
+
+## Related Links
+
+- [_Learn You Some Erlang For Great Good_ on Dialyzer](http://learnyousomeerlang.com/dialyzer)
+- [The “Success Typings” paper](http://www.it.uu.se/research/group/hipe/papers/succ_types.pdf)
