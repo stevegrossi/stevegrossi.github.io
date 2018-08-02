@@ -32,7 +32,7 @@ Ruby, Rails, Elixir, TDD, SQL, OOCSS, React, Git, CI
 ## In the Community
 
 - Since moving to Indianapolis, I’ve been an active member and sometime speaker at the Indy.rb Ruby users’ group.
-- Founded and organize [Indy Elixir](http://indyelixir.org/), the local Elixir users’ group.
+- Founded and organize [Indy Elixir](https://indyelixir.org/), the local Elixir users’ group.
 - Volunteer with Railsbridge Indy, teaching Ruby and Rails chiefly to folks underrepresented in the industry.
 
 ## New York University <span class="subhead">B.A. in Philosophy & Comparative Literature</span>
