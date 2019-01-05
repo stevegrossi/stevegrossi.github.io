@@ -5,7 +5,7 @@ tags:
   - management
 ---
 
-One of the most-misunderstood skills of a manager is delegation. Before becoming a manager myself, I had the common impression that delegation is when your boss gets you to do their job so they can go take 2-hour lunches. It turns out that's only half true: delegation _is_ about your manager getting you to do some of their job. But I've come to see how delegation is so much more than that: it's the engine of individual and collective growth within an organization.
+One of the most-misunderstood skills of a manager is delegation. Before [becoming a manager myself](/2018/04/05/reflections-on-my-first-few-months-as-a-manager/), I had the common impression that delegation is when your boss gets you to do their job so they can go take 2-hour lunches. It turns out that's only half true: delegation _is_ about your manager getting you to do some of their job. But I've come to see how delegation is so much more than that: it's the engine of individual and collective growth within an organization.
 
 <!--more-->
 
