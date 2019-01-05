@@ -1,7 +1,7 @@
 # Site settings
 title: Steve Grossi at Work
 email: hello@stevegrossi.com
-description: Reflections on craft.
+description: Reflections on building software for, and with, people.
 baseurl: "" # the subpath of your site, e.g. /blog/
 url: "https://work.stevegrossi.com"
 permalink: pretty
