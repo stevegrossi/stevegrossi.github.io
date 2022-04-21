@@ -3,7 +3,7 @@ title: Resume
 layout: resume
 ---
 
-# Steve Grossi
+# Steve Grossi (he/him)
 
 <p class="lede">Full-stack software developer and team lead</p>
 
