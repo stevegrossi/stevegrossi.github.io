@@ -5,7 +5,7 @@ layout: resume
 
 # Steve Grossi (he/him)
 
-<p class="lede">Full-stack software developer and team lead</p>
+<p class="lede">Full-stack product developer and team lead</p>
 
 ## Skills
 
