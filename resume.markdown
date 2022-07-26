@@ -17,7 +17,7 @@ Empathy, curiosity, and clarity foremost—then Ruby, Rails, Elixir, JavaScript,
 - As a Lead Engineer, I've coached teams of developers of various backgrounds and experience levels to question, understand, decompose, deploy, measure, iterate on, and communicate about flagship features of the platform like learning paths, commenting, and a Chrome extension.
 - As we've scaled up, I've honed the ability to analyze an optimize code and infrastructure through simplification, optimization, and caching (ideally in that order)
 - As an Engineering Manager for several years and enablement lead afterward, I've worked primarily on empowering my team with communities of practice, automation tools that save time and provide context when it's needed, and abstractions like APIs for common needs to containerized dev environments.
-- Since 2017, I helped start and run Lessonly's employee-led Diversity & Inclusion group. We organized discussion groups, an executive panel, and community outreach events that measurably improved the diversity of the company.
+- Since 2017, I helped start and run Lessonly's employee-led Diversity, Equity, &amp; Inclusion group. We organized discussion groups, an executive panel, and training that measurably improved the diversity of the company.
 
 ## Senior Developer at Alldayeveryday <span class="subhead">(January 2013–November 2014)</span>
 
