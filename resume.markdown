@@ -5,13 +5,20 @@ layout: resume
 
 # Steve Grossi (he/him)
 
-<p class="lede">Full-stack product developer and team lead</p>
+<p class="lede">Full-stack product engineer and team lead</p>
 
 ## Skills
 
-Empathy, curiosity, and clarity foremost—then Ruby, Rails, Elixir, JavaScript, React, SQL, Docker, and AWS.
+Empathy, curiosity, and clarity foremost—then Elixir, Ruby, JavaScript, React, CSS, HTML, SQL, Docker, and AWS.
 
-## Lead Software Engineer and Engineering Manager at Lessonly <span class="subhead">(November 2014–Present)</span>
+## Senior Engineer at Payitoff, acquired by Array <span class="subhead">(September 2022–Present)</span>
+
+- As a senior engineer I coupled planning, architecture, and delivery of new product capabilities with systems-level changes to security, observability, and developer tooling that ensured our ability to scale-up safely.
+- Led a phased, zero-downtime migration to envelope encryption for sensitive data, providing enhanced security and enterprise-readiness. I designed a simple abstraction enabling others to adopt this capability with just a few lines of code, and contributed an upstream bugfix to the open-source aws-kms library.
+- Instituted a business intelligence tool (Metabase) to save time and improve consistency answering questions about our product usage and outcomes. This became an essential tool for our engineering, product, and sales efforts.
+- Coached a team of mostly new-to-Elixir (and some new-to-programming) engineers on Elixir, Phoenix, and LiveView patterns, building a reputation for instructive, collaborative code-reviews.
+
+## Lead Software Engineer and Engineering Manager at Lessonly, acquired by Seismic <span class="subhead">(November 2014–September 2022)</span>
 
 - As Lessonly's second engineer, I've helped grow a culture of collaboration and knowledge-sharing. With code reviews, shared style guides, automation, and more, I've focused on building more than software—on building systems, practices, and patterns that have helped us scale from two engineers to 40.
 - As a Lead Engineer, I've coached teams of developers of various backgrounds and experience levels to question, understand, decompose, deploy, measure, iterate on, and communicate about flagship features of the platform like learning paths, commenting, and a Chrome extension.
